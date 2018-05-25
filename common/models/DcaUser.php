@@ -12,7 +12,7 @@ use Yii;
  * @property string $password
  * @property string $usertype
  * @property string $createdAt
- * @property string $updateAt
+ * @property string $updatedAt
  */
 class DcaUser extends \yii\db\ActiveRecord
 {
@@ -31,7 +31,7 @@ class DcaUser extends \yii\db\ActiveRecord
     {
         return [
             [['username', 'password', 'usertype', 'createdAt', 'updateAt'], 'required'],
-            [['createdAt', 'updateAt'], 'safe'],
+            [['createdAt', 'updatedAt'], 'safe'],
             [['username'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 32],
             [['usertype'], 'string', 'max' => 100],
@@ -50,18 +50,18 @@ class DcaUser extends \yii\db\ActiveRecord
             'password' => 'Password',
             'usertype' => 'Usertype',
             'createdAt' => 'Created At',
-            'updateAt' => 'Update At',
+            'updatedAt' => 'Update At',
         ];
     }
 
     public function generateUniqueRandomString($attribute, $length = 32) {
-			
+
         $randomString = Yii::$app->getSecurity()->generateRandomString($length);
-                
+
         if(!$this->findOne(['password' => $randomString]))
             return $randomString;
         else
             return $this->generateUniqueRandomString($attribute, $length);
-                
+
     }
 }
