@@ -92,7 +92,7 @@ class Student extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'approval_status' => 'Approval Status',
             'country' => 'Country',
-            'state_id' => 'State ID',
+            'state_id' => 'State',
             'date_of_birth' => '',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',

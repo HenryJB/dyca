@@ -13,7 +13,7 @@ use common\models\Student;
  * @property string $password
  * @property string $usertype
  * @property string $createdAt
- * @property string $updateAt
+ * @property string $updatedAt
  */
 class DcaUser extends \yii\db\ActiveRecord
 {
@@ -31,7 +31,11 @@ class DcaUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+<<<<<<< HEAD
             [['username', 'password', 'usertype', 'createdAt', 'updatedAt'], 'required'],
+=======
+            [['username', 'password', 'usertype', 'createdAt', 'updateAt'], 'required'],
+>>>>>>> f46ac7669b9cdabacdae570abbd85933c4d08ce0
             [['createdAt', 'updatedAt'], 'safe'],
             [['username'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 32],
