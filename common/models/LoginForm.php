@@ -3,6 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
+use common\models\DcaUser;
 
 /**
  * Login form
@@ -42,7 +43,7 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
+            if (!$user || !$user->validatePassword($this->password,$user->password)) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
         }
@@ -70,7 +71,7 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = DcaUser::findByUsername($this->username);
         }
 
         return $this->_user;

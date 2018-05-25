@@ -3,7 +3,8 @@ namespace frontend\models;
 
 use yii\base\Model;
 use yii\base\InvalidParamException;
-use common\models\User;
+use common\models\DcaUser;
+use Yii;
 
 /**
  * Password reset form
@@ -13,7 +14,7 @@ class ResetPasswordForm extends Model
     public $password;
 
     /**
-     * @var \common\models\User
+     * @var \common\models\DcaUser
      */
     private $_user;
 
@@ -30,7 +31,10 @@ class ResetPasswordForm extends Model
         if (empty($token) || !is_string($token)) {
             throw new InvalidParamException('Password reset token cannot be blank.');
         }
-        $this->_user = User::findByPasswordResetToken($token);
+
+        $this->_user = DcaUser::findByAuthKey($token);
+
+
         if (!$this->_user) {
             throw new InvalidParamException('Wrong password reset token.');
         }
@@ -55,9 +59,9 @@ class ResetPasswordForm extends Model
      */
     public function resetPassword()
     {
+        
         $user = $this->_user;
-        $user->setPassword($this->password);
-        $user->removePasswordResetToken();
+        $user->setPassword(Yii::$app->getSecurity()->generatePasswordHash($this->password));
 
         return $user->save(false);
     }
