@@ -12,12 +12,20 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css',
+        'css/bootstrap.min.css',
+        'css/mdb.min.css',
+        'css/style.css'        
     ];
     public $js = [
+    "js/jquery-3.3.1.min.js",
+    "js/popper.min.js",
+    "js/bootstrap.min.js",
+    "js/mdb.min.js",
+    "js/script.js"
     ];
     public $depends = [
-        'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
+        //'yii\web\YiiAsset',
+        //'yii\bootstrap\BootstrapAsset',
     ];
 }
