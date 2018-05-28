@@ -61,6 +61,7 @@ class ResetPasswordForm extends Model
     {
         
         $user = $this->_user;
+        
         $user->setPassword(Yii::$app->getSecurity()->generatePasswordHash($this->password));
 
         return $user->save(false);

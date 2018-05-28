@@ -101,9 +101,11 @@ class StudentController extends Controller
         if ($model->load(Yii::$app->request->post()) ) {        
 
             $authkey = $model->first_name.''.$model->last_name.'cad';
+
+            $password = $modelDcaUser->generateUniqueRandomString();
             
             $modelDcaUser->username = $model->email_address;
-            $modelDcaUser->password = $modelDcaUser->generateUniqueRandomString();
+            $modelDcaUser->password = $password;
             $modelDcaUser->usertype= '1';
             $modelDcaUser->authKey= Yii::$app->getSecurity()->hashData($authkey,'cad');
             $modelDcaUser->createdAt = date('Y-m-d');
@@ -126,8 +128,6 @@ class StudentController extends Controller
 
     public function actionLogin(){
       
-        $model = new LoginForm();
-
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {

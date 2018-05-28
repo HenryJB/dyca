@@ -15,7 +15,7 @@ use common\models\Student;
  * @property string $createdAt
  * @property string $updatedAt
  */
-class DcaUser extends \yii\db\ActiveRecord
+class DcaUser extends \yii\db\ActiveRecord implements \yii\web\Identityinterface
 {
     /**
      * {@inheritdoc}
@@ -31,11 +31,7 @@ class DcaUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-<<<<<<< HEAD
-            [['username', 'password', 'usertype', 'createdAt', 'updatedAt'], 'required'],
-=======
             [['username', 'password', 'usertype', 'createdAt', 'updateAt'], 'required'],
->>>>>>> f46ac7669b9cdabacdae570abbd85933c4d08ce0
             [['createdAt', 'updatedAt'], 'safe'],
             [['username'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 32],
@@ -91,8 +87,48 @@ class DcaUser extends \yii\db\ActiveRecord
         return static::findOne(['username' => $username]);
     }
 
-    public static function validatePassword($password,$user){
-        return var_dump(Yii::$app->getSecurity()->validatePassword($password, $user)); exit();
+
+
+     /**
+     * Finds an identity by the given ID.
+     *
+     * @param string|int $id the ID to be looked for
+     * @return IdentityInterface|null the identity object that matches the given ID.
+     */
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new \yii\base\NotSupportedException();
+    }
+
+    /**
+     * @return int|string current user ID
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string current user auth key
+     */
+    public function getAuthKey()
+    {
+        return $this->authKey;
+    }
+
+    /**
+     * @param string $authKey
+     * @return bool if auth key is valid for current user
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
     }
 
 }
