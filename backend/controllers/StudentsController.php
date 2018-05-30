@@ -24,11 +24,21 @@ class StudentsController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+                    'delete' => ['POST', 'GET'],
                 ],
             ],
         ];
     }
+
+    public function beforeAction($action)
+    {
+        if (in_array($action->id, ['confirm-member', 'sponsor', 'send-mail', ])) {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
+    }
+
 
     /**
      * Lists all Student models.
@@ -96,6 +106,42 @@ class StudentsController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
+    }
+
+    public function actionConfirmMember($id='')
+    {
+      $db = Yii::$app->db;
+      try {
+          $db->createCommand()->update('students', ['is_500' => 1], 'id='.$id)->execute();
+          return 'Student confirm member';
+          
+      } catch (\Exception $e) {
+          return 'failed';
+      }
+
+  }
+
+    public function actionSponsor($id='')
+    {
+      if(!empty($id) && is_numeric($id)){
+        $id = (int)$id;
+        $db = Yii::$app->db;
+        try {
+            $db->createCommand()->update('students', ['sponsorship_status' => 1], 'id='.$id)->execute();
+
+            return 'Student get sponsored';
+        } catch (\Exception $e) {
+            return 'failed';
+        }
+
+      }
+
+
+    }
+
+    public function actionSendMail($value='')
+    {
+      # code...
     }
 
     /**

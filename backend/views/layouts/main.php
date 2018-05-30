@@ -51,7 +51,7 @@ DashboardAsset::register($this);
                           <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a('Dashboard', ['site/index', 'class'=>''])?>
+                                <?=Html::a('Dashboard', ['site/index'])?>
                           </li>
 
                       </ul>
@@ -62,10 +62,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-users"></i>Students</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create', 'class'=>''])?>
+                                <?=Html::a(' New Student', ['students/create'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index', 'class'=>''])?>
+                                <?=Html::a('List', ['students/index'])?>
                           </li>
 
                       </ul>
@@ -75,10 +75,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-list"></i>Reports</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create', 'class'=>''])?>
+                                <?=Html::a(' New Student', ['students/create'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index', 'class'=>''])?>
+                                <?=Html::a('List', ['students/index'])?>
                           </li>
 
                       </ul>
@@ -157,7 +157,8 @@ DashboardAsset::register($this);
   <aside class="menu-sidebar d-none d-lg-block">
       <div class="logo">
           <a href="#">
-              <img src="images/icon/logo.png" alt="Cool Admin" />
+            DCA Backend
+              <!-- <img src="images/icon/logo.png" alt="Cool Admin" /> -->
           </a>
       </div>
       <div class="menu-sidebar__content js-scrollbar1">
@@ -174,10 +175,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-users"></i>Students</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create', 'class'=>''])?>
+                                <?=Html::a(' New Student', ['students/create'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index', 'class'=>''])?>
+                                <?=Html::a('List', ['students/index'])?>
                           </li>
 
                       </ul>
@@ -187,10 +188,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-users"></i>Instructors</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create', 'class'=>''])?>
+                                <?=Html::a(' New Instructor', ['instructors/create'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index', 'class'=>''])?>
+                                <?=Html::a('List', ['instructors/index'])?>
                           </li>
 
                       </ul>
@@ -200,10 +201,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-money"></i>Payments</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create', 'class'=>''])?>
+                                <?=Html::a(' Registration fees', ['payment/registration-fees'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index', 'class'=>''])?>
+                                <?=Html::a('School Fees', ['payment/school-fees'])?>
                           </li>
 
                       </ul>
@@ -214,70 +215,30 @@ DashboardAsset::register($this);
                           <i class="fas fa-list"></i>Reports</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create', 'class'=>''])?>
+                                <?=Html::a(' New Student', ['students/create'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index', 'class'=>''])?>
+                                <?=Html::a('List', ['students/index'])?>
                           </li>
 
                       </ul>
                   </li>
-
 
                   <li class="has-sub">
                       <a class="js-arrow" href="#">
-                          <i class="fas fa-copy"></i>Pages</a>
-                      <ul class="list-unstyled navbar__sub-list js-sub-list">
+                          <i class="fas fa-list"></i>Courses</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                              <a href="login.html">Login</a>
+                                <?=Html::a(' New Course', ['courses/create'])?>
                           </li>
                           <li>
-                              <a href="register.html">Register</a>
+                                <?=Html::a('List', ['courses/index'])?>
                           </li>
-                          <li>
-                              <a href="forget-pass.html">Forget Password</a>
-                          </li>
+
                       </ul>
                   </li>
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-desktop"></i>UI Elements</a>
-                      <ul class="list-unstyled navbar__sub-list js-sub-list">
-                          <li>
-                              <a href="button.html">Button</a>
-                          </li>
-                          <li>
-                              <a href="badge.html">Badges</a>
-                          </li>
-                          <li>
-                              <a href="tab.html">Tabs</a>
-                          </li>
-                          <li>
-                              <a href="card.html">Cards</a>
-                          </li>
-                          <li>
-                              <a href="alert.html">Alerts</a>
-                          </li>
-                          <li>
-                              <a href="progress-bar.html">Progress Bars</a>
-                          </li>
-                          <li>
-                              <a href="modal.html">Modals</a>
-                          </li>
-                          <li>
-                              <a href="switch.html">Switchs</a>
-                          </li>
-                          <li>
-                              <a href="grid.html">Grids</a>
-                          </li>
-                          <li>
-                              <a href="fontawesome.html">Fontawesome Icon</a>
-                          </li>
-                          <li>
-                              <a href="typo.html">Typography</a>
-                          </li>
-                      </ul>
-                  </li>
+
+
               </ul>
           </nav>
       </div>
@@ -410,7 +371,7 @@ DashboardAsset::register($this);
                           </div>
                           <div class="account-wrap">
                               <div class="account-item clearfix js-item-menu">
-                                  
+
                                   <div class="content">
                                       <a class="js-acc-btn" href="#">john doe</a>
                                   </div>
@@ -457,8 +418,15 @@ DashboardAsset::register($this);
 
       <!-- MAIN CONTENT-->
       <div class="main-content">
+        <?= Breadcrumbs::widget([
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
+        <div class="section__content section__content--p30">
+            <?= $content ?>
+        </div>
 
-        <?= $content ?>
+
+
       </div>
       <!-- END MAIN CONTENT-->
       <!-- END PAGE CONTAINER-->

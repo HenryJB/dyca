@@ -1,4 +1,8 @@
-<?php use yii\helpers\Html; ?>
+<?php
+use yii\helpers\Html;
+use common\models\AfricanState;
+
+?>
 
 <?php if(count($model)>0) :?>
 <div class="col-md-12">
@@ -10,8 +14,11 @@
 
                 <h5 class="text-sm-center mt-2 mb-1"><?= $model->first_name .' '. $model->last_name ?></h5>
                 <div class="location text-sm-center">
-                    <i class="fa fa-map-marker"></i><?= $model->state_id. ','.$model->country?> </div>
+                  <?php $state = AfricanState::find()->where(['state_id'=>$model->state_id])->one(); ?>
+                
+                    <i class="fa fa-map-marker"></i><?= $state['state_name']. ','.$model->country?> </div>
             </div>
+
             <hr>
             <div class="card-text text-sm-center">
                 <a href="#">

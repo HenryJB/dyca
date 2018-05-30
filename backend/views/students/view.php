@@ -6,28 +6,71 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Student */
 
-$this->title = $model->id;
+$this->title = $model->first_name;
 $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-view">
+  <!-- modal medium -->
+  <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="mediumModalLabel">Email Form</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <form action="<?php echo Yii::$app->request->baseUrl?>/students/send-mail" method="post">
+              <div class="form-group">
+                <input type="text" name="subject" id="subject"  class="form-control" placeholder="Subject"/>
+              </div>
+              <div class="form-group">
+                <textarea cols="6" rows="10" class="form-control"></textarea>
+              </div>
+              <button  name="sendMail"  class="btn btn-success" ><i class='fa fa-envelope'></i> Send Email</button>
+
+            </form>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end modal medium -->
 
     <div class="row">
       <div class="container">
+        <!-- Alert Notification -->
+        <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
+						<p class="alert-msg-box">
+
+            </p>
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+        <!-- Alert Notification -->
         <p>
 
         </p>
           </div>
-                <div class="col-sm-3 white-padding">
+                <div class="col-sm-3 white-padding" style="border-top: 2px solid #A40000">
                   <div class="panel widget light-widget panel-bd-top">
                     <div class="panel-heading no-title"> </div>
                     <div class="panel-body">
-                      <div class="text-center vd_info-parent">
-                        <?=Html::img('@web/uploads/students/'.$model->photo, [])?>
+                      <div class="text-center vd_info-parent" >
+                          <?php $photo =!empty($model->photo) || $model->photo!==NULL ?$model->photo:'default-avatar.gif' ?>
+                        <?=Html::img('@web/uploads/students/'.$photo, ['width'=>'263', 'height'=>'267'])?>
 
                       </div>
                       <div class="row">
-                        <div class="col-lg-12"> <a class="btn btn-success  btn-block "><i class="fa fa-envelope append-icon"></i>Send Email</a> </div>
+                        <!-- <div class="col-lg-12"> <a class="btn btn-success  btn-block "><i class="fa fa-envelope append-icon"></i>Send Email</a> </div> -->
                       </div>
                       <h2 class="font-semibold mgbt-xs-5"><?=$model->first_name . ' '. $model->last_name?> </h2>
                       <h4><?=$model->state_id.','. $model->country ?></h4>
@@ -40,6 +83,15 @@ $this->params['breadcrumbs'][] = $this->title;
                               <td>Payment Status</td>
                               <td> <?=$model->payment_status?> </td>
                             </tr>
+                            <?php if($model->is_500==1): ?>
+                            <tr>
+                              <td colspan="2">
+                                <button type="button" class="btn btn-primary m-l-10 m-b-10">Member
+                                  <span class="badge badge-light">500</span>
+                                </button>
+                              </td>
+                            </tr>
+                          <?php endif; ?>
                           </tbody>
                         </table>
                       </div>
@@ -53,22 +105,26 @@ $this->params['breadcrumbs'][] = $this->title;
                   <div class="card">
 									<div class="card-header">
 										<h4>
-
-                      <?= Html::a('<i class="fa fa-envelope"></i>', ['email', 'id' => $model->id],
-                          ['class' => 'btn btn-default', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Send']) ?>
-                      <?= Html::a('<i class="fa fa-edit"></i>', ['update', 'id' => $model->id],
-                          ['class' => 'btn btn-default', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Update']) ?>
-                      <?= Html::a('<i class="far fa-id-badge"></i>', ['update', 'id' => $model->id],
-                          ['class' => 'btn btn-default', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Make A Member of 500']) ?>
+                      <?= Html::a('<i class="fa fa-bookmark"></i>', ['sponsor', 'id' => $model->id],
+                          ['class' => 'sponsor btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Sponsor']) ?>
+                      <?= Html::a('<i class="fa fa-envelope"></i>', ['#'],
+                          ['class' => 'modal-mail btn btn-danger', 'data-toggle'=>'tooltip',
+                          'data-placement'=>'top', 'data-original-title'=>'Send Email']) ?>
+                      <?= Html::a('<i class="fa fa-edit"></i>', ['send-mail', 'id' => $model->id],
+                          ['class' => 'btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Update']) ?>
+                      <?= Html::a('<i class="far fa-id-badge"></i>', ['confirm-member', 'id' => $model->id],
+                          ['class' => 'selected-member btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Make A Member of 500']) ?>
 
                       <?= Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id],
-                       ['class' => 'btn btn-default',
+                       ['class' => 'btn btn-danger',
                        'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Delete',
                         'data' => [
                             'confirm' => 'Are you sure you want to delete this item?',
                             'method' => 'post',
                         ],
                     ]) ?>
+
+
                   </h4>
 									</div>
 									<div class="card-body">
@@ -133,7 +189,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				             </div>
                 					<div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
                 						<p>
+                              <?php
 
+
+                               ?>
                             </p>
                 					</div>
                 					<div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">
@@ -148,46 +207,55 @@ $this->params['breadcrumbs'][] = $this->title;
                                                       <span class="au-checkmark"></span>
                                                   </label>
                                               </th>
-                                              <th>name</th>
-                                              <th>email</th>
-                                              <th>description</th>
+                                              <th>Title</th>
+                                              <th>Description</th>
+                                              <th>Attachment</th>
 
 
                                           </tr>
                                       </thead>
                                       <tbody>
                                         <?php  if(count($projects)>0): ?>
+                                            <?php $c=1; ?>
                                             <?php foreach ($projects as  $project):?>
                                           <tr class="tr-shadow">
                                               <td>
-                                                  <label class="au-checkbox">
-                                                      <input type="checkbox">
-                                                      <span class="au-checkmark"></span>
-                                                  </label>
+                                                  <?= $c; ?>
                                               </td>
-                                              <td>Lori Lynch</td>
+                                              <td><?=$project->title?></td>
                                               <td>
-                                                  <span class="block-email">lori@example.com</span>
+                                                  <?=$project->description?>
                                               </td>
-                                              <td class="desc">Samsung S8 Black</td>
+                                              <td class="desc"><?=$project->attachment?></td>
 
 
                                               <td>
                                                   <div class="table-data-feature">
-                                                      <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Send">
-                                                          <i class="zmdi zmdi-mail-send"></i>
-                                                      </button>
-                                                      <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+
+                                                    <?= \lesha724\documentviewer\GoogleDocumentViewer::widget([
+                                                      'url'=> Yii::$app->request->baseUrl.'/web/uploads/student-projects/'.$project->attachment,
+                                                      'width'=>'100%',
+                                                      'height'=>'100%',
+
+                                                      'embedded'=>true,
+                                                      'a'=>\lesha724\documentviewer\GoogleDocumentViewer::A_BI
+                                                    ]); ?>
+
+                                                      <a href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="View">
+                                                          <i class="zmdi zmdi-eye"></i>
+                                                      </a>
+                                                      <a  href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
                                                           <i class="zmdi zmdi-edit"></i>
                                                       </button>
-                                                      <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
+                                                      <a  href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
                                                           <i class="zmdi zmdi-delete"></i>
-                                                      </button>
-                                                      <button class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
+                                                      </a>
+                                                      <a  href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
                                                           <i class="zmdi zmdi-more"></i>
-                                                      </button>
+                                                      </a>
                                                   </div>
                                               </td>
+                                              <?php $c++; ?>
                                           </tr>
                                           <tr class="spacer"></tr>
                                         <?php endforeach; ?>
