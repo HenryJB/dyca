@@ -31,7 +31,7 @@ class DcaUser extends \yii\db\ActiveRecord implements \yii\web\Identityinterface
     public function rules()
     {
         return [
-            [['username', 'password', 'usertype', 'createdAt', 'updateAt'], 'required'],
+            [['username', 'password', 'usertype', 'createdAt', 'updatedAt'], 'required'],
             [['createdAt', 'updatedAt'], 'safe'],
             [['username'], 'string', 'max' => 50],
             [['password'], 'string', 'max' => 32],

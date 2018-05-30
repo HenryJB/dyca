@@ -41,18 +41,37 @@ class SignupForm extends Model
      *
      * @return User|null the saved model or null if saving fails
      */
-    public function signup()
-    {
-        if (!$this->validate()) {
-            return null;
-        }
+    // public function signup()
+    // {
+    //     if (!$this->validate()) {
+    //         return null;
+    //     }
         
-        $user = new User();
-        $user->username = $this->username;
-        $user->email = $this->email;
-        $user->setPassword($this->password);
-        $user->generateAuthKey();
+    //     $student = new Student();
+
+    //     $dcauser = new DcaUser();
+
+    //     $authkey = $this->first_name . '' . $this->last_name . 'cad';
+
+    //     $password = $dcauser->generateUniqueRandomString();
+
+    //     $dcauser->username = $this->email_address;
+    //     $dcauser->password = $password;
+    //     $dcauser->usertype = '1';
+    //     $dcauser->authKey = Yii::$app->getSecurity()->hashData($authkey, 'cad');
+    //     $dcauser->createdAt = date('Y-m-d');
+    //     $dcauser->updatedAt = date('Y-m-d');
+
+
+    //     $student->first_name = $this->first_name;
+    //     $student->last_name  = $this->last_name;
+    //     $student->gender = $this->gender;
+    //     $student->phone_number = $this->phone_number;
+    //     $student->date_of_birth = $this->date_of_birth;
+
+
         
-        return $user->save() ? $user : null;
-    }
+    //     return $user->save() ? $user : null;
+        
+    // }
 }

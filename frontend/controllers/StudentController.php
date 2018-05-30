@@ -2,17 +2,17 @@
 
 namespace frontend\controllers;
 
-use Yii;
-use common\models\Student;
 use common\models\DcaUser;
+use common\models\LoginForm;
+use common\models\Student;
 use common\models\StudentSearch;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
 
 /**
  * StudentController implements the CRUD actions for Student model.
@@ -25,7 +25,7 @@ class StudentController extends Controller
     public function behaviors()
     {
         return [
-             'access' => [
+            'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
                 'rules' => [
@@ -52,7 +52,7 @@ class StudentController extends Controller
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, [ 'login'])) {
+        if (in_array($action->id, ['login'])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -94,99 +94,50 @@ class StudentController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Student();
+        $student = new Student();
 
-        $modelDcaUser = new DcaUser();
-        
-        if ($model->load(Yii::$app->request->post()) ) {        
+        $dcauser = new DcaUser();
 
-            $authkey = $model->first_name.''.$model->last_name.'cad';
+        if ($student->load(Yii::$app->request->post())) {
 
-            $password = $modelDcaUser->generateUniqueRandomString();
-            
-            $modelDcaUser->username = $model->email_address;
-            $modelDcaUser->password = $password;
-            $modelDcaUser->usertype= '1';
-            $modelDcaUser->authKey= Yii::$app->getSecurity()->hashData($authkey,'cad');
-            $modelDcaUser->createdAt = date('Y-m-d');
-            $modelDcaUser->updatedAt = date('Y-m-d');
+            $authkey = $student->first_name . '' . $student->last_name . 'cad';
 
+            $password = $dcauser->generateUniqueRandomString();
 
-            if($model->save() && $modelDcaUser->save()){
+            $dcauser->username = $student->email_address;
+            $dcauser->password = $password;
+            $dcauser->usertype = '1';
+            $dcauser->authKey = Yii::$app->getSecurity()->hashData($authkey, 'cad');
+            $dcauser->createdAt = date('Y-m-d');
+            $dcauser->updatedAt = date('Y-m-d');
+
+            if ($student->save() && $dcauser->save()) {
                 Yii::$app->getSession()->setFlash('account_created', 'Account created');
 
-                Yii::$app->runAction('messaging/registration',['email'=>$model->email_address]);
+                Yii::$app->runAction('messaging/registration', ['email' => $student->email_address]);
 
-                return $this->redirect(['view', 'id' => $model->id]);
-            }            
-        }        
+                return $this->redirect(['view', 'id' => $student->id]);
+            }
+        }
 
         return $this->render('create', [
+            'model' => $student,
+        ]);
+    }
+
+    public function actionLogin()
+    {
+
+        $model = new LoginForm();
+
+        return $this->renderPartial('login', [
             'model' => $model,
         ]);
     }
 
-    public function actionLogin(){
-      
-        $model = new LoginForm();
 
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $email = $model->username;
-            $password = $model->password;
-
-            $user = Dcauser::find()->where(['username'=> $email, 'password'=>$password])->one();
-
-            if(count($user)>0){
-
-              if($user->usertype==1){
-
-                $current_user = Student::find()->where(['email_address' => $user->username])->one();
-
-              }elseif ($user->usertype==2) {
-                  $current_user = Alumni::find()->where(['email' => $user->username])->one();
-              }
-
-              $user_session = Yii::$app->session;
-              $user_session->set('id', $current_user->id);
-
-              if($user->usertype==1 && $current_user->payment_status==='not paid'){
-
-                  return $this->redirect(['payments/index']);
-
-              }elseif ($user->usertype==1 && $current_user->payment_status==='paid' && empty($current_user->reason)) {
-
-                return $this->redirect(['students/update-profile']);
-
-              }elseif ($user->usertype==1 && $current_user->payment_status==='paid' && !empty($current_user->reason)) {
-                return $this->redirect(['students/profile']);
-
-              }elseif ($user->usertype==2 &&  empty($current_user->facebook)) {
-
-                  return $this->redirect(['alumni/update-profile']);
-
-              }elseif ($user->usertype==2 &&  !empty($current_user->facebook) ){
-
-                  return $this->redirect(['alumni/profile']);
-
-              }else{
-
-                     return $this->renderPartial('login', ['model'=>$model]);
-              }
-
-
-            }else {
-                return $this->renderPartial('login', ['model'=>$model]);
-            }
-
-
-        }
- else {
-            $model->password = '';
-
-            return $this->renderPartial('login', [
-                'model' => $model,
-            ]);
-        }
+    public function actionProfile(){
+        return $this->render('profile');
     }
 
     /**
@@ -240,11 +191,7 @@ class StudentController extends Controller
         ]);
     }
 
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-        return $this->goHome();
-    }
+
 
     /**
      * Updates an existing Student model.
@@ -265,7 +212,6 @@ class StudentController extends Controller
             'model' => $model,
         ]);
     }
-    
 
     /**
      * Deletes an existing Student model.

@@ -1,0 +1,17 @@
+Urgent 
+
+
+Get styles for profile page import into the assets
+
+Setup Login page
+Setup SignUp page // works but needs to be moved to sitecontroller
+
+
+Remove all logic not related to the student
+
+Registration for student currently resides on the student controller.
+
+Index,Login,Signup,Logout should all reside on the sitecontroller.
+
+Index returns the view for the landing page not yet received.
+
