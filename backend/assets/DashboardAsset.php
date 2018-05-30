@@ -25,6 +25,7 @@ class DashboardAsset extends AssetBundle
         'vendor/select2/select2.min.css',
         'vendor/perfect-scrollbar/perfect-scrollbar.css',
         'css/theme.css',
+        'css/extra-styles.css',
     ];
     public $js = [
         'vendor/jquery-3.2.1.min.js',
@@ -41,6 +42,7 @@ class DashboardAsset extends AssetBundle
         'vendor/chartjs/Chart.bundle.min.js',
         'vendor/select2/select2.min.js',
         'js/main.js',
+        'js/custom-scripts.js',
     ];
     public $depends = [
         //'yii\web\YiiAsset',

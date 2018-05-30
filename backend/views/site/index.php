@@ -43,7 +43,7 @@ $this->title = 'Del-York Creative Academy';
                                         <i class="zmdi zmdi-shopping-cart"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>388,688</h2>
+                                        <h2>688</h2>
                                         <span>courses</span>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@ $this->title = 'Del-York Creative Academy';
                                         <i class="zmdi zmdi-calendar-note"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>1,086</h2>
+                                        <h2>86</h2>
                                         <span>projects</span>
                                     </div>
                                 </div>
@@ -76,11 +76,11 @@ $this->title = 'Del-York Creative Academy';
                             <div class="overview__inner">
                                 <div class="overview-box clearfix">
                                     <div class="icon">
-                                        <i class="zmdi zmdi-money"></i>
+                                        <i class="zmdi zmdi-account"></i>
                                     </div>
                                     <div class="text">
-                                        <h2>1,060,386</h2>
-                                        <span>total earnings</span>
+                                        <h2>386</h2>
+                                        <span>Instructors</span>
                                     </div>
                                 </div>
                                 <div class="overview-chart">
