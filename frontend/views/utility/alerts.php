@@ -34,11 +34,32 @@
 <?php endif; ?>
 <?php if (Yii::$app->session->hasFlash('student_registration_error')): ?> 
 
-<div class="alert alert-error alert-dismissable">
+<div class="alert alert-danger alert-dismissable">
     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
         
         
     <?= Yii::$app->session->getFlash('student_registration_error') ?>
+</div>
+
+<?php endif; ?>
+
+<?php if (Yii::$app->session->hasFlash('student_payment_success')): ?> 
+
+<div class="alert alert-success alert-dismissable">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        
+        
+    <?= Yii::$app->session->getFlash('student_payment_success') ?>
+</div>
+
+<?php endif; ?>
+<?php if (Yii::$app->session->hasFlash('student_payment_error')): ?> 
+
+<div class="alert alert-danger alert-dismissable">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        
+        
+    <?= Yii::$app->session->getFlash('student_payment_error') ?>
 </div>
 
 <?php endif; ?>
