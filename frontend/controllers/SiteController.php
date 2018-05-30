@@ -1,18 +1,24 @@
 <?php
 namespace frontend\controllers;
 
-use Yii;
-use yii\base\InvalidParamException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use common\models\Country;
+use common\models\Course;
 use common\models\LoginForm;
+use common\models\Session;
+use common\models\Student;
+use common\models\Payment;
+use common\models\Voucher;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use common\models\DcaUser;
-use common\models\Student;
+use Yii;
+use yii\base\InvalidParamException;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
+
 /**
  * Site controller
  */
@@ -98,6 +104,84 @@ class SiteController extends Controller
         }
     }
 
+    public function actionRegister()
+    {
+
+        $session = Yii::$app->session;
+        $student = new Student();
+        $courses = Course::find()->all();
+        $countries = Country::find()->all();
+        
+
+        if ($student->load(Yii::$app->request->post()) && $student->validate()) {
+
+            $identifier = $student->generateUniqueTransactionCode();
+            $voucher_id = Voucher::validateCode(Yii::$app->request->post('voucher'));
+
+            $session = [
+                'first_name' => $student->first_name,
+                'last_name' => $student->last_name,
+                'gender' => $student->gender,
+                'phone_number' => $student->phone_number,
+                'email_address' => $student->email_address,
+                'contact_address' => $student->contact_address,
+                'date_of_birth' => $student->date_of_birth,
+                'country' => $student->country,
+                'first_choice' => $student->first_choice,
+                'second_choice' => $student->second_choice,
+                'transaction_code' => $identifier
+            ];
+
+            if(is_int($voucher_id)){
+
+                Yii::$app->getSession()->setFlash('voucher_code_success', 'Voucher is valid');
+                
+                if($student->save()){
+                    Yii::$app->getSession()->setFlash('student_registration_success', 'Student Registration Successful');
+
+                    $voucher = Voucher::find($voucher_id)->one();
+                    $voucher->status = 'not used';
+
+                    $payment = new Payment();
+                    $payment->student_id = $student->id;
+                    $payment->reference_no = $session['transaction_code'];
+                    $payment->method = "voucher";
+                    $payment->status = '';
+                    $payment->amount = $voucher->amount;
+                    $payment->voucher_id = $voucher_id;
+                    $payment->date = date('Y-m-d H:i:s');
+
+
+                    if($payment->save()){
+                        Yii::$app->getSession()->setFlash('student_payment_success', 'Student Payment Successful');
+                    }
+
+                    return $this->redirect('register');
+                }
+
+                Yii::$app->getSession()->setFlash('student_registration_error', 'Student Registration Fail');
+
+                return $this->redirect('register');
+            }
+
+            if(voucher_id){
+
+                Yii::$app->getSession()->setFlash('voucher_code_error', 'Voucher is invalid');
+
+                return $this->redirect('register');
+            }
+
+        }
+
+        return $this->render('register', [
+            'model' => $student,
+            'courses' => ArrayHelper::map($courses, 'id', 'name'),
+            'countries' => ArrayHelper::map($countries, 'state_id', 'state_name'),
+
+        ]);
+
+    }
+
     /**
      * Logs out the current user.
      *
@@ -110,7 +194,6 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-
     /**
      * Signs user up.
      *
@@ -119,6 +202,7 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
+
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {

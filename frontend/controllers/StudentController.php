@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\DcaUser;
 use common\models\LoginForm;
 use common\models\Student;
+use common\models\StudentProject;
 use common\models\StudentSearch;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
@@ -136,8 +137,20 @@ class StudentController extends Controller
     }
 
 
+
+
     public function actionProfile(){
-        return $this->render('profile');
+
+        $this->layout = 'dashboard';
+
+        $project = StudentProject::find()->where(['student_id'=> 1])->all();
+
+        return $this->render('profile', [
+            'model' => $this->findModel(1),
+            'projects' => $project,
+        ]);
+
+        //return $this->render('profile');
     }
 
     /**
