@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p>
                         <strong>DCA &amp; Changing the narrative</strong>
                     </p>
-                    
+
                     <a target="_blank" href="https://mdbootstrap.com/bootstrap-tutorial/" class="btn btn-outline-white btn-lg waves-effect waves-light">Pay
                         <i class="fa fa-money-bill-alt ml-2"></i>
                     </a>

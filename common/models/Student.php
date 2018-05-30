@@ -58,10 +58,10 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth', 'reason', 'information_source', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'required'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth','first_choice'], 'required'],
             [['gender', 'contact_address', 'payment_status', 'approval_status', 'reason', 'propose_project', 'information_source'], 'string'],
             [['year', 'date_of_birth', 'date_registered'], 'safe'],
-            [['state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'is_500','terms_condition'], 'integer'],
+            [['state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'is_existing','terms_condition'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 200],
             [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle'], 'string', 'max' => 100],
             [['occupation', 'photo'], 'string', 'max' => 255],
@@ -94,7 +94,7 @@ class Student extends \yii\db\ActiveRecord
             'approval_status' => 'Approval Status',
             'country' => 'Country',
             'state_id' => 'State',
-            'date_of_birth' => '',
+            'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
             'reason' => 'Reason',
@@ -103,7 +103,6 @@ class Student extends \yii\db\ActiveRecord
             'sponsor_aid' => 'Sponsor Aid',
             'sponsorship_status' => 'Sponsorship Status',
             'is_existing' => 'Is Existing',
-            'is_500'  => 'Is 500',
             'terms_condition' => 'Terms Condition',
             'date_registered' => 'Date Registered',
             'emergency_fullname' => 'Emergency Fullname',
@@ -113,13 +112,14 @@ class Student extends \yii\db\ActiveRecord
         ];
     }
 
-    public function createStudentCredentials($email,$password)
-    {
-        $model = '';
-        $model->user = $modelDcaUser->generateUniqueRandomString('password');
-        $model->password = $modelDcaUser->generateUniqueRandomString('password');
+    public function generateUniqueTransactionCode(){
 
-        return true;
+        $unique_refernce = time(). rand(10 * 42, 100 * 918);
+
+        $prefix = 'DCA';
+
+        return $transaction_reference = $prefix.$unique_refernce;
+
     }
 
 }
