@@ -142,7 +142,7 @@ class SiteController extends Controller
                 'transaction_code' => $identifier
             ];
 
-            if(is_int($voucher_id)){
+            if(is_numeric($voucher_id) && !empty($voucher_id)){
 
                 Yii::$app->getSession()->setFlash('voucher_code_success', 'Voucher is valid');
                 
@@ -150,19 +150,24 @@ class SiteController extends Controller
                     Yii::$app->getSession()->setFlash('student_registration_success', 'Student Registration Successful');
 
                     //TODO VOUCHER NOT UPDATING  IN DATABASE
-                    //CHEGED VOUCHER IN DATABASE FROM ennum to tinyint
-                    $voucher = Voucher::findOne($voucher_id);
-                    $voucher->status = 1;
-                    $voucher->save();
+                    //CHEGED VOUCHER IN DATABASE FROM ennum to tinyint                
 
+                    try {
+                        $db = Yii::$app->db;
+                        $db->createCommand()->update('vouchers', ['status' => 1], 'id='.$voucher_id)->execute();
+    
+                    } catch (\Exception $e) {
+                        return 'failed';
+                    }
+                
 
                     $payment = new Payment();
                     $payment->student_id = $student->id;
                     $payment->reference_no = $session['transaction_code'];
                     $payment->method = "voucher";
                     $payment->status = 'nonon';
-                    $payment->amount = $voucher->amount;
-                    $payment->voucher_id = $voucher->id;
+                    $payment->amount = $vouchers->amount;
+                    $payment->voucher_id = $vouchers->id;
                     $payment->date = date('Y-m-d H:i:s');
 
                     $dca_user->username = $student->email_address;
@@ -191,8 +196,8 @@ class SiteController extends Controller
                             "Voucher Added To Account"
                         );
 
-                        Yii::$app->getSession()->setFlash('student_payment_success', 'Student Payment Successful');
-                        return $this->redirect('register');
+                        Yii::$app->getSession()->setFlash('student_payment_success', 'Student Payment Successful Please Check Your Mail');
+                        return $this->redirect('login');
                     }else{
                         Yii::$app->getSession()->setFlash('student_payment_error', 'Student Payment Failed');
                         return $this->redirect('register');
