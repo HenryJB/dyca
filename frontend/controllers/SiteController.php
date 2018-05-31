@@ -6,6 +6,10 @@ use common\models\Course;
 use common\models\LoginForm;
 use common\models\Session;
 use common\models\Student;
+
+use common\models\DcaUser;
+
+use common\models\User;
 use common\models\Payment;
 use common\models\Voucher;
 use frontend\models\PasswordResetRequestForm;
@@ -35,7 +39,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup','register'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -88,17 +92,15 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post()) ) {
+            
+            return $this->redirect(Yii::$app->request->baseUrl.'/student/profile');
         } else {
             $model->password = '';
 
-            return $this->render('login', [
+            return $this->renderPartial('login', [
                 'model' => $model,
             ]);
         }
@@ -111,9 +113,17 @@ class SiteController extends Controller
         $student = new Student();
         $courses = Course::find()->all();
         $countries = Country::find()->all();
+        $dca_user  =  new DcaUser();
+        $user  = new User();
         
 
-        if ($student->load(Yii::$app->request->post()) && $student->validate()) {
+        if ($student->load(Yii::$app->request->post())) {
+
+            if(!$student->validate()){
+                $redirect = Yii::$app->request->baseUrl.'/site/register';
+                Yii::$app->getSession()->setFlash('student_registration_error', 'We Discovered Some Errors In Your Form');
+                return $this->redirect($redirect);
+            }
 
             $identifier = $student->generateUniqueTransactionCode();
             $voucher_id = Voucher::validateCode(Yii::$app->request->post('voucher'));
@@ -139,8 +149,12 @@ class SiteController extends Controller
                 if($student->save()){
                     Yii::$app->getSession()->setFlash('student_registration_success', 'Student Registration Successful');
 
-                    $voucher = Voucher::find($voucher_id)->one();
-                    $voucher->status = 'used';
+                    //TODO VOUCHER NOT UPDATING  IN DATABASE
+                    //CHEGED VOUCHER IN DATABASE FROM ennum to tinyint
+                    $voucher = Voucher::findOne($voucher_id);
+                    $voucher->status = 1;
+                    $voucher->save();
+
 
                     $payment = new Payment();
                     $payment->student_id = $student->id;
@@ -151,8 +165,23 @@ class SiteController extends Controller
                     $payment->voucher_id = $voucher->id;
                     $payment->date = date('Y-m-d H:i:s');
 
+                    $dca_user->username = $student->email_address;
+                    $dca_user->auth_key = Yii::$app->security->generateRandomString();
+                    $dca_user->password_hash = Yii::$app->security->generatePasswordHash($student->email_address);
+                    $dca_user->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+                    $dca_user->email = $student->email_address;
 
-                    if($payment->save() && $voucher->save()){
+
+                    $user->username = $student->email_address;
+                    $user->auth_key = Yii::$app->security->generateRandomString();
+                    $user->password_hash = Yii::$app->security->generatePasswordHash($student->email_address);
+                    $user->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
+                    $user->email = $student->email_address;
+    
+                    
+
+
+                    if($payment->save() && $dca_user->save() && $user->save()){
 
                         $student->invoiceByVoucher(                            
                             $student->first_name,
@@ -209,27 +238,7 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     */
-    public function actionSignup()
-    {
-        $model = new SignupForm();
-
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
+    
 
     /**
      * Requests password reset.
@@ -241,11 +250,11 @@ class SiteController extends Controller
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
 
                 return $this->goHome();
             } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('password_reset_error', 'Sorry, we are unable to reset password for the provided email address.');
             }
         }
 

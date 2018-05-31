@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models;
+namespace frontend\models;
 
 use Yii;
 
@@ -22,7 +22,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $created_at
  * @property int $updated_at
  */
-class DcaUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class DcaUser extends \yii\db\ActiveRecord implements IdentityInterface
 {
 
     const STATUS_DELETED = 0;

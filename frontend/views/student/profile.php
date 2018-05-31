@@ -66,8 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="panel-heading no-title"> </div>
                     <div class="panel-body">
                         <div class="text-center vd_info-parent">
-                            <?php $photo =!empty($model->photo) || $model->photo!==NULL ?$model->photo:'default-avatar.gif' ?>
-                            <?=Html::img('@web/uploads/students/'.$photo, ['width'=>'263', 'height'=>'267'])?>
+                            <?php $photo =!empty($model->photo) || $model->photo!==NULL ?$model->photo:'avatar.png' ?>
+                            <?=Html::img('@web/img/'.$photo, ['width'=>'263', 'height'=>'267'])?>
 
                         </div>
                         <div class="row">
@@ -92,15 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?=$model->payment_status?>
                                         </td>
                                     </tr>
-                                    <?php if($model->is_500==1): ?>
-                                    <tr>
-                                        <td colspan="2">
-                                            <button type="button" class="btn btn-primary m-l-10 m-b-10">Member
-                                                <span class="badge badge-light">500</span>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <?php endif; ?>
+                                    
                                 </tbody>
                             </table>
                         </div>
