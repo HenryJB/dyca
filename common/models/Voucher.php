@@ -30,7 +30,6 @@ class Voucher extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'type', 'status', 'expiry_date', 'discount'], 'required'],
             [['status'], 'string'],
             [['expiry_date'], 'safe'],
             [['discount'], 'integer'],
@@ -57,7 +56,7 @@ class Voucher extends \yii\db\ActiveRecord
 
     public function validateCode($code){
 
-        $voucher = static::findOne(['code' => $code]);
+        $voucher = static::find()->where(['code' => $code])->one();
 
         $today = date("Y-m-d");
 
@@ -65,7 +64,7 @@ class Voucher extends \yii\db\ActiveRecord
             return true;
         }
 
-        if($voucher->status == 'used'){
+        if((int)$voucher->status == 1){
             return true;
         }
 

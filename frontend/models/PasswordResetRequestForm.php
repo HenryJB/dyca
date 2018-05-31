@@ -3,7 +3,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
-use common\models\DcaUser;
+use common\models\User;
 
 /**
  * Password reset request form
@@ -13,18 +13,15 @@ class PasswordResetRequestForm extends Model
     public $username;
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            //['email', 'email'],
+            ['username', 'email'],
             ['username', 'exist',
-                'targetClass' => '\common\models\DcaUser',
-                //'filter' => ['status' => User::STATUS_ACTIVE],
+                'targetClass' => '\common\models\User',
+                'filter' => ['status' => DcaUser::STATUS_ACTIVE],
                 'message' => 'There is no user with this email address.'
             ],
         ];
@@ -38,14 +35,21 @@ class PasswordResetRequestForm extends Model
     public function sendEmail()
     {
         /* @var $user User */
-        $user = DcaUser::findOne([
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
             'username' => $this->username,
         ]);
 
         if (!$user) {
             return false;
         }
-        
+
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
 
         return Yii::$app
             ->mailer
