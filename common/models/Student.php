@@ -122,4 +122,25 @@ class Student extends \yii\db\ActiveRecord
 
     }
 
+    public function invoiceByVoucher($first_name,$last_name,$amount,$email_address,$subject){
+        
+        $message = Yii::$app->mailer->compose(
+            '@common/mail/layouts/invoice_voucher.php',
+            [
+                'amount' => $amount,
+                'name' => $first_name.' '.$last_name,
+            ]
+        );
+
+        $message->setTo($email_address);
+        $message->setFrom(Yii::$app->params['supportEmail']);
+        $message->setSubject($subject);
+        try{
+            $message->send();
+        }catch(Exception $e){
+            Yii::$app->getSession()->setFlash('student_payment_error', 'Student Payment Failed');           
+        }
+        
+    }
+
 }

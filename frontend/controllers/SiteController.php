@@ -140,21 +140,36 @@ class SiteController extends Controller
                     Yii::$app->getSession()->setFlash('student_registration_success', 'Student Registration Successful');
 
                     $voucher = Voucher::find($voucher_id)->one();
-                    $voucher->status = 'not used';
+                    $voucher->status = 'used';
 
                     $payment = new Payment();
                     $payment->student_id = $student->id;
                     $payment->reference_no = $session['transaction_code'];
                     $payment->method = "voucher";
-                    $payment->status = '';
+                    $payment->status = 'nonon';
                     $payment->amount = $voucher->amount;
-                    $payment->voucher_id = $voucher_id;
+                    $payment->voucher_id = $voucher->id;
                     $payment->date = date('Y-m-d H:i:s');
 
 
-                    if($payment->save()){
+                    if($payment->save() && $voucher->save()){
+
+                        $student->invoiceByVoucher(                            
+                            $student->first_name,
+                            $student->last_name,
+                            $voucher->amount,
+                            $student->email_address,
+                            "Voucher Added To Account"
+                        );
+
                         Yii::$app->getSession()->setFlash('student_payment_success', 'Student Payment Successful');
+                        return $this->redirect('register');
+                    }else{
+                        Yii::$app->getSession()->setFlash('student_payment_error', 'Student Payment Failed');
+                        return $this->redirect('register');
                     }
+
+                    
 
                     return $this->redirect('register');
                 }
@@ -164,7 +179,7 @@ class SiteController extends Controller
                 return $this->redirect('register');
             }
 
-            if(voucher_id){
+            if($voucher_id){
 
                 Yii::$app->getSession()->setFlash('voucher_code_error', 'Voucher is invalid');
 
