@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use common\models\AfricanState;
+use common\models\State;
 
 ?>
 
@@ -14,9 +14,9 @@ use common\models\AfricanState;
 
                 <h5 class="text-sm-center mt-2 mb-1"><?= $model->first_name .' '. $model->last_name ?></h5>
                 <div class="location text-sm-center">
-                  <?php $state = AfricanState::find()->where(['state_id'=>$model->state_id])->one(); ?>
+                  <?php $state = State::find()->where(['id'=>$model->state_id])->one(); ?>
 
-                    <i class="fa fa-map-marker"></i> <?= $state['state_name']. ','.$model->country?> </div>
+                    <i class="fa fa-map-marker"></i> <?= $state['name']. ','.$model->country?> </div>
             </div>
 
             <hr>
@@ -26,6 +26,7 @@ use common\models\AfricanState;
         </div>
         <div class="card-footer bg-dark">
           <?=Html::a('<strong class="card-title mb-3">View profile</strong>', ['students/view?id='.$model->id])?>
+          <?=Html::a('<strong class="card-title mb-3">Sponsor</strong>', ['students/view?id='.$model->id], ['class'=>'pull-right'])?>
 
         </div>
     </div>

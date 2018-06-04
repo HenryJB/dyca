@@ -63,7 +63,7 @@ class Student extends \yii\db\ActiveRecord
     {
         return [
             [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'state_id', 'date_of_birth',
-              'date_of_birth', 'session_id', 'about', 'is_existing', 'date_registered'], 'required'],
+              'date_of_birth', 'session_id', 'about', 'terms_condition', 'is_existing', 'date_registered'], 'required'],
               ['local_government_id', 'required', 'when' => function ($model) {
                   return $model->country == 160;
               }, 'whenClient' => "function (attribute, value) {
@@ -79,7 +79,7 @@ class Student extends \yii\db\ActiveRecord
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
             [['email_address'], 'unique'],
             [['date_registered'], 'safe'],
-            [['project'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4']
+            [['project'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4'],
         ];
     }
 
@@ -106,7 +106,7 @@ class Student extends \yii\db\ActiveRecord
             'approval_status' => 'Approval Status',
             'country' => 'Country',
             'state_id' => 'State',
-            'local_government_id'=> 'Local Govt.(For Nigerians only)',
+            'local_government_id'=> 'Local Govt',
             'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'Course',
             'second_choice' => 'Second Choice',

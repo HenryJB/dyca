@@ -7,6 +7,9 @@ use common\models\Student;
 use common\models\StudentProject;
 use app\models\StudentSearch;
 use yii\web\Controller;
+use common\models\LocalGovernment;
+use common\models\Country;
+use common\models\State;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -32,7 +35,7 @@ class StudentsController extends Controller
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['confirm-member', 'sponsor', 'send-mail', ])) {
+        if (in_array($action->id, ['related-states', 'related-local-government','confirm-member', 'sponsor', 'send-mail', ])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -141,6 +144,34 @@ class StudentsController extends Controller
 
 
     }
+
+    public function actionRelatedStates($id)
+    {
+        $states = State::find()->where(['country_id' => $id])->all();
+        if (count($states) > 0) {
+          echo '<option value="">Select State </option>';
+            foreach ($states as $state) {
+                echo '<option value="'.$state->id.'">'.$state->name.'</option>';
+            }
+        } else {
+            echo '<option> </option>';
+        }
+    }
+
+    public function actionRelatedLocalGovernment($id)
+    {
+        $local_govts = LocalGovernment::find()->where(['state_id' => $id])->all();
+
+        if (count($local_govts) > 0) {
+              echo '<option value="">Select LGA </option>';
+            foreach ($local_govts as $local_govt) {
+                echo '<option value="'.$local_govt->id.'">'.$local_govt->name.'</option>';
+            }
+        } else {
+            echo '<option> </option>';
+        }
+    }
+
 
     public function actionSendMail($value='')
     {
