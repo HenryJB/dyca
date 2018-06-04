@@ -81,7 +81,7 @@
                                 Don't you have account?
                                                                  
                                 </p>
-                                <?= Html::a('Sign Up Here', ['create']) ?>.   
+                                <?= Html::a('Sign Up Here', Yii::$app->request->baseUrl.'students/create') ?>.   
                             </div>
                         </div>
                     </div>

@@ -104,7 +104,8 @@ class StudentsController extends Controller
           $user->setPassword($model->first_name);
           $user->generateAuthKey();
 
-          if($model->save()  && $model->upload() && $user->save()){
+          if($model->save()  && $user->save()){
+                $model->upload();
             //Send email to user
             Yii::$app->runAction('messaging/registration',['email'=>$model->email_address]);
 
