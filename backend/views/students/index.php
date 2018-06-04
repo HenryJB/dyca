@@ -12,11 +12,13 @@ use circulon\widgets\ColumnListView;
 $this->title = 'Students';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="student-index">
 
 <div class="col-lg-12">
-   <?php /* echo $this->render('_search', ['model' => $searchModel]); */?>
+   <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 </div>
+<div class="student-index">
+
+
 
 
     <?php
