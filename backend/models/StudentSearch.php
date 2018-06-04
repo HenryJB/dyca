@@ -19,7 +19,7 @@ class StudentSearch extends Student
     {
         return [
             [['id', 'state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'occupation', 'photo', 'facebook_id', 'twitter_handle', 'instagram_handle', 'year', 'payment_status', 'approval_status', 'country', 'date_of_birth', 'reason', 'propose_project', 'information_source', 'date_registered', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'safe'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'occupation', 'photo', 'facebook_id', 'twitter_handle', 'instagram_handle', 'year', 'payment_status', 'approval_status', 'country', 'date_of_birth', 'about', 'propose_project', 'information_source', 'date_registered', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'safe'],
         ];
     }
 
@@ -47,6 +47,9 @@ class StudentSearch extends Student
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 6,
+            ],
         ]);
 
         $this->load($params);
@@ -86,8 +89,8 @@ class StudentSearch extends Student
             ->andFilterWhere(['like', 'payment_status', $this->payment_status])
             ->andFilterWhere(['like', 'approval_status', $this->approval_status])
             ->andFilterWhere(['like', 'country', $this->country])
-            ->andFilterWhere(['like', 'reason', $this->reason])
-            ->andFilterWhere(['like', 'propose_project', $this->propose_project])
+            ->andFilterWhere(['like', 'about', $this->about])
+            ->andFilterWhere(['like', 'project', $this->project])
             ->andFilterWhere(['like', 'information_source', $this->information_source])
             ->andFilterWhere(['like', 'emergency_fullname', $this->emergency_fullname])
             ->andFilterWhere(['like', 'emergency_relationship', $this->emergency_relationship])

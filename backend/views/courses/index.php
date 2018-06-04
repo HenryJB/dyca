@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'course_category',
             'name',
             'description:ntext',
-            'instructor_id',
+            // 'instructor_id',
             //'duration',
             //'fee',
             //'prerequisite:ntext',

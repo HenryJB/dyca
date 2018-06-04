@@ -5,12 +5,12 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "africa_states_tbl".
+ * This is the model class for table "countries".
  *
- * @property int $state_id
- * @property string $state_name
- * @property string $country
- * @property string $zip_code
+ * @property int $id
+ * @property string $sortname
+ * @property string $name
+ * @property int $phonecode
  */
 class Country extends \yii\db\ActiveRecord
 {
@@ -19,7 +19,7 @@ class Country extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'africa_states_tbl';
+        return 'countries';
     }
 
     /**
@@ -28,9 +28,10 @@ class Country extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['state_name', 'country'], 'required'],
-            [['state_name', 'country'], 'string', 'max' => 40],
-            [['zip_code'], 'string', 'max' => 4],
+            [['sortname', 'name', 'phonecode'], 'required'],
+            [['phonecode'], 'integer'],
+            [['sortname'], 'string', 'max' => 3],
+            [['name'], 'string', 'max' => 150],
         ];
     }
 
@@ -40,10 +41,10 @@ class Country extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'state_id' => 'State ID',
-            'state_name' => 'State Name',
-            'country' => 'Country',
-            'zip_code' => 'Zip Code',
+            'id' => 'ID',
+            'sortname' => 'Sortname',
+            'name' => 'Name',
+            'phonecode' => 'Phonecode',
         ];
     }
 }

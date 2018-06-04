@@ -13,17 +13,26 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options'=>['class'=>'form-horizontal']
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'first_name') ?>
+<div class="col-lg-4">
+  <?= $form->field($model, 'email_address')->textInput(['placeholder'=>'Email addres'])->label(false) ?>
+</div>
 
-    <?= $form->field($model, 'last_name') ?>
+<div class="col-lg-2">
+  <?= $form->field($model, 'gender')->label(false) ?>
+</div>
 
-    <?= $form->field($model, 'gender') ?>
+<div class="col-lg-4">
+  <?= $form->field($model, 'state_id')->label(false) ?>
+</div>
 
-    <?= $form->field($model, 'email_address') ?>
+
+
+
+
 
     <?php // echo $form->field($model, 'contact_address') ?>
 
@@ -55,7 +64,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'second_choice') ?>
 
-    <?php // echo $form->field($model, 'reason') ?>
+    <?php // echo $form->field($model, 'about') ?>
 
     <?php // echo $form->field($model, 'propose_project') ?>
 
@@ -81,7 +90,7 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+
     </div>
 
     <?php ActiveForm::end(); ?>

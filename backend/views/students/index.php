@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ListView;
+use yii\widgets\Pjax;
+use circulon\widgets\ColumnListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\StudentSearch */
@@ -12,35 +14,24 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="student-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
-    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="col-lg-12">
+   <?php /* echo $this->render('_search', ['model' => $searchModel]); */?>
+</div>
 
-    
-    <p>
 
-    </p>
     <?php
-    $columns = 3;
-    $cl = 12 / $columns;
+    Pjax::begin(['id' => 'my-list-view']);
 
-echo ListView::widget([
-      'dataProvider' => $dataProvider,
-      'layout'       => '{items}{pager}',
-      'itemOptions'  => ['class' => "col-md-$cl"],
-      'itemView'     => '_student',
-      'options'      => ['class' => '' ],
-      'beforeItem'   => function ($model, $key, $index, $widget) use ($columns) {
-          if ($index % $columns == 0 ) {
-              return "<div class='row'>";
-          }
-      },
+      echo ColumnListView::widget([
+          'dataProvider' => $dataProvider,
+          'columns' => 3,
+          'itemOptions' => [
+            'class' => 'col-lg-4 col-xs-12',
+          ],
+          'itemView'     => '_student',
 
-      'afterItem' => function ($model, $key, $index, $widget) use ($columns) {
-          if ( $index != 0 && $index % ($columns - 1) == 0 ) {
-              return "</div>";
-          }
-      }
-]);
+        ]);
+  Pjax::end();
 
 
 

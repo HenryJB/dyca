@@ -44,6 +44,38 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
   <!-- end modal medium -->
 
+
+  <!-- modal small -->
+  <div class="modal fade" id="smallmodal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="smallmodalLabel">DCA Tag Modal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <form action="<?= Yii::$app->request->baseUrl?>/students/confirm-member" method="post">
+              <input type="hidden" name="id" value="<?=$model->id?>"/>
+              <select class="form-control" name="dca_tag" id="dca_tag">
+                <option value="DCA 500">DCA 500</option>
+              </select>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+              </div>
+            </form>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- end modal small -->
+
     <div class="row">
       <div class="container">
         <!-- Alert Notification -->
@@ -60,13 +92,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </p>
           </div>
-                <div class="col-sm-3 white-padding" style="border-top: 2px solid #A40000">
-                  <div class="panel widget light-widget panel-bd-top">
+                <div class="col-sm-3 white-padding" >
+                  <div class="panel widget light-widget panel-bd-top" style="border-top: 2px solid #A40000">
                     <div class="panel-heading no-title"> </div>
                     <div class="panel-body">
                       <div class="text-center vd_info-parent" >
                           <?php $photo =!empty($model->photo) || $model->photo!==NULL ?$model->photo:'default-avatar.gif' ?>
-                        <?=Html::img('@web/uploads/students/'.$photo, ['width'=>'263', 'height'=>'267'])?>
+                        <?=Html::img('@web/uploads/students/'.$photo, ['width'=>'260', 'height'=>'260'])?>
 
                       </div>
                       <div class="row">
@@ -74,7 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       </div>
                       <h2 class="font-semibold mgbt-xs-5"><?=$model->first_name . ' '. $model->last_name?> </h2>
                       <h4><?=$model->state_id.','. $model->country ?></h4>
-                      <p style="padding:10px;"><?=$model->reason ?></p>
+                      <p style="padding:10px;"><?=$model->about ?></p>
                       <div class="mgtp-20">
                         <table class="table table-striped table-hover">
                           <tbody>
@@ -83,11 +115,11 @@ $this->params['breadcrumbs'][] = $this->title;
                               <td>Payment Status</td>
                               <td> <?=$model->payment_status?> </td>
                             </tr>
-                            <?php if($model->is_500==1): ?>
+                            <?php if($model->tag==!NULL): ?>
                             <tr>
                               <td colspan="2">
-                                <button type="button" class="btn btn-primary m-l-10 m-b-10">Member
-                                  <span class="badge badge-light">500</span>
+                                <button type="button" class="btn btn-primary m-l-10 m-b-10">
+                                  <span class="badge badge-light"><?=$model->tag?></span>
                                 </button>
                               </td>
                             </tr>
@@ -101,7 +133,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 </div>
-                <div class="col-sm-9">
+                <div class="col-sm-9 white-padding">
                   <div class="card">
 									<div class="card-header">
 										<h4>
@@ -111,9 +143,9 @@ $this->params['breadcrumbs'][] = $this->title;
                           ['class' => 'modal-mail btn btn-danger', 'data-toggle'=>'tooltip',
                           'data-placement'=>'top', 'data-original-title'=>'Send Email']) ?>
                       <?= Html::a('<i class="fa fa-edit"></i>', ['send-mail', 'id' => $model->id],
-                          ['class' => 'btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Update']) ?>
-                      <?= Html::a('<i class="far fa-id-badge"></i>', ['confirm-member', 'id' => $model->id],
-                          ['class' => 'selected-member btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Make A Member of 500']) ?>
+                          ['class' => 't btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Update']) ?>
+                      <?= Html::a('<i class="fa fa-tag"></i>', ['confirm-member', 'id' => $model->id],
+                          ['class' => 'tag-box btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Give a tag']) ?>
 
                       <?= Html::a('<i class="fa fa-trash"></i>', ['delete', 'id' => $model->id],
                        ['class' => 'btn btn-danger',
@@ -232,15 +264,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                               <td>
                                                   <div class="table-data-feature">
 
-                                                    <?= \lesha724\documentviewer\GoogleDocumentViewer::widget([
-                                                      'url'=> Yii::$app->request->baseUrl.'/web/uploads/student-projects/'.$project->attachment,
-                                                      'width'=>'100%',
-                                                      'height'=>'100%',
 
-                                                      'embedded'=>true,
-                                                      'a'=>\lesha724\documentviewer\GoogleDocumentViewer::A_BI
-                                                    ]); ?>
-
+                                                    <a href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="View">
+                                                        <i class="zmdi zmdi-download"></i>
+                                                    </a>
                                                       <a href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="View">
                                                           <i class="zmdi zmdi-eye"></i>
                                                       </a>

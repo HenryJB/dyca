@@ -52,6 +52,7 @@ class StudentsController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+
         ]);
     }
 
@@ -108,13 +109,15 @@ class StudentsController extends Controller
         ]);
     }
 
-    public function actionConfirmMember($id='')
+    public function actionConfirmMember()
     {
+      $dca_tag = Yii::$app->request->post('dca_tag');
+      $id = Yii::$app->request->post('id');
       $db = Yii::$app->db;
       try {
-          $db->createCommand()->update('students', ['is_500' => 1], 'id='.$id)->execute();
-          return 'Student confirm member';
-          
+          $db->createCommand()->update('students', ['tag' => $dca_tag], 'id='.$id)->execute();
+          return $this->redirect(['view', 'id' => $id]);
+
       } catch (\Exception $e) {
           return 'failed';
       }

@@ -1,7 +1,7 @@
 <?php
 
 namespace backend\assets;
-
+use Yii;
 use yii\web\AssetBundle;
 
 /**
@@ -44,8 +44,18 @@ class DashboardAsset extends AssetBundle
         'js/main.js',
         'js/custom-scripts.js',
     ];
-    public $depends = [
-        //'yii\web\YiiAsset',
-      //  'yii\bootstrap\BootstrapAsset',
-    ];
+    public $depends = [];
+
+      public function init()
+    {
+        parent::init();
+        if((Yii::$app->controller->id!=='students') && (Yii::$app->controller->action->id!=='view')){
+          $this->depends[] = 'yii\web\YiiAsset';
+          $this->depends[] =  'yii\bootstrap\BootstrapAsset';
+        }elseif ((Yii::$app->controller->id==='students') && (Yii::$app->controller->action->id==='index')) {
+          $this->depends[] = 'yii\web\YiiAsset';
+          $this->depends[] =  'yii\bootstrap\BootstrapAsset';
+        }
+
+    }
 }

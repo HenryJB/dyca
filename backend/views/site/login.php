@@ -82,19 +82,19 @@
                                 </div>
                                 <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--green m-b-20', 'name' => 'login-button']) ?>
 
-                                <div class="social-login-content">
+                                <!-- <div class="social-login-content">
                                     <div class="social-button">
                                         <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
 
                                     </div>
-                                </div>
+                                </div> -->
                             <?php ActiveForm::end(); ?>
-                            <div class="register-link">
+                            <!-- <div class="register-link">
                                 <p>
                                     Don't you have account?
                                     <a href="#">Sign Up Here</a>
                                 </p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

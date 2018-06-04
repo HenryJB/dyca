@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
 
             <?php $form = ActiveForm::begin(); ?>
             <div class="row setup-content-2" id="step-1">
-                <div class="col-md-6 offset-md-3">
+                <div class="col-md-8 offset-md-3">
                     <h3 class="font-weight-bold pl-0 my-4">
                         <strong>Basic Information</strong>
                     </h3>

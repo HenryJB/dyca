@@ -9,8 +9,8 @@ use yii\widgets\ActiveForm;
 ?>
 
 
-           
-        
+
+
 
     <div class="container">
 
@@ -18,9 +18,13 @@ use yii\widgets\ActiveForm;
 
      <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
 
-     <p class="text-center"><a href="<?= Yii::$app->request->baseUrl.'/site/login'?>" >Already a student? Click here</a></p>    
-        
+     <p class="text-center"><a href="<?= Yii::$app->request->baseUrl.'/site/login'?>" >Already a student? Click here</a></p>
+
         <div class="pt-5">
+
+
+            <?php $form = ActiveForm::begin(); ?>
+
             <div class="steps-form-2">
                 <div class="steps-row-2 setup-panel-2 d-flex justify-content-between">
                     <div class="steps-step-2">
@@ -44,8 +48,6 @@ use yii\widgets\ActiveForm;
 
                 </div>
             </div>
-
-            <?php $form = ActiveForm::begin(); ?>
             <div class="row setup-content-2" id="step-1">
                 <div class="col-md-6 offset-md-3">
                     <h3 class="font-weight-bold pl-0 my-4">
@@ -55,7 +57,7 @@ use yii\widgets\ActiveForm;
                         <?php if(!empty($form->errorSummary($model))): ?>
                             <?= $form->errorSummary($model); ?>
                         <?php endif;?>
-                        
+
                     </div>
 
                     <div class="form-group md-form">
@@ -101,15 +103,15 @@ use yii\widgets\ActiveForm;
                     <h3 class="font-weight-bold pl-0 my-4">
                         <strong>Course</strong>
                     </h3>
-                    
+
                     <?= $form->field($model, 'first_choice')->dropDownList(
                             $courses, ['prompt' => ''],['class' =>'mdb-select']) ?>
                             <?= $form->field($model, 'second_choice')->dropDownList(
                             $courses, ['prompt' => ''],['class' =>'mdb-select']) ?>
 
                 </div>
-               
-                
+
+
             </div>
 
 
@@ -120,13 +122,13 @@ use yii\widgets\ActiveForm;
                     </h3>
                     <div class="col-md-6 offset-md-3">
 
-                        
+
                         <div class="form-group">
                         <input type="text" name="voucher" class="form-control"/>
                         </div>
                      </div>
 
-                   
+
 
                     <div class="col-md-6 offset-md-3">
                         <?= Html::submitButton('Validate Voucher', ['class' => 'btn btn-success']) ?>

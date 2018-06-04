@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?=$model->payment_status?>
                                         </td>
                                     </tr>
-                                    
+
                                 </tbody>
                             </table>
                         </div>

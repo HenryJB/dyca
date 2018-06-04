@@ -19,7 +19,7 @@ class SearchStudent extends Student
     {
         return [
             [['id', 'state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'occupation', 'photo', 'facebook_id', 'twitter_handle', 'instagram_handle', 'year', 'payment_status', 'approval_status', 'country', 'date_of_birth', 'reason', 'propose_project', 'information_source', 'date_registered', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'safe'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'occupation', 'photo', 'facebook_id', 'twitter_handle', 'instagram_handle', 'year', 'payment_status', 'approval_status', 'country', 'date_of_birth', 'about', 'project', 'information_source', 'date_registered', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'safe'],
         ];
     }
 
@@ -86,7 +86,7 @@ class SearchStudent extends Student
             ->andFilterWhere(['like', 'payment_status', $this->payment_status])
             ->andFilterWhere(['like', 'approval_status', $this->approval_status])
             ->andFilterWhere(['like', 'country', $this->country])
-            ->andFilterWhere(['like', 'reason', $this->reason])
+            ->andFilterWhere(['like', 'about', $this->about])
             ->andFilterWhere(['like', 'propose_project', $this->propose_project])
             ->andFilterWhere(['like', 'information_source', $this->information_source])
             ->andFilterWhere(['like', 'emergency_fullname', $this->emergency_fullname])

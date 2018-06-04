@@ -1,8 +1,9 @@
 $(document).ready(function(){
 $('.sufee-alert').hide();
   $('.modal-mail').click(function(e){
-    e.preventDefault();
-      $("#mediumModal").modal();
+      e.preventDefault();
+      $("#mediumModal").modal("show");
+      $("#mediumModal").appendTo("body");
       return false;
   });
 
@@ -34,6 +35,13 @@ $('.sufee-alert').hide();
         },
         error: {}
     });
+      return false;
+  });
+
+  $('.tag-box').click(function(e){
+      e.preventDefault();
+      $("#smallmodal").modal("show");
+      $("#smallmodal").appendTo("body");
       return false;
   });
 

@@ -3,7 +3,9 @@
 namespace common\models;
 
 use Yii;
-use common\models\DcaUser;
+use yii\imagine\Image as ImageBox;
+use Imagine\Image\Box;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "students".
@@ -28,13 +30,15 @@ use common\models\DcaUser;
  * @property string $date_of_birth
  * @property int $first_choice
  * @property int $second_choice
- * @property string $reason
+ * @property string $date_of_birthday
+ * @property int $session_id
+ * @property string $about
  * @property string $propose_project
  * @property string $information_source
  * @property int $sponsor_aid
  * @property int $sponsorship_status
  * @property int $is_existing
- * @property int $is_500
+ * @property string $tag
  * @property int $terms_condition
  * @property string $date_registered
  * @property string $emergency_fullname
@@ -58,16 +62,24 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth','first_choice'], 'required'],
-            [['gender', 'contact_address', 'payment_status', 'approval_status', 'reason', 'propose_project', 'information_source'], 'string'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'state_id', 'date_of_birth',
+              'date_of_birth', 'session_id', 'about', 'is_existing', 'date_registered'], 'required'],
+              ['local_government_id', 'required', 'when' => function ($model) {
+                  return $model->country == 160;
+              }, 'whenClient' => "function (attribute, value) {
+                  return $('#country').val() == '160';
+              }"],
+            [['gender', 'contact_address', 'payment_status', 'approval_status', 'about',  'information_source'], 'string'],
             [['year', 'date_of_birth', 'date_registered'], 'safe'],
-            [['state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'is_existing','terms_condition'], 'integer'],
+            [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 200],
-            [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle'], 'string', 'max' => 100],
+            [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle', 'tag'], 'string', 'max' => 100],
             [['occupation', 'photo'], 'string', 'max' => 255],
             [['country', 'emergency_fullname'], 'string', 'max' => 150],
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
             [['email_address'], 'unique'],
+            [['date_registered'], 'safe'],
+            [['project'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4']
         ];
     }
 
@@ -94,15 +106,19 @@ class Student extends \yii\db\ActiveRecord
             'approval_status' => 'Approval Status',
             'country' => 'Country',
             'state_id' => 'State',
+            'local_government_id'=> 'Local Govt.(For Nigerians only)',
             'date_of_birth' => 'Date Of Birth',
-            'first_choice' => 'First Choice',
+            'first_choice' => 'Course',
             'second_choice' => 'Second Choice',
-            'reason' => 'Reason',
-            'propose_project' => 'Propose Project',
+            'date_of_birthday' => 'Date Of Birthday',
+            'session_id' => 'Session ',
+            'about' => 'About You',
+            'project' => 'Project',
             'information_source' => 'Information Source',
             'sponsor_aid' => 'Sponsor Aid',
             'sponsorship_status' => 'Sponsorship Status',
             'is_existing' => 'Is Existing',
+            'tag' => 'Tag',
             'terms_condition' => 'Terms Condition',
             'date_registered' => 'Date Registered',
             'emergency_fullname' => 'Emergency Fullname',
@@ -112,35 +128,25 @@ class Student extends \yii\db\ActiveRecord
         ];
     }
 
-    public function generateUniqueTransactionCode(){
+    public function upload()
+    {
+        if ($this->validate()) {
 
-        $unique_refernce = time(). rand(10 * 42, 100 * 918);
+            $this->project->saveAs(Url::to('@frontend/web/uploads/screening_projects/').$this->project->baseName.'.'.$this->project->extension);
 
-        $prefix = 'DCA';
+            $image_extensions = array('jpg', 'gif', 'png');
 
-        return $transaction_reference = $prefix.$unique_refernce;
+            if(in_array($this->project->extension, $image_extensions)){
+              ImageBox::thumbnail(Url::to('@frontend/web/uploads/screening_projects/').$this->project->baseName.'.'.$this->project->extension, 640, 350)
+                ->resize(new Box(640, 350))
+                ->save(Url::to('@frontend/web/uploads/screening_projects/thumbs/').$this->project->baseName.'.'.$this->project->extension,
+                        ['quality' => 80]);
+            }
 
-    }
 
-    public function invoiceByVoucher($first_name,$last_name,$amount,$email_address,$subject){
-        
-        $message = Yii::$app->mailer->compose(
-            '@common/mail/layouts/invoice_voucher.php',
-            [
-                'amount' => $amount,
-                'name' => $first_name.' '.$last_name,
-            ]
-        );
-
-        $message->setTo($email_address);
-        $message->setFrom(Yii::$app->params['supportEmail']);
-        $message->setSubject($subject);
-        try{
-            $message->send();
-        }catch(Exception $e){
-            Yii::$app->getSession()->setFlash('student_payment_error', 'Student Payment Failed');           
+            return true;
+        } else {
+            return false;
         }
-        
     }
-
 }

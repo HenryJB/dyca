@@ -238,6 +238,22 @@ DashboardAsset::register($this);
                       </ul>
                   </li>
 
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#">
+                          <i class="fas fa-envelope"></i>Messaging</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a('emails', ['email/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('Email Templates', ['email-template/index'])?>
+                          </li>
+
+                      </ul>
+                  </li>
+
+
+
 
               </ul>
           </nav>

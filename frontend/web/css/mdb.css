@@ -4383,8 +4383,8 @@ a.waves-effect, a.waves-light {
       box-shadow: none !important;
       background-color: transparent; }
   .btn[class*="btn-outline-"] {
-    padding-top: 0.7rem;
-    padding-bottom: 0.7rem; }
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem; }
     .btn[class*="btn-outline-"].btn-lg {
       padding-top: 0.88rem;
       padding-bottom: 0.88rem; }
