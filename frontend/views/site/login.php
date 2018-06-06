@@ -92,7 +92,7 @@
                             <div class="register-link">
                                 <p>
                                     Don't you have account?
-                                    <a href="<?= Yii::$app->request->baseUrl.'/site/register'?>">Sign Up Here</a>
+                                    <a href="<?= Yii::$app->request->baseUrl.'/students/create'?>">Sign Up Here</a>
                                 </p>
                             </div>
                         </div>

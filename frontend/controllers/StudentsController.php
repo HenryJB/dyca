@@ -4,7 +4,8 @@ namespace frontend\controllers;
 
 use common\models\Course;
 use common\models\CoursesCategory;
-use common\models\Dcauser;
+
+use common\models\User;
 use common\models\Email;
 use common\models\LocalGovernment;
 use common\models\CourseRegistration;
@@ -14,6 +15,7 @@ use common\models\Student;
 use common\models\Session;
 use common\models\StudentProject;
 use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResetPasswordForm;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
@@ -59,7 +61,7 @@ class StudentsController extends Controller
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['related-states', 'related-local-government', 'login', 'change-picture'])) {
+        if (in_array($action->id, ['related-states', 'related-local-government', 'login', 'change-picture','request-password-reset'])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -99,12 +101,12 @@ class StudentsController extends Controller
             $model->date_registered = date('Y-m-d');
             $model->project = UploadedFile::getInstance($model, 'project');
 
-            $user = new Dcauser();
-            //$user = new User();
+            $user = new User();
             $user->username = $model->email_address;
             $user->email = $model->email_address;
             $user->setPassword($model->first_name);
             $user->generateAuthKey();
+
 
             if ($model->save() && $user->save()) {
 
@@ -241,7 +243,33 @@ class StudentsController extends Controller
     {
         $session = Yii::$app->session;
 
-        $model = new Student();
+        $student = $this->findModel($session->get('id'));
+
+        $student->scenario = Student::SCENARIO_PROFILE_UPDATE;
+
+        $student->photo = $student->changeProfilePicture();
+
+        if(!empty($student->errors) || empty($student->photo))
+        {
+            Yii::$app->session->setFlash('error', $student->errors);
+            return $this->redirect('profile');
+        }
+
+        try{
+
+            if($student->save())
+            {
+                Yii::$app->session->setFlash('success', 'Image Upload Successful');
+                return $this->redirect('profile');
+            }else{
+                Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
+                return $this->redirect('profile');
+            }
+        }catch(Exception $e)
+        {
+            Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
+            return $this->redirect('profile');
+        }
 
     }
 
@@ -493,24 +521,44 @@ class StudentsController extends Controller
      */
     public function actionRequestPasswordReset()
     {
-        $model = new PasswordResetRequestForm();
+        $model = new Student();
 
-        $request = Yii::$app->request;
+        if (Yii::$app->request->post('email') && filter_var(Yii::$app->request->post('email'), FILTER_VALIDATE_EMAIL)) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            if ($model->sendEmail()) {
+            if ($model->sendEmail(Yii::$app->request->post('email'))) {
 
                 Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
 
-                return $this->redirect('profile');
+                return true;
             } else {
                 Yii::$app->session->setFlash('password_reset_error', 'Sorry, we are unable to reset password for the provided email address.');
-                return $this->redirect('profile');
+                return false;
             }
         }
 
         return $this->redirect('profile');
+    }
+
+    public function actionResetPassword($token)
+    {
+        $this->layout = 'profile-layout';
+
+        try {
+            $model = new ResetPasswordForm($token);
+
+            if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+                Yii::$app->session->setFlash('success', 'New password saved.');
+    
+                return $this->redirect('profile');
+            }
+        } catch (InvalidParamException $e) {
+            Yii::$app->session->setFlash('error', 'Invalid Token');
+            return $this->redirect('profile');
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
     }
 
     public function save_base64_image($base64_image_string, $output_file_without_extentnion, $path_with_end_slash = '')

@@ -6,6 +6,10 @@ use Yii;
 
 use common\models\CourseRegistration;
 use yii\imagine\Image as ImageBox;
+
+use common\models\User;
+
+use yii\web\UploadedFile;
 use Imagine\Image\Box;
 use yii\helpers\Url;
 
@@ -51,6 +55,7 @@ use yii\helpers\Url;
 class Student extends \yii\db\ActiveRecord
 {
     const SCENARIO_PROFILE_UPDATE = 'profile_update';
+    const SCENARIO_UPDATE_PROFILE_PICTURE = 'update_profile_picture';
     /**
      * {@inheritdoc}
      */
@@ -59,12 +64,16 @@ class Student extends \yii\db\ActiveRecord
         return 'students';
     }
 
-    public function scenarios(){
-        return [
-            self::SCENARIO_PROFILE_UPDATE => [
-                'first_name', 'last_name', 'email_address', 'contact_address', 'phone_number','date_of_birth','about'
-            ]
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_PROFILE_UPDATE] = [
+            'first_name', 'last_name', 'email_address', 'contact_address', 'phone_number','date_of_birth','about'
         ];
+        
+        $scenarios[self::SCENARIO_UPDATE_PROFILE_PICTURE] = ['photo'];
+
+        return $scenarios;
     }
 
     /**
@@ -163,10 +172,10 @@ class Student extends \yii\db\ActiveRecord
     }
 
     
-    public function changeProfilePicture($model){
+    public function changeProfilePicture(){
         $extensionsStack = array('png, jpg, jpeg, gif');
 
-        $file = UploadedFile::getInstance($model, 'photo');
+        $file = UploadedFile::getInstanceByName('photo');
 
         $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
 
@@ -177,14 +186,14 @@ class Student extends \yii\db\ActiveRecord
           if(in_array($file->extension, $extensionsStack)){
 
             $file->saveAs(
-                Url::to('@frontend/web/uploads/student/').$img_name
+                Url::to('@frontend/web/uploads/profiles/').$img_name
             );
                 return $img_name;
 
           }else {
 
             $file->saveAs(
-                Url::to('@frontend/web/uploads/student/').$img_name
+                Url::to('@frontend/web/uploads/profiles/').$img_name
             );
 
             return $img_name;
@@ -194,4 +203,35 @@ class Student extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+    public function sendEmail($email)
+    {
+        /* @var $user User */
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'username' => $email,
+        ]);
+
+        if (!$user) {
+            return false;
+        }
+
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        return Yii::$app
+            ->mailer
+            ->compose( '@frontend/mail/passwordResetToken.php',
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($email)
+            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->send();
+    }
+
 }

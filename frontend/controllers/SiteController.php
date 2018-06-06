@@ -3,7 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Country;
 use common\models\Course;
-use common\models\LoginForm;
+use frontend\models\LoginForm;
 use common\models\Session;
 use common\models\Student;
 
@@ -102,6 +102,9 @@ class SiteController extends Controller
           if(count($student)>0){
             $student_session = Yii::$app->session;
             $student_session->set('id', $student->id);
+            $student_session->set('photo', $student->photo);
+            $student_session->set('email_address', $student->email_address);
+            
 
             if($student->payment_status==='not paid'){
 
@@ -137,6 +140,10 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        $student_session = Yii::$app->session;
+
+        $student_session->destroy();
+
         Yii::$app->user->logout();
 
           return $this->redirect('login');

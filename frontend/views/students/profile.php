@@ -95,7 +95,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             <label for="fname" class="col-sm-3 text-right control-label col-form-label">Email</label>
                             <div class="col-sm-9">
 
-                                <?= Html::input('text', 'username', '', ['class' => 'form-control','placeholder' =>'Email','id' => 'request-reset-input']) ?>
+                                <?= Html::input('text', 'email', '', ['class' => 'form-control','placeholder' =>'Email','id' => 'request-reset-input']) ?>
+
+                                <div id="request-reset-input-feedback">
+
+                                </div>
                             </div>
                         </div>
                     </div>

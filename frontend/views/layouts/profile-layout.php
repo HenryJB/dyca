@@ -1,6 +1,9 @@
 <?php
 	use yii\helpers\Html;
-	use yii\helpers\Url;
+    use yii\helpers\Url;
+    use dosamigos\fileupload\FileUpload;
+
+    use common\models\Student;
 
 ?>
     <!DOCTYPE html>
@@ -64,7 +67,7 @@
                             <b class="logo-icon p-l-10">
                                 <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                                 <!-- Dark Logo icon -->
-                                <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" id="img-brand" width="80px" height="50px">
+                                <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" id="img-brand" width="80px" height="50px" class="img-fluid">
 
                             </b>
                             <!--End Logo icon -->
@@ -221,7 +224,15 @@
                                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
 
-                                    <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" alt="user" class="rounded-circle" id="img-brand" width="31" height="20">
+                                    <?php $session = Yii::$app->session; ?>
+
+                                     <?php if(!empty($session->get('photo'))): ?>
+                                     <img src="<?= Url::to('@web/uploads/profiles/'.$session->get('photo')); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
+                                    <?php else:?>
+                                    <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
+                                     <?php endif; ?>
+
+                                   
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                     <a class="dropdown-item" href="<?= Yii::$app->request->baseUrl.'/students/profile'?>">
@@ -229,7 +240,7 @@
                                     <a class="dropdown-item" href="javascript:void(0)">
                                         <i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
 
-                                    <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#Modal3">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal3">
                                         <i class="ti-exchange-vertical m-r-5 m-l-5"></i> Change Profile Picture</a>
                                     <a class="dropdown-item" href="javascript:void(0)">
                                         <i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
@@ -388,13 +399,13 @@
                                                 <label for="fname" class="col-sm-3 text-right control-label col-form-label">Picture</label>
                                                 <div class="col-sm-9">
 
-                                                    <?= Html::fileInput('photo', '', ['class' => 'form-control','id' => 'profile-picture-input']) ?>
+                                                <?= Html::input('file', 'photo', '', ['class' => 'form-control','id' => 'profile-picture-input']) ?>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="border-top">
                                             <div class="card-body">
-                                                <button type="submit" class="btn btn-primary" id="request-reset-btn">Submit</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
                                             </div>
                                         </div>
                                         <?= Html::endForm() ?>
