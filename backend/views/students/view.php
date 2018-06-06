@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\Tag;
+use common\models\State;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Student */
@@ -60,7 +62,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <form action="<?= Yii::$app->request->baseUrl?>/students/confirm-member" method="post">
               <input type="hidden" name="id" value="<?=$model->id?>"/>
               <select class="form-control" name="dca_tag" id="dca_tag">
-                <option value="DCA 500">DCA 500</option>
+                <?php if(count($tags)>0) :?>
+                        <?php foreach($tags as $tag): ?>
+                          <option value="<?=$tag->id?>"><?=$tag->name?></option>
+                        <?php endforeach; ?>
+                  <?php endif; ?>
               </select>
 
               <div class="modal-footer">
@@ -76,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </div>
   <!-- end modal small -->
 
-    <div class="row">
+    <div id="profile-box" class="row" style="padding-top:20px; color:#ffffff;">
       <div class="container">
         <!-- Alert Notification -->
         <div class="sufee-alert alert with-close alert-success alert-dismissible fade show">
@@ -92,40 +98,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </p>
           </div>
-                <div class="col-sm-3 white-padding" >
+                <div class="col-sm-3 black-padding" >
                   <div class="panel widget light-widget panel-bd-top" style="border-top: 2px solid #A40000">
                     <div class="panel-heading no-title"> </div>
                     <div class="panel-body">
                       <div class="text-center vd_info-parent" >
                           <?php $photo =!empty($model->photo) || $model->photo!==NULL ?$model->photo:'default-avatar.gif' ?>
-                        <?=Html::img('@web/uploads/students/'.$photo, ['width'=>'260', 'height'=>'260'])?>
+                        <?=Html::img('@web/uploads/students/'.$photo, ['width'=>'260', 'height'=>'260', 'class'=>'profile-img'])?>
 
                       </div>
                       <div class="row">
                         <!-- <div class="col-lg-12"> <a class="btn btn-success  btn-block "><i class="fa fa-envelope append-icon"></i>Send Email</a> </div> -->
                       </div>
-                      <h2 class="font-semibold mgbt-xs-5"><?=$model->first_name . ' '. $model->last_name?> </h2>
-                      <h4><?=$model->state_id.','. $model->country ?></h4>
+                      <h2 class="font-semibold mgbt-xs-5 f-text-white"><?=$model->first_name . ' '. $model->last_name?> </h2>
+                      <h4 class="f-text-white"><?=$model->state_id.','. $model->country ?></h4>
                       <p style="padding:10px;"><?=$model->about ?></p>
                       <div class="mgtp-20">
-                        <table class="table table-striped table-hover">
-                          <tbody>
-
-                            <tr>
-                              <td>Payment Status</td>
-                              <td> <?=$model->payment_status?> </td>
-                            </tr>
-                            <?php if($model->tag==!NULL): ?>
-                            <tr>
-                              <td colspan="2">
-                                <button type="button" class="btn btn-primary m-l-10 m-b-10">
-                                  <span class="badge badge-light"><?=$model->tag?></span>
-                                </button>
-                              </td>
-                            </tr>
-                          <?php endif; ?>
-                          </tbody>
-                        </table>
+                        <span>Payment Status: <?=$model->payment_status?> </span>
                       </div>
                     </div>
                   </div>
@@ -133,12 +122,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 </div>
-                <div class="col-sm-9 white-padding">
-                  <div class="card">
+                <div class="col-sm-9 red-padding">
+                  <div class="card" style="border:none !important">
 									<div class="card-header">
 										<h4>
-                      <?= Html::a('<i class="fa fa-bookmark"></i>', ['sponsor', 'id' => $model->id],
-                          ['class' => 'sponsor btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Sponsor']) ?>
+
                       <?= Html::a('<i class="fa fa-envelope"></i>', ['#'],
                           ['class' => 'modal-mail btn btn-danger', 'data-toggle'=>'tooltip',
                           'data-placement'=>'top', 'data-original-title'=>'Send Email']) ?>
@@ -152,79 +140,148 @@ $this->params['breadcrumbs'][] = $this->title;
                        'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Delete',
                         'data' => [
                             'confirm' => 'Are you sure you want to delete this item?',
-                            'method' => 'post',
+                            'method' => 'get',
                         ],
                     ]) ?>
 
 
                   </h4>
 									</div>
-									<div class="card-body">
+									<div class="card-body red-padding">
 										<div class="custom-tab">
 
 											<nav>
 												<div class="nav nav-tabs" id="nav-tab" role="tablist">
-													<a class="nav-item nav-link active show" id="custom-nav-home-tab" data-toggle="tab" href="#custom-nav-home" role="tab" aria-controls="custom-nav-home" aria-selected="true">Profile</a>
+													<a class="nav-item nav-link active show" id="custom-nav-home-tab" data-toggle="tab" href="#custom-nav-home" role="tab" aria-controls="custom-nav-home" aria-selected="true">About</a>
 													<a class="nav-item nav-link" id="custom-nav-profile-tab" data-toggle="tab" href="#custom-nav-profile" role="tab" aria-controls="custom-nav-profile" aria-selected="false">Courses</a>
 													<a class="nav-item nav-link" id="custom-nav-contact-tab" data-toggle="tab" href="#custom-nav-contact" role="tab" aria-controls="custom-nav-contact" aria-selected="false">Projects</a>
 												</div>
 											</nav>
 											<div class="tab-content pl-3 pt-2" id="nav-tabContent">
 												<div class="tab-pane fade active show" id="custom-nav-home" role="tabpanel" aria-labelledby="custom-nav-home-tab">
-
+                              <h3><h3> <i class="fa fa-user"></i> About</h3>
                             <div class="row">
-                            <div class="col-sm-6">
+
+                            <div class="col-md-6 col-sm-6">
+
                               <div class="row mgbt-xs-0">
-                                <label class="col-xs-5 control-label">First Name:</label>
-                                <div class="col-xs-7 controls"><?=$model->first_name?></div>
+                                <label class="col-xs-5 col-md-5 control-label">First Name:</label>
+                                <div class="col-xs-7 col-md-7 controls"><?=$model->first_name?></div>
                                 <!-- col-sm-10 -->
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6">
                               <div class="row mgbt-xs-0">
-                                <label class="col-xs-5 control-label">Last Name:</label>
-                                <div class="col-xs-7 controls"><?=$model->last_name?></div>
+                                <label class="col-xs-5 col-md-5 control-label">Last Name:</label>
+                                <div class="col-xs-7 col-md-7 controls"><?=$model->last_name?></div>
                                 <!-- col-sm-10 -->
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6">
                               <div class="row mgbt-xs-0">
-                                <label class="col-xs-5 control-label">Phone number</label>
-                                <div class="col-xs-7 controls"><?=$model->phone_number?></div>
+                                <label class="col-xs-5 col-md-5 control-label">Phone number</label>
+                                <div class="col-xs-7  col-md-7controls"><?=$model->phone_number?></div>
                                 <!-- col-sm-10 -->
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class=" col-md-6 col-sm-6">
                               <div class="row mgbt-xs-0">
-                                <label class="col-xs-5 control-label">Email:</label>
-                                <div class="col-xs-7 controls"><?=$model->email_address?></div>
+                                <label class="col-xs-5 col-md-5  control-label">Email:</label>
+                                <div class="col-xs-7 col-md-7 controls"><?=$model->email_address?></div>
                                 <!-- col-sm-10 -->
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6">
                               <div class="row mgbt-xs-0">
-                                <label class="col-xs-5 control-label">States:</label>
-                                <div class="col-xs-7 controls"><?=$model->state_id?></div>
+                                <label class="col-md-5 col-xs-5 control-label">Gender:</label>
+                                <div class="col-xs-7 controls"><?=$model->gender?></div>
                                 <!-- col-sm-10 -->
                               </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-md-6 col-sm-6">
                               <div class="row mgbt-xs-0">
-                                <label class="col-xs-5 control-label">Country:</label>
+                                <label class="col-md-5 col-xs-5 control-label">Country:</label>
                                 <div class="col-xs-7 controls"><?=$model->country?></div>
                                 <!-- col-sm-10 -->
                               </div>
                             </div>
 
                           </div>
+                          <h3><h3> <i class="fa fa-book"></i> Contact Information</h3>
+                          <div class="row">
+                            <label class="col-md-5 col-xs-5 c control-label">Contact address:</label>
+                            <div class="col-xs-7 col-md-7 controls"><?=$model->contact_address?></div>
+
+                            <label class="col-md-5 col-xs-5 c control-label">Phone number:</label>
+                            <div class="col-xs-7 col-md-7 controls"><?=$model->phone_number?></div>
+
+                            <label class="col-md-5 col-xs-5 c control-label">State:</label>
+                            <div class="col-xs-7 col-md-7 controls">
+                              <?php $state= State::find()->where(['id'=>$model->state_id])->one(); ?>
+                              <?=$state->name?>
+                            </div>
+
+                            <label class="col-md-5 col-xs-5 c control-label">Country:</label>
+                            <div class="col-xs-7 col-md-7 controls"><?=$model->country?></div>
+                          </div>
+
+                          <h3> <i class="fa fa-graduation-cap"></i> Education Information</h3>
+                          <div class="row">
+                            <label class="col-md-5 col-xs-5 c control-label">Del-York Creative Academy:</label>
+                            <div class="col-xs-7 col-md-7 controls"><?=$model->year?></div>
+
+
+                          </div>
+                          <h3>Tags</h3>
+                          <div class="row">
+
+                            <!-- <label class="col-md-5 col-xs-5 c control-label">Del-York Creative Academy:</label> -->
+                            <div class="col-xs-7 col-md-7 controls">
+                            <?php if(count($taggings)>0): ?>
+                                  <?php foreach ($taggings as $tagging):?>
+
+                                    <?php $student_tag = Tag::find()->where(['id'=>$tagging->tag_id])->one();?>
+
+                                    <?php if(count($student_tag)>0) :?>
+                                      <a class="btn btn-danger " href="<?=Yii::$app->request->baseUrl?>/students/tag?id=<?=$student_tag->id?>">
+                                        <span class="badge badge-dark">
+                                        <?=$student_tag->name?>
+                                        </span>
+                                      </a>
+                                    <?php endif?>
+
+                                <?php endforeach; ?>
+                          <?php endif; ?>
+                          </div>
+                          </div>
 
 				             </div>
                 					<div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
                 						<p>
-                              <?php
+                              <?php if(count($registered_courses)>0):?>
+
+                                <?php  foreach ($registered_courses as $reg_course ):?>
+                                  <?php $course= $reg_course->getCourse()->andWhere('id='.$reg_course->course_id)->one(); ?>
+                                  <div class="col-md-5">
+                                <div class="card">
+                                    <?=Html::img('@web/uploads/courses/'.$course->photo, ['alt'=> 'Course photo', 'class'=>'card-img-top'])?>
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-3"><?= $course->name;?></h4>
+                                        <p class="card-text"><?=$course->description;?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
 
 
-                               ?>
+
+
+                                  <?php endforeach;?>
+                                <?php endif;?>
+
+
+
+
                             </p>
                 					</div>
                 					<div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">

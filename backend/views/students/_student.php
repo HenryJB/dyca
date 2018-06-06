@@ -1,10 +1,13 @@
 <?php
 use yii\helpers\Html;
 use common\models\State;
+use common\models\Tag;
+use common\models\Course;
 
 ?>
 
 <?php if(count($model)>0) :?>
+  <a class="link" href="<?=Yii::$app->request->baseUrl?>/students/view?id=<?=$model->id?>">
 <div class="col-md-12">
     <div class="card">
         <div class="card-body text-white bg-danger">
@@ -21,14 +24,15 @@ use common\models\State;
 
             <hr>
             <div class="card-text text-sm-center">
-                <?= $model->occupation?>
+              <?php $course = Course::find()->where(['id'=>$model->first_choice])->one(); ?>
+                <?= $course->name?>
             </div>
         </div>
         <div class="card-footer bg-dark">
           <?=Html::a('<strong class="card-title mb-3">View profile</strong>', ['students/view?id='.$model->id])?>
-          <?=Html::a('<strong class="card-title mb-3">Sponsor</strong>', ['students/view?id='.$model->id], ['class'=>'pull-right'])?>
 
         </div>
     </div>
 </div>
+</a>
 <?php endif ;?>
