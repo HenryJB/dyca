@@ -4,7 +4,10 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Student;
+use common\models\Tag;
+use common\models\Tagging;
 use common\models\StudentProject;
+use common\models\CourseRegistration;
 use app\models\StudentSearch;
 use yii\web\Controller;
 use common\models\LocalGovernment;
@@ -12,7 +15,7 @@ use common\models\Country;
 use common\models\State;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use yii\data\ActiveDataProvider;
 /**
  * StudentsController implements the CRUD actions for Student model.
  */
@@ -60,6 +63,28 @@ class StudentsController extends Controller
     }
 
     /**
+     * Lists all Student models.
+     * @return mixed
+     */
+    public function actionTag($id)
+    {
+        $provider = new ActiveDataProvider([
+          'query' => Tagging::find()->where(['tag_id'=> $id]),
+          'pagination' => [
+              'pageSize' => 20,
+          ],
+        ]);
+
+
+        return $this->render('tag', [
+            //'searchModel' => $searchModel,
+            'dataProvider' => $provider,
+
+        ]);
+    }
+
+
+    /**
      * Displays a single Student model.
      * @param integer $id
      * @return mixed
@@ -68,9 +93,15 @@ class StudentsController extends Controller
     public function actionView($id)
     {
         $project = StudentProject::find()->where(['student_id'=> $id])->all();
+        $taggings = Tagging::find()->where(['student_id'=> $id])->all();
+        $tags = Tag::find()->all();
+        $registered_courses = CourseRegistration::find()->where(['student_id'=> $id])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'projects' => $project,
+            'taggings' => $taggings,
+            'tags' => $tags,
+            'registered_courses'=>$registered_courses
         ]);
     }
 
@@ -116,9 +147,23 @@ class StudentsController extends Controller
     {
       $dca_tag = Yii::$app->request->post('dca_tag');
       $id = Yii::$app->request->post('id');
+
       $db = Yii::$app->db;
       try {
-          $db->createCommand()->update('students', ['tag' => $dca_tag], 'id='.$id)->execute();
+          $tagging = new Tagging();
+          $tag = Tag::find()->where(['id'=>$dca_tag])->one();
+          $model = $this->findModel($id);
+          $tagging->student_id = $id;
+          $tagging->tag_id = $dca_tag;
+          $tagging->save();
+
+        //  $db->createCommand()->update('students', ['tag' => $dca_tag], 'id='.$id)->execute();
+
+          if ($tag->notify_status==1) {
+              // Send email Notification
+              //Yii::$app->runAction('messaging/sponsorship_received',['email'=>$model->email_address]);
+
+          }
           return $this->redirect(['view', 'id' => $id]);
 
       } catch (\Exception $e) {
