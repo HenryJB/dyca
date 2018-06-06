@@ -5,6 +5,8 @@ namespace common\models;
 use yii\imagine\Image as ImageBox;
 use Imagine\Image\Box;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
+use yii;
 
 /**
  * This is the model class for table "student_projects".
@@ -34,13 +36,13 @@ class StudentProject extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_id', 'title', 'description', 'date', 'type'], 'required'],
+            [['title', 'description', 'type'], 'required'],
             [['student_id'], 'integer'],
             [['description', 'type'], 'string'],
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['url'], 'string', 'max' => 50],
-            [['attachment'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif, docx, pdf, mp4, mp3'],
+            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, docx, pdf, mp4, mp3'],
         ];
     }
 
@@ -61,31 +63,43 @@ class StudentProject extends \yii\db\ActiveRecord
         ];
     }
 
-    public function upload()
-    {
+   
+
+    public function upload($model){
         $extensionsStack = array('png, jpg, jpeg, gif');
-        if ($this->validate()) {
 
-          if(in_array($this->attachment->extension, $extensionsStack)){
+        $file = UploadedFile::getInstance($model, 'attachment');
 
-            $this->attachment->saveAs(
-                Url::to('@academy/web/uploads/student-projects/').$this->attachment->baseName.'.'.$this->attachment->extension
+        $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
+
+        //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
+
+        if ($this->validate() && !empty($img_name)) {
+
+          if(in_array($file->extension, $extensionsStack)){
+
+            $file->saveAs(
+                Url::to('@frontend/web/uploads/student-projects/').$img_name
             );
-            ImageBox::thumbnail(Url::to('@academy/web/uploads/student-projects/').$this->attachment->baseName.'.'.$this->attachment->extension, 263, 263)
+
+            ImageBox::thumbnail(Url::to('@frontend/web/uploads/student-projects/').$img_name, 263, 263)
                 ->resize(new Box(263, 263))
                 ->save(
-                    Url::to('@academy/web/uploads/student-projects/thumbs/').$this->attachment->baseName.'.'.$this->attachment->extension,
+                    Url::to('@frontend/web/uploads/student-projects/thumbs/').$img_name,
                     ['quality' => 80]
                 );
 
+                return $img_name;
+
           }else {
-            $this->attachment->saveAs(
-                Url::to('@academy/web/uploads/student-projects/').$this->attachment->baseName.'.'.$this->attachment->extension
+
+            $file->saveAs(
+                Url::to('@frontend/web/uploads/student-projects/').$img_name
             );
+
+            return $img_name;
           }
 
-
-            return true;
         } else {
             return false;
         }

@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\Student;
 use yii\imagine\Image as ImageBox;
 use Imagine\Image\Box;
 use yii\helpers\Url;
@@ -76,6 +77,11 @@ class Course extends \yii\db\ActiveRecord
     public function getCourseCategory()
     {
         return $this->hasOne(CoursesCategory::className(), ['id' => 'course_category']);
+    }
+
+    public function getCourseRegistration()
+    {
+        return $this->hasMany(CourseRegistration::className(), ['course_id' => 'id']);
     }
 
     public function upload()
