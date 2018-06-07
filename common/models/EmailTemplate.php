@@ -60,4 +60,9 @@ class EmailTemplate extends \yii\db\ActiveRecord
             return false;
         }
     }
+
+    public function getEmails()
+    {
+        return $this->hasMany(Email::className(), ['email_template_id' => 'id']);
+    }
 }

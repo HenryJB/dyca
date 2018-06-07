@@ -69,22 +69,6 @@ class StudentsController extends Controller
     }
 
     /**
-     * Displays a single Student model.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
      * Creates a new Student model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      *
@@ -114,7 +98,7 @@ class StudentsController extends Controller
                     $model->upload();
                 }
                 //Send email to user
-                Yii::$app->runAction('messaging/registration', ['email' => $model->email_address]);
+                Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
 
                 return $this->redirect(['view', 'id' => $model->id]);
 
@@ -164,46 +148,6 @@ class StudentsController extends Controller
         } else {
             echo '<option> </option>';
         }
-    }
-
-    /**
-     * Updates an existing Student model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Student model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**
@@ -273,6 +217,7 @@ class StudentsController extends Controller
 
     }
 
+    //This function is unused.
     public function actionChangePicture2()
     {
         $model = new Student();
@@ -336,64 +281,6 @@ class StudentsController extends Controller
         //  }
     }
 
-
-    public function actionCoursesApplied()
-    {
-  
-        $this->layout = 'profile-layout';
-
-        $session = Yii::$app->session;
-
-        $model = new CourseRegistration();
-        
-
-        if($model->load(Yii::$app->request->post()) && $model->validate())
-        {  
-           //check if the student has already appied to this course and redirect him out
-            $check =$model->find()->where(['course_id' => $model->course_id])
-                          ->andWhere('student_id='.$session->get('id'))->one();
-
-            if(count($check) > 0){
-                Yii::$app->session->setFlash('error', 'This user has already registered to this course');
-                return $this->redirect('courses-applied');
-            }
-
-            //set student id on the model
-            $model->student_id = $session->get('id');
-
-            //save data to database
-            if($model->save()){
-                //set flash session for feedback
-                Yii::$app->session->setFlash('success', 'You have successfully applied for this course');
-                //redirect back
-                return $this->redirect('courses-applied');
-            }
-
-            Yii::$app->session->setFlash('error', 'Failed to apply for course');
-            return $this->redirect('courses-applied');
-
-        }
-    
-        return $this->render('courses-applied', [
-            'courses_applied' => CourseRegistration::find()->where(['student_id'=> $session->get('id')])->all(), 
-            'courses' => ArrayHelper::map(Course::find()->all(), 'id', 'name'), 
-            'sessions' => ArrayHelper::map(Session::find()->all(), 'id', 'name'),
-            'model' => $model
-        ]);
-    }
-
-    public function actionCourseDelete($id)
-    {
-        if (CourseRegistration::findOne($id)->delete()) {
-            Yii::$app->session->setFlash('success', 'Course Deleted');
-            return $this->redirect('projects');
-        }
-
-        Yii::$app->session->setFlash('error', 'Course Applied For Could Not Be Deleted');
-
-        return $this->redirect('course-applied');
-    }
-
     public function actionGrants()
     {
         $this->layout = 'profile-layout';
@@ -419,6 +306,7 @@ class StudentsController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    //This function is not used
     public function actionNewProject()
     {
         $session = Yii::$app->session;
@@ -440,54 +328,6 @@ class StudentsController extends Controller
         return $this->render('project_create', [
             'model' => $model,
         ]);
-    }
-
-    public function actionProjects()
-    {
-        $this->layout = 'profile-layout';
-        $session = Yii::$app->session;
-        $errors = '';
-
-        $model = new StudentProject();
-
-        $projects = StudentProject::find()->where(['student_id' => $session->get('id')])->all();
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-
-            $model->student_id = $session->get('id');
-
-            $model->attachment = $model->upload($model);
-
-            $model->date = date('Y-m-d');
-
-            if (!empty($model->attachment)) {
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'Project uploaded successfully. Upload more or click the finish button');
-                    return $this->render('projects', ['projects' => $projects, 'model' => $model, 'errors' => $model->errors]);
-                }
-            }
-
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Project uploaded successfully. Upload more or click the finish button');
-                return $this->render('projects', ['projects' => $projects, 'model' => $model, 'errors' => $model->errors]);
-            }
-        }
-
-        return $this->render('projects', ['projects' => $projects, 'model' => $model, 'errors' => $model->errors]);
-    }
-
-    public function actionProjectDelete($id)
-    {
-        $project = StudentProject::findOne($id)->delete();
-
-        if ($project) {
-            Yii::$app->session->setFlash('success', 'Project deleted');
-            return $this->redirect('projects');
-        }
-
-        Yii::$app->session->setFlash('error', 'Project could not be deleted');
-
-        return $this->redirect('projects');
     }
 
     public function actionProfile()

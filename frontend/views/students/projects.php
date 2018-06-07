@@ -17,9 +17,30 @@
           <?php foreach ($projects as $project): ?>
           <!-- Comment Row -->
           <div class="d-flex flex-row comment-row m-t-0">
-            <div class="p-2">
-              <img src="<?= Url::to('@web/uploads/student-projects/'.$project->attachment); ?>" width="300px" height="300px">
-            </div>
+            <?php if($project->type == 'video') :?>
+              <div class="p-2">
+                <video width="320" height="240" controls>
+                  <source src="<?= Url::to('@web/uploads/student-projects/'.$project->attachment); ?>" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            <?php endif;?>
+
+            <?php if($project->type == 'photo') :?>
+              <div class="p-2">
+                <img src="<?= Url::to('@web/uploads/student-projects/'.$project->attachment); ?>" width="300px" height="300px">
+              </div>
+            <?php endif;?>
+
+            
+            
+            <?php if($project->type == 'audio') :?>
+              <div class="p-2">
+                <img src="<?= Url::to('@web/uploads/student-projects/'.$project->attachment); ?>" width="300px" height="300px">
+              </div>
+            <?php endif;?>
+
+
             <div class="comment-text w-100">
               <h6 class="font-medium">
                 <?= $project->title?>

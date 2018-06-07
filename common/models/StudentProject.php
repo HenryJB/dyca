@@ -42,7 +42,7 @@ class StudentProject extends \yii\db\ActiveRecord
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['url'], 'string', 'max' => 50],
-            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, docx, pdf, mp4, mp3'],
+            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, pdf, mp4, mp3'],
         ];
     }
 
@@ -72,6 +72,9 @@ class StudentProject extends \yii\db\ActiveRecord
 
         $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
 
+        //TODO ADD IMAGE FILE SIZE CHECK
+        //TODO ADD CHECKS FOR VIDEO UPLOADS CONSCERNING SIZE
+
         //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
 
         if ($this->validate() && !empty($img_name)) {
@@ -79,25 +82,46 @@ class StudentProject extends \yii\db\ActiveRecord
           if(in_array($file->extension, $extensionsStack)){
 
             $file->saveAs(
-                Url::to('@frontend/web/uploads/student-projects/').$img_name
+                Url::to().$img_name
             );
 
-            ImageBox::thumbnail(Url::to('@frontend/web/uploads/student-projects/').$img_name, 263, 263)
+            ImageBox::thumbnail(Url::to('@frontend/web/uploads/student-projects/images/').$img_name, 263, 263)
                 ->resize(new Box(263, 263))
                 ->save(
-                    Url::to('@frontend/web/uploads/student-projects/thumbs/').$img_name,
+                    Url::to('@frontend/web/uploads/student-projects/images/thumbs/').$img_name,
                     ['quality' => 80]
                 );
 
                 return $img_name;
 
           }else {
+            
+            switch ($file->extension) 
+            {
+                case 'mp4':
+                    $file->saveAs(
+                        Url::to('@frontend/web/uploads/student-projects/videos/').$img_name
+                    );
 
-            $file->saveAs(
-                Url::to('@frontend/web/uploads/student-projects/').$img_name
-            );
+                    break;
+                case 'mp3':
+                        $file->saveAs(
+                            Url::to('@frontend/web/uploads/student-projects/audios/').$img_name
+                        );
+                    break;
+                case 'pdf':
+                    $file->saveAs(
+                        Url::to('@frontend/web/uploads/student-projects/documents/').$img_name
+                    );
+                    break;
+
+                default:
+                    $img_name = null;
+                break;
+            }
 
             return $img_name;
+           
           }
 
         } else {

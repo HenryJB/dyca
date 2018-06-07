@@ -39,7 +39,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup','register'],
+                        'actions' => ['signup','register','testing'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -118,7 +118,6 @@ class SiteController extends Controller
 
             }
 
-
           }
 
 
@@ -129,6 +128,13 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+
+    public function actionTesting()
+    {
+        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
+
     }
 
 

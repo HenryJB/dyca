@@ -8,16 +8,16 @@ use common\models\Session;
 use Yii;
 
 /**
- * This is the model class for table "course_registration".
  *
  * @property int $id
  * @property int $student_id
- * @property int $session_id
  * @property int $course_id
+ * @property int $session_id
  *
+ * @property Courses $course
  * @property Students $student
  * @property Sessions $session
- * @property Courses $course
+ * This is the model class for table "course_registrations".
  */
 class CourseRegistration extends \yii\db\ActiveRecord
 {
@@ -26,7 +26,7 @@ class CourseRegistration extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'course_registration';
+        return 'course_registrations';
     }
 
     /**
@@ -35,8 +35,8 @@ class CourseRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_id', 'session_id'], 'required'],
-            [['student_id', 'session_id', 'course_id'], 'integer'],
+            [['student_id', 'course_id', 'session_id'], 'required'],
+            [['student_id', 'course_id', 'session_id'], 'integer'],
             [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Student::className(), 'targetAttribute' => ['student_id' => 'id']],
             [['session_id'], 'exist', 'skipOnError' => true, 'targetClass' => Session::className(), 'targetAttribute' => ['session_id' => 'id']],
             [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
@@ -79,5 +79,4 @@ class CourseRegistration extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Course::className(), ['id' => 'course_id']);
     }
-
 }

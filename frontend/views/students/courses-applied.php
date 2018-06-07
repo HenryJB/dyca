@@ -6,7 +6,7 @@
 ?>
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8 offset-md-2">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title m-b-0">Courses Applied</h4>

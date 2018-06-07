@@ -9,7 +9,8 @@ use Yii;
  *
  * @property int $id
  * @property string $code
- * @property string $type
+ * @property string $description
+ * @property string $prefix
  * @property string $status
  * @property string $expiry_date
  * @property int $discount
@@ -30,11 +31,12 @@ class Voucher extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status'], 'string'],
+            [['code', 'description', 'status', 'expiry_date', 'discount'], 'required'],
+            [['description', 'status'], 'string'],
             [['expiry_date'], 'safe'],
             [['discount'], 'integer'],
             [['code'], 'string', 'max' => 15],
-            [['type'], 'string', 'max' => 150],
+            [['prefix'], 'string', 'max' => 20],
             [['code'], 'unique'],
         ];
     }
@@ -47,31 +49,11 @@ class Voucher extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'code' => 'Code',
-            'type' => 'Type',
+            'description' => 'Description',
+            'prefix' => 'Prefix',
             'status' => 'Status',
             'expiry_date' => 'Expiry Date',
-            'discount' => 'Discount',
+            'discount' => 'Discount(%)',
         ];
-    }
-
-    public function validateCode($code){
-
-        $voucher = static::find()->where(['code' => $code])->one();
-
-        $today = date("Y-m-d");
-
-        if ($voucher == null) {
-            return true;
-        }
-
-        if((int)$voucher->status == 1){
-            return true;
-        }
-
-        if ($today < $voucher->expiry_date || $today == $voucher->expiry_date) {
-            return true;
-        }
-
-        return (int)$voucher->id;
     }
 }

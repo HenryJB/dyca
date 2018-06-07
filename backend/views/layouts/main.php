@@ -201,7 +201,7 @@ DashboardAsset::register($this);
                           <i class="fas fa-money"></i>Payments</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' Registration fees', ['payment/registration-fees'])?>
+                                <?=Html::a(' Registration fees', ['payments/index'])?>
                           </li>
                           <li>
                                 <?=Html::a('School Fees', ['payment/school-fees'])?>
@@ -252,6 +252,43 @@ DashboardAsset::register($this);
                       </ul>
                   </li>
 
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#">
+                          <i class="fas fa-tags"></i>Tags</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a('New Tag', ['tags/create'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('Tag List', ['tags/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('Tag assignment', ['taggings/index'])?>
+                          </li>
+
+                      </ul>
+                  </li>
+
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#">
+                          <i class="fas fa-envelope"></i>Vouchers</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a('New Voucher', ['vouchers/create'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('Voucher List', ['vouchers/index'])?>
+                          </li>
+
+                      </ul>
+                  </li>
+
+                  <li>
+                      <?=Html::a('<i class="fas fa-cog"></i>Settings', ['settings/index'])?>
+
+
+                  </li>
 
 
 
@@ -437,7 +474,7 @@ DashboardAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <div class="section__content section__content--p30">
+        <div class="section__content section__content--cp30">
             <?= $content ?>
         </div>
 

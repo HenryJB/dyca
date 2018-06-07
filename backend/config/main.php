@@ -8,7 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-backend',
-    'name' => 'DCA Backend',
+    'name' => 'DCA Admin Backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
@@ -45,7 +45,14 @@ return [
             'rules' => [
             ],
         ],
-        
+
+        'urlManagerFrontend' => [
+        'class' => 'yii\web\urlManager',
+        'baseUrl' => '/frontend/web',
+        'enablePrettyUrl' => true,
+        'showScriptName' => true,
+    ],
+
     ],
     'params' => $params,
 ];
