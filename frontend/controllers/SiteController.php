@@ -130,6 +130,21 @@ class SiteController extends Controller
         }
     }
 
+    
+   public function actionUpdateProfile()
+   {
+     $student_session = Yii::$app->session;
+     $id = $student_session->get('id');
+       $student = $this->findModel($id);
+       $student->scenario= 'update-profile';
+       if ($student->load(Yii::$app->request->post()) && $student->save()) {
+           return $this->redirect(['student-projects/create']);
+       }
+       return $this->render('update-profile', [
+           'model' => $student,
+       ]);
+   }
+
 
     public function actionTesting()
     {
