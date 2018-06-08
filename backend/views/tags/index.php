@@ -26,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
         'name',
         'description',
+        'message',
+        'voucher_category',
         'notify_status',
         ['class' => 'yii\grid\ActionColumn']
       ],

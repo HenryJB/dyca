@@ -4,32 +4,25 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\VoucherSearch */
+/* @var $model common\models\VoucherCategorySearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="voucher-search">
+<div class="voucher-category-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'data-pjax' => 1
+        ],
     ]); ?>
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'voucher_category') ?>
-
-    <?= $form->field($model, 'code') ?>
+    <?= $form->field($model, 'name') ?>
 
     <?= $form->field($model, 'description') ?>
-
-    <?= $form->field($model, 'prefix') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'expiry_date') ?>
-
-    <?php // echo $form->field($model, 'discount') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

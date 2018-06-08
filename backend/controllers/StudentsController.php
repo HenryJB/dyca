@@ -8,6 +8,8 @@ use common\models\Tag;
 use common\models\Tagging;
 use common\models\StudentProject;
 use common\models\CourseRegistration;
+use common\models\VouchersAssignment;
+use common\models\Voucher;
 use app\models\StudentSearch;
 use yii\web\Controller;
 use common\models\LocalGovernment;
@@ -145,29 +147,48 @@ class StudentsController extends Controller
 
     public function actionConfirmMember()
     {
-      $dca_tag = Yii::$app->request->post('dca_tag');
+      $dca_tag = (int)Yii::$app->request->post('dca_tag');
       $id = Yii::$app->request->post('id');
-
       $db = Yii::$app->db;
+      $db->beginTransaction();
       try {
           $tagging = new Tagging();
-          $tag = Tag::find()->where(['id'=>$dca_tag])->one();
-          $model = $this->findModel($id);
           $tagging->student_id = $id;
           $tagging->tag_id = $dca_tag;
           $tagging->save();
 
-        //  $db->createCommand()->update('students', ['tag' => $dca_tag], 'id='.$id)->execute();
+          $tag = Tag::find()->where(['id'=>$dca_tag])->one();
+          if(count($tag)> 0 && $tag->voucher_category!==NULL){
+              $selected_voucher = Voucher::find()->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
+              ->one();
 
-          if ($tag->notify_status==1) {
-              // Send email Notification
-              //Yii::$app->runAction('messaging/sponsorship_received',['email'=>$model->email_address]);
+              if(count($selected_voucher)>0){
+
+                  $vouchers_assignment = new  VouchersAssignment();
+                  $vouchers_assignment->voucher_id= $selected_voucher->id;
+                  $vouchers_assignment->student_id=  $id;
+
+                  if(!$vouchers_assignment->save()){
+                      $msg = $vouchers_assignment->getErrors();
+
+                      //exit;
+                  }
+
+
+              }
+              if($tag->message!==NULL && $tag->notify_status==1){
+                //send email
+                  //Yii::$app->runAction('messaging/sponsorship_received',['email'=>$model->email_address]);
+              }
+
 
           }
+          $model = $this->findModel($id);
           return $this->redirect(['view', 'id' => $id]);
 
       } catch (\Exception $e) {
-          return 'failed';
+          $transaction->rollBack();
+          throw $e;
       }
 
   }

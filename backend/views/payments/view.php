@@ -32,6 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'student_id',
             'reference_no',
             'amount',
+            'description:ntext',
+            'type',
             'method',
             'status',
             'voucher_id',

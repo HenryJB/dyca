@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\VoucherSearch */
+/* @var $model app\models\EntrySearchPayment */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="voucher-search">
+<div class="payment-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,19 +17,23 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'voucher_category') ?>
+    <?= $form->field($model, 'student_id') ?>
 
-    <?= $form->field($model, 'code') ?>
+    <?= $form->field($model, 'reference_no') ?>
+
+    <?= $form->field($model, 'amount') ?>
 
     <?= $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'prefix') ?>
+    <?php // echo $form->field($model, 'type') ?>
+
+    <?php // echo $form->field($model, 'method') ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
-    <?php // echo $form->field($model, 'expiry_date') ?>
+    <?php // echo $form->field($model, 'voucher_id') ?>
 
-    <?php // echo $form->field($model, 'discount') ?>
+    <?php // echo $form->field($model, 'date') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

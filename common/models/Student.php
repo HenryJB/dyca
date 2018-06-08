@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+<<<<<<< HEAD
 
 use common\models\CourseRegistration;
 use yii\imagine\Image as ImageBox;
@@ -12,6 +13,8 @@ use common\models\User;
 use yii\web\UploadedFile;
 use Imagine\Image\Box;
 use yii\helpers\Url;
+=======
+>>>>>>> 00e25da99aad8acce66fd242948452b91abd5a1d
 
 /**
  * This is the model class for table "students".
@@ -33,13 +36,14 @@ use yii\helpers\Url;
  * @property string $approval_status
  * @property string $country
  * @property int $state_id
+ * @property int $local_government_id
  * @property string $date_of_birth
  * @property int $first_choice
  * @property int $second_choice
  * @property string $date_of_birthday
  * @property int $session_id
  * @property string $about
- * @property string $propose_project
+ * @property string $project
  * @property string $information_source
  * @property int $sponsor_aid
  * @property int $sponsorship_status
@@ -51,6 +55,8 @@ use yii\helpers\Url;
  * @property string $emergency_relationship
  * @property string $emergency_phone_number
  * @property string $emergency_secondary_phone_number
+ *
+ * @property Tagging[] $taggings
  */
 class Student extends \yii\db\ActiveRecord
 {
@@ -82,24 +88,21 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'state_id', 'date_of_birth',
-              'date_of_birth', 'session_id', 'about', 'terms_condition', 'is_existing', 'date_registered'], 'required'],
-              ['local_government_id', 'required', 'when' => function ($model) {
-                  return $model->country == 160;
-              }, 'whenClient' => "function (attribute, value) {
-                  return $('#country').val() == '160';
-              }"],
-            [['gender', 'contact_address', 'payment_status', 'approval_status', 'about',  'information_source'], 'string'],
-            [['year', 'date_of_birth', 'date_registered'], 'safe'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth', 'date_of_birthday', 'session_id', 'about', 'information_source', 'is_existing', 'date_registered'], 'required'],
+            [['gender', 'contact_address', 'payment_status', 'approval_status', 'about', 'information_source'], 'string'],
+            [['year', 'date_of_birth', 'date_of_birthday', 'date_registered'], 'safe'],
             [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 200],
             [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle', 'tag'], 'string', 'max' => 100],
-            [['occupation', 'photo'], 'string', 'max' => 255],
+            [['occupation', 'photo', 'project'], 'string', 'max' => 255],
             [['country', 'emergency_fullname'], 'string', 'max' => 150],
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
             [['email_address'], 'unique'],
+<<<<<<< HEAD
             [['date_registered'], 'safe'],
             [['project','photo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4'],
+=======
+>>>>>>> 00e25da99aad8acce66fd242948452b91abd5a1d
         ];
     }
 
@@ -125,14 +128,14 @@ class Student extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'approval_status' => 'Approval Status',
             'country' => 'Country',
-            'state_id' => 'State',
-            'local_government_id'=> 'Local Govt',
+            'state_id' => 'State ID',
+            'local_government_id' => 'Local Government ID',
             'date_of_birth' => 'Date Of Birth',
-            'first_choice' => 'Course',
+            'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
             'date_of_birthday' => 'Date Of Birthday',
-            'session_id' => 'Session ',
-            'about' => 'About You',
+            'session_id' => 'Session ID',
+            'about' => 'About',
             'project' => 'Project',
             'information_source' => 'Information Source',
             'sponsor_aid' => 'Sponsor Aid',
@@ -148,6 +151,17 @@ class Student extends \yii\db\ActiveRecord
         ];
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaggings()
+    {
+        return $this->hasMany(Tagging::className(), ['student_id' => 'id']);
+    }
+
+>>>>>>> 00e25da99aad8acce66fd242948452b91abd5a1d
 
     public function upload()
     {

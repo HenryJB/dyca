@@ -23,7 +23,9 @@
         "kartik-v/yii2-widget-fileinput": "@dev",
         "lesha724/yii2-document-viewer": "*",
         "yiisoft/yii2-imagine": "*",
-        "circulon/yii2-columnlistview": "*"
+        "circulon/yii2-columnlistview": "*",
+        "2amigos/yii2-file-upload-widget": "~1.0",
+        "true/punycode": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

@@ -17,15 +17,21 @@ use common\models\Course;
 
                 <h5 class="text-sm-center mt-2 mb-1"><?= $model->first_name .' '. $model->last_name ?></h5>
                 <div class="location text-sm-center">
+
                   <?php $state = State::find()->where(['id'=>$model->state_id])->one(); ?>
 
+                  <?php if(count($state)>0): ?>
                     <i class="fa fa-map-marker"></i> <?= $state['name']. ','.$model->country?> </div>
+                  <?php endif?>
             </div>
 
             <hr>
             <div class="card-text text-sm-center">
+
               <?php $course = Course::find()->where(['id'=>$model->first_choice])->one(); ?>
+              <?php if(count($course)>0): ?>
                 <?= $course->name?>
+              <?php endif?>
             </div>
         </div>
         <div class="card-footer bg-dark">

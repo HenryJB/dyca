@@ -12,7 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="voucher-index">
 
-    <h3><?= Html::encode($this->title) ?></h3>
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create Voucher', ['create'], ['class' => 'btn btn-success']) ?>
@@ -23,14 +24,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'voucher_category',
             'code',
-            'description',
-            'status',
-            'expiry_date',
-            'discount',
+            'description:ntext',
+            'prefix',
+            //'status',
+            //'expiry_date',
+            //'discount',
+
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
-
 </div>
