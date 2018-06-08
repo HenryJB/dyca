@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Payment;
-use app\models\EntrySearchPayment;
+use common\models\VoucherCategory;
+use common\models\VoucherCategorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PaymentsController implements the CRUD actions for Payment model.
+ * VoucherCategoriesController implements the CRUD actions for VoucherCategory model.
  */
-class PaymentsController extends Controller
+class VoucherCategoriesController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,12 +30,12 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Lists all Payment models.
+     * Lists all VoucherCategory models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new EntrySearchPayment();
+        $searchModel = new VoucherCategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Displays a single Payment model.
+     * Displays a single VoucherCategory model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Creates a new Payment model.
+     * Creates a new VoucherCategory model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Payment();
+        $model = new VoucherCategory();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +76,7 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Updates an existing Payment model.
+     * Updates an existing VoucherCategory model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -96,7 +96,7 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Deletes an existing Payment model.
+     * Deletes an existing VoucherCategory model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +110,15 @@ class PaymentsController extends Controller
     }
 
     /**
-     * Finds the Payment model based on its primary key value.
+     * Finds the VoucherCategory model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Payment the loaded model
+     * @return VoucherCategory the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Payment::findOne($id)) !== null) {
+        if (($model = VoucherCategory::findOne($id)) !== null) {
             return $model;
         }
 

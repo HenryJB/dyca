@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="smallmodalLabel">DCA Tag Modal</h5>
+          <h5 class="modal-title" id="smallmodalLabel bg-danger">DCA Tag Modal</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -111,7 +111,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <!-- <div class="col-lg-12"> <a class="btn btn-success  btn-block "><i class="fa fa-envelope append-icon"></i>Send Email</a> </div> -->
                       </div>
                       <h2 class="font-semibold mgbt-xs-5 f-text-white"><?=$model->first_name . ' '. $model->last_name?> </h2>
-                      <h4 class="f-text-white"><?=$model->state_id.','. $model->country ?></h4>
+                      <?php $state= State::find()->where(['id'=>$model->state_id])->one(); ?>
+
+                      <h4 class="f-text-white"><?=$state->name.','. $model->country ?></h4>
                       <p style="padding:10px;"><?=$model->about ?></p>
                       <div class="mgtp-20">
                         <span>Payment Status: <?=$model->payment_status?> </span>
@@ -130,7 +132,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       <?= Html::a('<i class="fa fa-envelope"></i>', ['#'],
                           ['class' => 'modal-mail btn btn-danger', 'data-toggle'=>'tooltip',
                           'data-placement'=>'top', 'data-original-title'=>'Send Email']) ?>
-                      <?= Html::a('<i class="fa fa-edit"></i>', ['send-mail', 'id' => $model->id],
+                      <?= Html::a('<i class="fa fa-edit"></i>', ['update', 'id' => $model->id],
                           ['class' => 't btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Update']) ?>
                       <?= Html::a('<i class="fa fa-tag"></i>', ['confirm-member', 'id' => $model->id],
                           ['class' => 'tag-box btn btn-danger', 'data-toggle'=>'tooltip', 'data-placement'=>'top','data-original-title'=>'Give a tag']) ?>
@@ -262,12 +264,65 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <?php  foreach ($registered_courses as $reg_course ):?>
                                   <?php $course= $reg_course->getCourse()->andWhere('id='.$reg_course->course_id)->one(); ?>
+                                  <?php if(count($course)>0) :?>
+
                                   <div class="col-md-5">
-                                <div class="card">
+                                    <div class="card">
                                     <?=Html::img('@web/uploads/courses/'.$course->photo, ['alt'=> 'Course photo', 'class'=>'card-img-top'])?>
-                                    <div class="card-body">
+                                    <div class="card-body text-white bg-danger">
                                         <h4 class="card-title mb-3"><?= $course->name;?></h4>
                                         <p class="card-text"><?=$course->description;?>
+                                        </p>
+                                    </div>
+
+                                  </div>
+                                <?php endif;?>
+                            </div>
+
+                              <?php endforeach;?>
+                                <?php endif;?>
+
+
+                            </p>
+                					</div>
+                					<div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">
+
+
+
+                            <p>
+                              <?php  if(count($projects)>0): ?>
+                                  <?php $c=1; ?>
+                                  <?php foreach ($projects as  $project):?>
+
+                                  <div class="col-md-5">
+                                <div class="card">
+                                    <?php switch ($project->attachment) {
+                                      case 'audio':?>
+
+                                      <audio controls
+                                        <source src="<?=Url::to('@web/uploads/student-projects/'.$project->attachment)?>" type="audio/mpeg">
+                                        Your browser does not support the audio tag.
+                                      </audio>
+                                      <?php  break;?>
+                                      <?php case 'video':?>
+                                      <video  width="100%" height="100%" controls>
+                                        <source src="<?=Url::to('@web/uploads/student-projects/'.$project->attachment)?>" type="video/mp4">
+
+                                        Your browser does not support the video tag.
+                                      </video>
+
+                                      <?php  break;?>
+                                      <?php  case 'pdf':
+                                          # code...
+                                        break;
+
+                                      default:
+                                        # code...
+                                        break;
+                                    } ?>
+                                      <div class="card-body text-white bg-danger">
+                                        <h4 class="card-title mb-3"><?= $project->title;?></h4>
+                                        <p class="card-text"><?=$project->description;?>
                                         </p>
                                     </div>
                                 </div>
@@ -283,70 +338,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                             </p>
-                					</div>
-                					<div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">
-                						<p>
 
-                              <table class="table table-data2">
-                                      <thead>
-                                          <tr>
-                                              <th>
-                                                  <label class="au-checkbox">
-                                                      <input type="checkbox">
-                                                      <span class="au-checkmark"></span>
-                                                  </label>
-                                              </th>
-                                              <th>Title</th>
-                                              <th>Description</th>
-                                              <th>Attachment</th>
-
-
-                                          </tr>
-                                      </thead>
-                                      <tbody>
-                                        <?php  if(count($projects)>0): ?>
-                                            <?php $c=1; ?>
-                                            <?php foreach ($projects as  $project):?>
-                                          <tr class="tr-shadow">
-                                              <td>
-                                                  <?= $c; ?>
-                                              </td>
-                                              <td><?=$project->title?></td>
-                                              <td>
-                                                  <?=$project->description?>
-                                              </td>
-                                              <td class="desc"><?=$project->attachment?></td>
-
-
-                                              <td>
-                                                  <div class="table-data-feature">
-
-
-                                                    <a href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="View">
-                                                        <i class="zmdi zmdi-download"></i>
-                                                    </a>
-                                                      <a href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="View">
-                                                          <i class="zmdi zmdi-eye"></i>
-                                                      </a>
-                                                      <a  href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
-                                                          <i class="zmdi zmdi-edit"></i>
-                                                      </button>
-                                                      <a  href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete">
-                                                          <i class="zmdi zmdi-delete"></i>
-                                                      </a>
-                                                      <a  href="<?=Yii::$app->request->baseUrl?>/projects/view?id=<?= $project->id;?>" class="item" data-toggle="tooltip" data-placement="top" title="" data-original-title="More">
-                                                          <i class="zmdi zmdi-more"></i>
-                                                      </a>
-                                                  </div>
-                                              </td>
-                                              <?php $c++; ?>
-                                          </tr>
-                                          <tr class="spacer"></tr>
-                                        <?php endforeach; ?>
-                                        <?php endif; ?>
-                                      </tbody>
-                                  </table>
-                            </p>
                 					</div>
 											</div>
 

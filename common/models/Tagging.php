@@ -10,9 +10,10 @@ use Yii;
  * @property int $id
  * @property int $tag_id
  * @property int $student_id
+ * @property int $voucher_id
  *
- * @property Tags $tag
- * @property Students $student
+ * @property Tag $tag
+ * @property Student $student
  */
 class Tagging extends \yii\db\ActiveRecord
 {
@@ -31,7 +32,7 @@ class Tagging extends \yii\db\ActiveRecord
     {
         return [
             [['tag_id', 'student_id'], 'required'],
-            [['tag_id', 'student_id'], 'integer'],
+            [['tag_id', 'student_id', 'voucher_id'], 'integer'],
             [['tag_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tag::className(), 'targetAttribute' => ['tag_id' => 'id']],
             [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Student::className(), 'targetAttribute' => ['student_id' => 'id']],
         ];
@@ -46,6 +47,7 @@ class Tagging extends \yii\db\ActiveRecord
             'id' => 'ID',
             'tag_id' => 'Tag ID',
             'student_id' => 'Student ID',
+            'voucher_id' => 'Voucher ID',
         ];
     }
 

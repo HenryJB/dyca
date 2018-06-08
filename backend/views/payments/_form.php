@@ -18,6 +18,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'amount')->textInput() ?>
 
+    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'method')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>

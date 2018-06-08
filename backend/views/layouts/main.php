@@ -198,14 +198,12 @@ DashboardAsset::register($this);
                   </li>
                   <li class="has-sub">
                       <a class="js-arrow" href="#">
-                          <i class="fas fa-money"></i>Payments</a>
+                          <i class="fas fa-credit-card"></i>Payments</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' Registration fees', ['payments/index'])?>
+                                <?=Html::a(' Records', ['payments/index'])?>
                           </li>
-                          <li>
-                                <?=Html::a('School Fees', ['payment/school-fees'])?>
-                          </li>
+                          
 
                       </ul>
                   </li>
@@ -274,6 +272,9 @@ DashboardAsset::register($this);
                       <a class="js-arrow" href="#">
                           <i class="fas fa-envelope"></i>Vouchers</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                        <li>
+                              <?=Html::a('Voucher Category', ['voucher-categories/index'])?>
+                        </li>
                           <li>
                                 <?=Html::a('New Voucher', ['vouchers/create'])?>
                           </li>

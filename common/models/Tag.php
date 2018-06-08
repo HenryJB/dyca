@@ -11,6 +11,10 @@ use Yii;
  * @property string $name
  * @property string $description
  * @property int $notify_status
+ * @property string $message
+ * @property int $voucher_category
+ *
+ * @property Tagging[] $taggings
  */
 class Tag extends \yii\db\ActiveRecord
 {
@@ -29,8 +33,8 @@ class Tag extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'description', 'notify_status'], 'required'],
-            [['description'], 'string'],
-            [['notify_status'], 'integer'],
+            [['description', 'message'], 'string'],
+            [['notify_status', 'voucher_category'], 'integer'],
             [['name'], 'string', 'max' => 100],
         ];
     }
@@ -45,6 +49,16 @@ class Tag extends \yii\db\ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'notify_status' => 'Notify Status',
+            'message' => 'Message',
+            'voucher_category' => 'Voucher Category',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTaggings()
+    {
+        return $this->hasMany(Tagging::className(), ['tag_id' => 'id']);
     }
 }

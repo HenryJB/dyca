@@ -8,12 +8,15 @@ use Yii;
  * This is the model class for table "vouchers".
  *
  * @property int $id
+ * @property int $voucher_category
  * @property string $code
  * @property string $description
  * @property string $prefix
  * @property string $status
  * @property string $expiry_date
  * @property int $discount
+ *
+ * @property VoucherCategory $voucherCategory
  */
 class Voucher extends \yii\db\ActiveRecord
 {
@@ -31,13 +34,14 @@ class Voucher extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'description', 'status', 'expiry_date', 'discount'], 'required'],
+            [['voucher_category', 'code', 'description', 'status', 'expiry_date', 'discount'], 'required'],
+            [['voucher_category', 'discount'], 'integer'],
             [['description', 'status'], 'string'],
             [['expiry_date'], 'safe'],
-            [['discount'], 'integer'],
-            [['code'], 'string', 'max' => 15],
+            [['code'], 'string', 'max' => 30],
             [['prefix'], 'string', 'max' => 20],
             [['code'], 'unique'],
+            [['voucher_category'], 'exist', 'skipOnError' => true, 'targetClass' => VoucherCategory::className(), 'targetAttribute' => ['voucher_category' => 'id']],
         ];
     }
 
@@ -48,12 +52,21 @@ class Voucher extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'voucher_category' => 'Voucher Category',
             'code' => 'Code',
             'description' => 'Description',
             'prefix' => 'Prefix',
             'status' => 'Status',
             'expiry_date' => 'Expiry Date',
-            'discount' => 'Discount(%)',
+            'discount' => 'Discount',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVoucherCategory()
+    {
+        return $this->hasOne(VoucherCategory::className(), ['id' => 'voucher_category']);
     }
 }

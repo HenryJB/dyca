@@ -23,7 +23,7 @@ class VouchersController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST', 'GET'],
+                    'delete' => ['POST'],
                 ],
             ],
         ];
@@ -71,7 +71,7 @@ class VouchersController extends Controller
         if ($model->load(Yii::$app->request->post())) {
           $num = Yii::$app->request->post('num');
           $count =1;
-
+          $session->set('voucher_category', $model->voucher_category);
           $session->set('prefix', $model->prefix);
           $session->set('description', $model->description);
           $session->set('expiry_date', $model->expiry_date);
@@ -81,6 +81,7 @@ class VouchersController extends Controller
           for ($i = 0; $i < $num; $i++) {
 
               $model = new Voucher();
+              $model->voucher_category= $session->get('voucher_category');
               $model->prefix= $session->get('prefix');
               $model->description= $session->get('description');
               $model->expiry_date = $session->get('expiry_date');

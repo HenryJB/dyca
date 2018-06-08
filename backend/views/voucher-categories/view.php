@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Voucher */
+/* @var $model common\models\VoucherCategory */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Vouchers', 'url' => ['index']];
+$this->title = $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Voucher Categories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="voucher-view">
+<div class="voucher-category-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,13 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'voucher_category',
-            'code',
+            'name',
             'description:ntext',
-            'prefix',
-            'status',
-            'expiry_date',
-            'discount',
         ],
     ]) ?>
 

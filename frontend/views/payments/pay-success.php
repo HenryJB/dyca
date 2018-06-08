@@ -28,12 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                           <h3 class="head text-center">Your payment was successful.</h3>
                           <p class="text-center">
-                            <img src="../../img/checked.png">
+                            <img src="<?=Yii::$app->request->baseUrl?>/img/checked.png">
                           </p>
                           <div class="alert alert-success">
                             <p class=" text-center">
 
-                               An email has been sent to your mail. Please check to login
+                               An email has been sent to your mail containing your login details.
+                               Please check to login
                             </p>
                           </div>
 

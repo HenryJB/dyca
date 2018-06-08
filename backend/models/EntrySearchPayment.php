@@ -1,16 +1,16 @@
 <?php
 
-namespace common\models;
+namespace app\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Voucher;
+use common\models\Payment;
 
 /**
- * VoucherSearch represents the model behind the search form of `common\models\Voucher`.
+ * EntrySearchPayment represents the model behind the search form of `common\models\Payment`.
  */
-class VoucherSearch extends Voucher
+class EntrySearchPayment extends Payment
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,9 @@ class VoucherSearch extends Voucher
     public function rules()
     {
         return [
-            [['id', 'voucher_category', 'discount'], 'integer'],
-            [['code', 'description', 'prefix', 'status', 'expiry_date'], 'safe'],
+            [['id', 'student_id', 'voucher_id'], 'integer'],
+            [['reference_no', 'description', 'type', 'method', 'status', 'date'], 'safe'],
+            [['amount'], 'number'],
         ];
     }
 
@@ -41,7 +42,7 @@ class VoucherSearch extends Voucher
      */
     public function search($params)
     {
-        $query = Voucher::find();
+        $query = Payment::find();
 
         // add conditions that should always apply here
 
@@ -60,14 +61,16 @@ class VoucherSearch extends Voucher
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'voucher_category' => $this->voucher_category,
-            'expiry_date' => $this->expiry_date,
-            'discount' => $this->discount,
+            'student_id' => $this->student_id,
+            'amount' => $this->amount,
+            'voucher_id' => $this->voucher_id,
+            'date' => $this->date,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
+        $query->andFilterWhere(['like', 'reference_no', $this->reference_no])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'prefix', $this->prefix])
+            ->andFilterWhere(['like', 'type', $this->type])
+            ->andFilterWhere(['like', 'method', $this->method])
             ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
