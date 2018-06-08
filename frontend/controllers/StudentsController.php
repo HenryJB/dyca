@@ -162,6 +162,22 @@ class StudentsController extends Controller
         return $this->actionLogin();
     }
 
+      /**
+     * Displays a single Student model.
+     *
+     * @param int $id
+     *
+     * @return mixed
+     *
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
      * Finds the Student model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

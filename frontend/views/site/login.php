@@ -52,7 +52,7 @@
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                              <?= Html::img('@web/images/dcalogo.png', ['alt' => '', 'id' => '', 'class' => '']); ?>
+                              <?= Html::img('@web/img/dcalogo.png', ['alt' => '', 'id' => '', 'class' => '']); ?>
                             </a>
                         </div>
                         <div class="login-form">
@@ -80,14 +80,8 @@
                                         <a href="<?= Yii::$app->request->baseUrl.'/site/request-password-reset'?>">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--green m-b-20', 'name' => 'login-button']) ?>
+                                <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--red m-b-20', 'name' => 'login-button']) ?>
 
-                                <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
-
-                                    </div>
-                                </div>
                             <?php ActiveForm::end(); ?>
                             <div class="register-link">
                                 <p>

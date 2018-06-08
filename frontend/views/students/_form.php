@@ -38,7 +38,7 @@ SignupAsset::register($this);
       <div class="col-xs-12 col-sm-6 col-lg-6">
         <?= $form->field($model, 'phone_number')->textInput(['type'=>'tel']) ?>
       </div>
-      <div class="col-xs-12 col-sm-6 col-lg-6">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
         <?= $form->field($model, 'date_of_birth')->textInput(['type'=>'date']) ?>
       </div>
 
@@ -105,6 +105,7 @@ SignupAsset::register($this);
           </div>
 
           <div class="col-xs-12 col-sm-6 col-lg-6">
+
             <?= $form->field($model, 'first_choice')->dropDownList(
                         ArrayHelper::map(Course::find()
                                 ->all(),
@@ -134,16 +135,10 @@ SignupAsset::register($this);
               <?= $form->field($model, 'about')->textarea(['rows' => 2]) ?>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-lg-12">
-              <?= $form->field($model, 'project')->fileInput() ?>
+          
+          <div class="col-xs-12 col-sm-6 col-lg-6">
+              <?= $form->field($model, 'terms_condition')->checkbox() ?>
           </div>
-
-
-            <div class="col-xs-12 col-sm-6 col-lg-6">
-                <?= $form->field($model, 'terms_condition')->checkbox() ?>
-            </div>
-
-
 
 
           <div class="form-group col-xs-12 col-sm-6 col-lg-12">

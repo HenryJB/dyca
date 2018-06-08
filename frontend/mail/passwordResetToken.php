@@ -13,7 +13,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
 
 <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
 
-<title>Masterclass</title>
+<title>Delyork Creative Academy</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -293,7 +293,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
 
                                                                             <td class="active-t" align="center" style="background:#c63430; mso-padding-alt:19px 15px 21px; font:700 19px/23px Lato, Arial, Helvetica, sans-serif; border-radius:2px; letter-spacing:2px; text-transform:uppercase;">
 
-                                                                                <a style="color:#fff; text-decoration:none; display:block; padding:19px 15px 21px;" href="https://itunes.apple.com/US/app/id1273867416?mt=8"
+                                                                                <a style="color:#fff; text-decoration:none; display:block; padding:19px 15px 21px;" href="<?= Yii::$app->request->baseUrl?>"
                                                                                     target="_blank">EXPLORE OUR COURSES</a>
 
                                                                             </td>
@@ -330,7 +330,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
                                                                         <tr>
 
                                                                             <td align="center" style="padding:0 0px 19px 0px; font:27px/32px Lato, Arial, Helvetica, sans-serif; color:#fff;">
-                                                                                <a style="color:#fff; text-decoration:none;" href="https://itunes.apple.com/US/app/id1273867416?mt=8" target="_blank">
+                                                                                <a style="color:#fff; text-decoration:none;" href="<?= Yii::$app->request->baseUrl?>" target="_blank">
                                                                                     Discover Our Classes</a>
 
                                                                             </td>

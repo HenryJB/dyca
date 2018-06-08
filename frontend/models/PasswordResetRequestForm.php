@@ -51,6 +51,8 @@ class PasswordResetRequestForm extends Model
             }
         }
 
+        Yii::$app->session->setFlash('success', 'Password Reset Link Sent To Mail');
+
         return Yii::$app
             ->mailer
             ->compose( '@frontend/mail/passwordResetToken.php',
@@ -61,4 +63,38 @@ class PasswordResetRequestForm extends Model
             ->setSubject('Password reset for ' . Yii::$app->name)
             ->send();
     }
+
+    public function sendEmailSite()
+    {
+        /* @var $user User */
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'username' => $this->username,
+        ]);
+
+        if (!$user) {
+            return false;
+        }
+
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        Yii::$app->session->setFlash('success', 'Password Reset Link Sent To Mail');
+
+        return Yii::$app
+            ->mailer
+            ->compose( '@frontend/mail/passwordResetTokenSite.php',
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($this->username)
+            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->send();
+    }
+
+    
 }

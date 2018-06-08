@@ -1,0 +1,8 @@
+#main-wrapper .left-sidebar[data-sidebarbg=skin5], #main-wrapper .left-sidebar[data-sidebarbg=skin5] ul {
+    background: #141619!important;
+}
+
+
+#main-wrapper .topbar .top-navbar .navbar-header[data-logobg=skin5] {
+    background: #141619!important;
+}

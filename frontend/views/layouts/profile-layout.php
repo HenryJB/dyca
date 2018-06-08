@@ -23,6 +23,7 @@
         <?= Html::cssFIle('@web/js/profile/assets/libs/fullcalendar/dist/fullcalendar.min.css'); ?>
             <?= Html::cssFIle('@web/js/profile/assets/extra-libs/calendar/calendar.css'); ?>
                 <?= Html::cssFIle('@web/css/profile/style.min.css'); ?>
+                <?= Html::cssFIle('@web/css/profile/custom.css'); ?>
 
                     <!-- <link href="../../assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="../../assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
@@ -242,7 +243,7 @@
 
                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal3">
                                         <i class="ti-exchange-vertical m-r-5 m-l-5"></i> Change Profile Picture</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">
+                                    <a class="dropdown-item" href="<?= Yii::$app->request->baseUrl.'/email/index'?>">
                                         <i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="javascript:void(0)">
@@ -299,13 +300,7 @@
                                     <span class="hide-menu">Messages</span>
                                 </a>
                             </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/students/scholarship'?>"
-                                    aria-expanded="false">
-                                    <i class="mdi mdi-blur-linear"></i>
-                                    <span class="hide-menu">Scholarships</span>
-                                </a>
-                            </li>
+                            
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow waves-effect waves-dark" href="" aria-expanded="false">
                                     <i class="mdi mdi-chart-bubble"></i>
@@ -326,12 +321,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false">
-                                    <i class="mdi mdi-relative-scale"></i>
-                                    <span class="hide-menu">Skill sets</span>
-                                </a>
-                            </li>
+                           
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl?>/site/logout" aria-expanded="false">
                                     <i class="mdi mdi-relative-scale"></i>
