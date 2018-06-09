@@ -22,6 +22,7 @@ use yii;
  */
 class StudentProject extends \yii\db\ActiveRecord
 {
+    public $fileName;
     /**
      * {@inheritdoc}
      */
@@ -42,7 +43,7 @@ class StudentProject extends \yii\db\ActiveRecord
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['url'], 'string', 'max' => 50],
-            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif, pdf, mp4, mp3'],
+            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg,jpeg, gif, pdf, mp4, mp3'],
         ];
     }
 
@@ -65,67 +66,55 @@ class StudentProject extends \yii\db\ActiveRecord
 
    
 
-    public function upload($model){
-        $extensionsStack = array('png, jpg, jpeg, gif');
-
+    public function upload($model)
+    {
         $file = UploadedFile::getInstance($model, 'attachment');
 
-        $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
+        $this->fileName = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
 
-        //TODO ADD IMAGE FILE SIZE CHECK
-        //TODO ADD CHECKS FOR VIDEO UPLOADS CONSCERNING SIZE
+        $url =  Url::to('@frontend/web/uploads/student-projects/');
 
-        //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
+        switch ($file->extension) 
+        {
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+                $link = $url.'images/'.$this->fileName;
+                
+                $file->saveAs($link);
 
-        if ($this->validate() && !empty($img_name)) {
-
-          if(in_array($file->extension, $extensionsStack)){
-
-            $file->saveAs(
-                Url::to().$img_name
-            );
-
-            ImageBox::thumbnail(Url::to('@frontend/web/uploads/student-projects/images/').$img_name, 263, 263)
+                ImageBox::thumbnail($link, 263, 263)
                 ->resize(new Box(263, 263))
                 ->save(
-                    Url::to('@frontend/web/uploads/student-projects/images/thumbs/').$img_name,
+                    $link,
                     ['quality' => 80]
                 );
 
-                return $img_name;
-
-          }else {
-            
-            switch ($file->extension) 
-            {
-                case 'mp4':
-                    $file->saveAs(
-                        Url::to('@frontend/web/uploads/student-projects/videos/').$img_name
-                    );
-
-                    break;
-                case 'mp3':
-                        $file->saveAs(
-                            Url::to('@frontend/web/uploads/student-projects/audios/').$img_name
-                        );
-                    break;
-                case 'pdf':
-                    $file->saveAs(
-                        Url::to('@frontend/web/uploads/student-projects/documents/').$img_name
-                    );
-                    break;
-
-                default:
-                    $img_name = null;
                 break;
-            }
+            case 'mp4':
+                $link = $url.'videos/'.$this->fileName;
 
-            return $img_name;
-           
-          }
+                $file->saveAs($link);
 
-        } else {
-            return false;
-        }
+                break;
+            case 'mp3':
+                    $link = $url.'audios/'.$this->fileName;
+                    $file->saveAs($link);
+                break;
+            case 'pdf':
+                $link = $url.'pdf/'.$this->fileName;
+                $file->saveAs($link);
+                break;
+
+            default:
+            $this->fileName = null;
+            break;
+        }   
+
+          return $this->fileName;
     }
+
+
+
 }

@@ -1,20 +1,9 @@
 <?php
 
 namespace common\models;
-
-use Yii;
-<<<<<<< HEAD
-
-use common\models\CourseRegistration;
-use yii\imagine\Image as ImageBox;
-
-use common\models\User;
-
 use yii\web\UploadedFile;
-use Imagine\Image\Box;
 use yii\helpers\Url;
-=======
->>>>>>> 00e25da99aad8acce66fd242948452b91abd5a1d
+use Yii;
 
 /**
  * This is the model class for table "students".
@@ -98,11 +87,6 @@ class Student extends \yii\db\ActiveRecord
             [['country', 'emergency_fullname'], 'string', 'max' => 150],
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
             [['email_address'], 'unique'],
-<<<<<<< HEAD
-            [['date_registered'], 'safe'],
-            [['project','photo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4'],
-=======
->>>>>>> 00e25da99aad8acce66fd242948452b91abd5a1d
         ];
     }
 
@@ -151,8 +135,6 @@ class Student extends \yii\db\ActiveRecord
         ];
     }
 
-<<<<<<< HEAD
-=======
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -161,7 +143,6 @@ class Student extends \yii\db\ActiveRecord
         return $this->hasMany(Tagging::className(), ['student_id' => 'id']);
     }
 
->>>>>>> 00e25da99aad8acce66fd242948452b91abd5a1d
 
     public function upload()
     {
