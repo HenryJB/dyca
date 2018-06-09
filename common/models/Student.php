@@ -62,7 +62,7 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth', 'date_of_birthday', 'session_id', 'about', 'information_source', 'is_existing', 'date_registered'], 'required'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth',  'session_id', 'about',  'terms_condition', 'date_registered'], 'required'],
             [['gender', 'contact_address', 'payment_status', 'approval_status', 'about', 'information_source'], 'string'],
             [['year', 'date_of_birth', 'date_of_birthday', 'date_registered'], 'safe'],
             [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
@@ -97,13 +97,13 @@ class Student extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'approval_status' => 'Approval Status',
             'country' => 'Country',
-            'state_id' => 'State ID',
-            'local_government_id' => 'Local Government ID',
+            'state_id' => 'State',
+            'local_government_id' => 'Local Government ',
             'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
             'date_of_birthday' => 'Date Of Birthday',
-            'session_id' => 'Session ID',
+            'session_id' => 'Session',
             'about' => 'About',
             'project' => 'Project',
             'information_source' => 'Information Source',

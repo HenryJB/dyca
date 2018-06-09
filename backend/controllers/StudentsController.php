@@ -149,33 +149,39 @@ class StudentsController extends Controller
     {
       $dca_tag = (int)Yii::$app->request->post('dca_tag');
       $id = Yii::$app->request->post('id');
-      $db = Yii::$app->db;
-      $db->beginTransaction();
+    ///  $db = Yii::$app->db;
+    //  $db->beginTransaction();
       try {
           $tagging = new Tagging();
           $tagging->student_id = $id;
           $tagging->tag_id = $dca_tag;
-          $tagging->save();
 
+          if(!$tagging->save()){
+
+            print_r($tagging->getErrors());
+            exit;
+          }
+          $model = $this->findModel($id);
           $tag = Tag::find()->where(['id'=>$dca_tag])->one();
-          if(count($tag)> 0 && $tag->voucher_category!==NULL){
-              $selected_voucher = Voucher::find()->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
-              ->one();
+          if(count($tag)> 0 || $tag->voucher_category!==NULL){
+              $selected_vouchers = Voucher::find()
+              ->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
+              ->all();
 
-              if(count($selected_voucher)>0){
+              if(count($selected_vouchers)>0){
 
                   $vouchers_assignment = new  VouchersAssignment();
-                  $vouchers_assignment->voucher_id= $selected_voucher->id;
+                  $vouchers_assignment->voucher_id= $selected_vouchers[0]->id;
                   $vouchers_assignment->student_id=  $id;
 
                   if(!$vouchers_assignment->save()){
-                      $msg = $vouchers_assignment->getErrors();
-
-                      //exit;
+                      //$msg = $vouchers_assignment->getErrors();
+                      print_r($vouchers_assignment->getErrors());
+                      exit;
                   }
 
 
-              }
+            }
               if($tag->message!==NULL && $tag->notify_status==1){
                 //send email
                   //Yii::$app->runAction('messaging/sponsorship_received',['email'=>$model->email_address]);
@@ -183,11 +189,11 @@ class StudentsController extends Controller
 
 
           }
-          $model = $this->findModel($id);
+
           return $this->redirect(['view', 'id' => $id]);
 
       } catch (\Exception $e) {
-          $transaction->rollBack();
+        //  $transaction->rollBack();
           throw $e;
       }
 

@@ -96,7 +96,7 @@ class StudentsController extends Controller
           $model->year = date('Y');
           $model->is_existing = 0;
           $model->date_registered = date('Y-m-d');
-          $model->project = UploadedFile::getInstance($model, 'project');
+        //  $model->project = UploadedFile::getInstance($model, 'project');
 
           $user = new Dcauser();
           //$user = new User();
@@ -106,17 +106,14 @@ class StudentsController extends Controller
           $user->generateAuthKey();
 
           if($model->save() && $user->save()){
-
-            if($model->project==!null){
-              $model->upload();
-            }
+            
             //Send email to user
-            Yii::$app->runAction('messaging/registration',['email'=>$model->email_address]);
+            //Yii::$app->runAction('messaging/registration',['email'=>$model->email_address]);
 
             return $this->redirect(['view', 'id' => $model->id]);
 
           }else {
-              //print_r($model->getErrors());
+              print_r($model->getErrors());
           }
 
         }

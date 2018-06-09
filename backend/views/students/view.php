@@ -98,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </p>
           </div>
-                <div class="col-sm-3 black-padding" >
+                <div class="col-sm-3 red-padding" >
                   <div class="panel widget light-widget panel-bd-top" style="border-top: 2px solid #A40000">
                     <div class="panel-heading no-title"> </div>
                     <div class="panel-body">
@@ -124,7 +124,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                 </div>
-                <div class="col-sm-9 red-padding">
+                <div class="col-sm-9 white-padding">
                   <div class="card" style="border:none !important">
 									<div class="card-header">
 										<h4>
@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                   </h4>
 									</div>
-									<div class="card-body red-padding">
+									<div class="card-body white-padding">
 										<div class="custom-tab">
 
 											<nav>

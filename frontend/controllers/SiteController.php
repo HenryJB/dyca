@@ -107,9 +107,6 @@ class SiteController extends Controller
 
                 return $this->redirect(['payments/index']);
 
-            }elseif (empty($student->photo)) {
-
-                return $this->redirect(['update-profile']);
             }else {
               return $this->redirect(Yii::$app->request->baseUrl.'/students/dashboard');
 
