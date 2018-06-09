@@ -98,12 +98,10 @@ class StudentsController extends Controller
                 $course_registration->session_id    =   $model->session_id;
                 $course_registration->date          =   date('Y-m-d');
 
-                if($course_registration->save()){
-                    Yii::$app->session->setFlash('success', "Course Registered");
-                }
-
-                if ($model->project == !null ) {
-                    $model->upload();
+                try{
+                    $course_registration->save();
+                }catch(Exception $e){
+                    Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
                 }
         
                 Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);

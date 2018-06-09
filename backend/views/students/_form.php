@@ -50,9 +50,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'second_choice')->textInput() ?>
 
-    <?= $form->field($model, 'reason')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'about')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'propose_project')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'project')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'information_source')->dropDownList([ 'Advertisements' => 'Advertisements', 'Blog' => 'Blog', 'Bronchure' => 'Bronchure', 'Google' => 'Google', 'Facebook' => 'Facebook', 'Instagram' => 'Instagram', 'DCA Alumni' => 'DCA Alumni', 'Word of Mouth' => 'Word of Mouth', 'TV Commercials' => 'TV Commercials', 'Linkedin' => 'Linkedin', 'Twitter' => 'Twitter', 'Youtube' => 'Youtube', 'Others' => 'Others', ], ['prompt' => '']) ?>
 

@@ -302,7 +302,7 @@
                             </li>
                             
                             <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="" aria-expanded="false">
+                                <a class="sidebar-link has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
                                     <i class="mdi mdi-chart-bubble"></i>
                                     <span class="hide-menu">Payments </span>
                                 </a>
@@ -314,7 +314,7 @@
                                         </a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="<?=Yii::$app->request->baseUrl.'/payment/history'?>" class="sidebar-link">
+                                        <a href="#" class="sidebar-link">
                                             <i class="mdi mdi-note-plus"></i>
                                             <span class="hide-menu"> History </span>
                                         </a>

@@ -2,6 +2,7 @@
 
     use yii\helpers\Url;
 ?>
+
 <div class="container-fluid">
     <!-- ============================================================== -->
     <!-- Start Page Content -->
@@ -9,15 +10,21 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-body printableArea">
-                <h3>
-                    <b>INVOICE</b>
+                <h3 >
+                    <b>INVOICE <?= $payments->reference_no;?></b>
                     <span class="pull-right"></span>
                 </h3>
                 <hr>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="pull-left">
-
+                        <address>
+                                <h3> <b style="color:#a40000!important;"><?= $settings->company_name?></b></h3>
+                                <p class="text-muted m-l-5"><?= $settings->address?>,
+                                    <br> <?= $settings->phone_number?>,
+                                    <br> <?= $settings->email_address?>,
+                                    </p>
+                            </address>
                         </div>
                         <div class="pull-right text-right">
                             <address>
@@ -76,3 +83,6 @@
         </div>
     </div>
 </div>
+
+
+

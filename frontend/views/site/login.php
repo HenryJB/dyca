@@ -42,6 +42,14 @@
 
     <?= Html::cssFIle('@web/css/theme.css'); ?>
 
+    <style>
+
+        .page-content--bge5 {
+            background: #141619;
+            height: 100vh;
+        }
+    </style>
+
 </head>
 
 <body class="animsition">

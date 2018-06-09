@@ -8,6 +8,10 @@
 <div class="row">
     <div class="col-md-8 offset-md-2">
 
+         <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1">
+             <i class="fa fa-plus"></i>
+                                    Apply to another course
+                                </button>
 
         <div class="comment-widgets scrollable ps-container ps-theme-default" data-ps-id="b65c4487-f538-6a4a-baab-ff500e736f16">
 
@@ -33,13 +37,9 @@
                             <div class="comment-footer">
                                 <span class="text-muted float-right">
 
-                                </span>
+                                </span>                            
 
-                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#Modal1">
-                                    Apply to another course
-                                </button>
-
-                                <a href="<?= Url::to(['course-applied/delete','id' => $course_applied->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                <a href="<?= Url::to(['course-applied/delete','id' => $course_applied->id])?>" class="btn btn-danger btn-sm rounded" onclick="return confirm('Are you sure?')">
                                 Delete</a>
                             </div>
                         </div>

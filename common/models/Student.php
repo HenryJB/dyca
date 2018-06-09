@@ -78,7 +78,7 @@ class Student extends \yii\db\ActiveRecord
     {
         return [
             [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'state_id', 'date_of_birth',
-              'date_of_birth', 'session_id', 'about', 'terms_condition', 'is_existing', 'date_registered'], 'required'],
+              'date_of_birth', 'session_id', 'about', 'terms_condition', 'is_existing', 'date_registered'], 'required'],    
               ['local_government_id', 'required', 'when' => function ($model) {
                   return $model->country == 160;
               }, 'whenClient' => "function (attribute, value) {
@@ -121,13 +121,13 @@ class Student extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'approval_status' => 'Approval Status',
             'country' => 'Country',
-            'state_id' => 'State ID',
-            'local_government_id' => 'Local Government ID',
+            'state_id' => 'State',
+            'local_government_id' => 'Local Government ',
             'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
             'date_of_birthday' => 'Date Of Birthday',
-            'session_id' => 'Session ID',
+            'session_id' => 'Session',
             'about' => 'About',
             'project' => 'Project',
             'information_source' => 'Information Source',
@@ -190,14 +190,14 @@ class Student extends \yii\db\ActiveRecord
           if(in_array($file->extension, $extensionsStack)){
 
             $file->saveAs(
-                Url::to('@frontend/web/uploads/profiles/').$img_name
+                Url::to('@frontend/web/uploads/students/').$img_name
             );
                 return $img_name;
 
           }else {
 
             $file->saveAs(
-                Url::to('@frontend/web/uploads/profiles/').$img_name
+                Url::to('@frontend/web/uploads/students/').$img_name
             );
 
             return $img_name;

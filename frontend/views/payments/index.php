@@ -1,6 +1,15 @@
 <?php
-use yii\helpers\Html;
 
+use yii\helpers\Html;
+use yii\widgets\DetailView;
+use common\widgets\Alert;
+
+/* @var $this yii\web\View */
+/* @var $model common\models\Student */
+
+$this->title = 'Payment is required';
+$this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
@@ -17,7 +26,7 @@ use yii\helpers\Html;
                      <div class="tab-content">
                       <div>
 
-                          <h3 class="head text-center">Your Registration was successful.</h3>
+                          <h3 class="head text-center">Payment is required to login.</h3>
                           <p class=" text-center">
                             Please proceed to pay your registation fees <br />
                               by clicking on the button below.

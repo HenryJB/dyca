@@ -142,7 +142,7 @@ SignupAsset::register($this);
 
 
           <div class="form-group col-xs-12 col-sm-6 col-lg-12">
-              <?= Html::submitButton('Submit', ['class' => 'btn btn-warning']) ?>
+              <?= Html::submitButton('Submit', ['class' => 'btn btn-danger']) ?>
           </div>
 
           <?php ActiveForm::end(); ?>

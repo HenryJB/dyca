@@ -9,7 +9,6 @@ use common\models\Student;
 
 class PaymentsController extends \yii\web\Controller
 {
-
   public function beforeAction($action)
   {
       if (in_array($action->id, ['pay-voucher'])) {
@@ -44,7 +43,7 @@ class PaymentsController extends \yii\web\Controller
       if(Yii::$app->request->post()){
         $session = Yii::$app->session;
         $voucherCode = Yii::$app->request->post('voucher');
-
+        $student_id =null;
 
         if($voucherCode!==''){
           $voucher = Voucher::find()->where(['code'=> $voucherCode])->one();
@@ -52,7 +51,11 @@ class PaymentsController extends \yii\web\Controller
           if(count($voucher)>0){
 
             $voucher_assigned = VouchersAssignment::find()->where(['voucher_id'=> $voucher->id])->one();
-            $student_id = $voucher_assigned->student_id;
+
+            if(count($voucher_assigned)>0){
+              $student_id = $voucher_assigned->student_id;
+            }
+
 
             $today          = date_create(date('Y-m-d'));
             $expiry_date    = date_create($voucher->expiry_date);
@@ -62,13 +65,13 @@ class PaymentsController extends \yii\web\Controller
 
             if($voucher->status=='used'){
 
-              Yii::$app->session->setFlash('error', 'The voucher has already been used');
-              return $this->redirect(['students/view', 'id' => 21]);
+              $session->setFlash('voucher-status', 'The voucher has already been used.');
+              return $this->redirect(['students/view', 'id' =>$session->get('id')]);
 
             }elseif ($voucher->status=='not used' && (int)$dateObject->format("%a") < 0) {
 
-              Yii::$app->session->setFlash('error', 'The voucher has already been used');
-              return $this->redirect(['students/view', 'id' => 21]);
+              $session->setFlash('voucher-status', 'The voucher has expired.');
+              return $this->redirect(['students/view', 'id' => $session->get('id')]);
             }else {
                 $db = Yii::$app->db;
                 try {
@@ -85,14 +88,20 @@ class PaymentsController extends \yii\web\Controller
                     //1. Populate the payment table
                       $transaction_ref = $this->generateUniqueTransactionCode();
                       $payment = new Payment();
-                      $payment->student_id = $student_id;
+                      $payment->student_id = $voucher_assigned->student_id;
                       $payment->reference_no =$transaction_ref ;
                       $payment->method = "voucher";
                       $payment->status = 'paid';
-                      $payment->amount = $voucher->amount;
+                      $payment->description ='Payment for Registration';
+                      $payment->type= 'Registration fee';
+                      $payment->amount=5000; //$voucher->amount;
                       $payment->voucher_id = $voucher->id;
                       $payment->date = date('Y-m-d H:i:s');
-                      $payment->save();
+
+                      if(!$payment->save()){
+                        print_r($payment->getErrors());
+                        exit;
+                      }
 
                     //2. send emails with username and password
                       //Yii::$app->runAction('messaging/invoice',['email'=>$model->email_address]);
@@ -101,6 +110,8 @@ class PaymentsController extends \yii\web\Controller
                     //3. redirect to login
 
                       Yii::$app->session->setFlash('success', 'Payment Successful');
+
+                      Yii::$app->runAction('messaging/pay-success',['id'=>$student_id, 'email_template' => 5]);
 
                       return $this->redirect('pay-success');
 
@@ -114,12 +125,10 @@ class PaymentsController extends \yii\web\Controller
             }
 
 
-
-
         }else {
 
-          Yii::$app->session->setFlash('error', 'Please enter a valid voucher.');
-          return $this->redirect(['students/view', 'id' => 21]);
+          $session->setFlash('error', 'Please enter a valid voucher.');
+          return $this->redirect(['students/view', 'id' => $voucher_assigned->student_id]);
         }// end of if
 
         }

@@ -8,7 +8,7 @@
     <p class="alert-danger p-3">errors exists please check and fill again</p>
     <?php endif;?>
 
-    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#Modal1">
+    <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1">
       Add More Projects
     </button>
 
@@ -41,8 +41,13 @@
 
 
             <?php if($project->type == 'audio') :?>
+
+                
             <div class="p-2">
-              <img src="<?= Url::to('@web/uploads/student-projects/audios/audio.png'); ?>" width="300px" height="300px">
+              <audio controls
+                    <source src="<?=Url::to('@web/uploads/student-projects/audios/'.$project->attachment)?>" type="audio/mpeg">
+                    Your browser does not support the audio tag.
+                  </audio>
             </div>
             <?php endif;?>
 
@@ -71,9 +76,9 @@
                   <div class="p-2">
                     <div class="btn-group" role="group" aria-label="Basic example">
 
-                      <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                      <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm rounded" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>
                         Delete</a>
-                      <a href="<?= Url::to('@web/uploads/student-projects/documents/'.$project->attachment)?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure?')"
+                      <a href="<?= Url::to('@web/uploads/student-projects/documents/'.$project->attachment)?>" class="btn btn-success btn-sm rounded" onclick="return confirm('Are you sure?')"
                         target='_blank'> View</a>
 
                     </div>
@@ -85,10 +90,10 @@
                   <div class="p-2">
                     <div class="btn-group" role="group" aria-label="Basic example">
 
-                      <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                      <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm rounded" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>
                         Delete</a>
-                      <a href="<?= Url::to('@web/uploads/student-projects/audios/'.$project->attachment)?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure?')"
-                        target='_blank'> Listen</a>
+                      <a href="<?= Url::to('@web/uploads/student-projects/audios/'.$project->attachment)?>" class="btn btn-success btn-sm rounded" onclick="return confirm('Are you sure?')"
+                        target='_blank'> <i class="fa fa-download"></i> Download</a>
 
                     </div>
 
@@ -99,7 +104,7 @@
                     <div class="p-2">
                       <div class="btn-group" role="group" aria-label="Basic example">
 
-                        <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                        <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm rounded" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>
                           Delete</a>
     
                       </div>
