@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
     </div>
 
     <div class="col-xs-12 col-sm-6 col-lg-12">
-        <?= $form->field($model, 'type')->dropDownList([ 'audio' => 'Audio', 'photo' => 'Photo', 'text' => 'Text', 'video' => 'Video', ], ['prompt' => '']) ?>
+        <?= $form->field($model, 'type')->dropDownList([ 'audio' => 'Audio', 'photo' => 'Photo', 'pdf' => 'Pdf', 'video' => 'Video', ], ['prompt' => '']) ?>
     </div>
 
     <div class="form-group">

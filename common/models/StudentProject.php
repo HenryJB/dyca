@@ -103,7 +103,7 @@ class StudentProject extends \yii\db\ActiveRecord
                     $file->saveAs($link);
                 break;
             case 'pdf':
-                $link = $url.'pdf/'.$this->fileName;
+                $link = $url.'documents/'.$this->fileName;
                 $file->saveAs($link);
                 break;
 

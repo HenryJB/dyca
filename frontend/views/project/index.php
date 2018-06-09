@@ -8,6 +8,10 @@
     <p class="alert-danger p-3">errors exists please check and fill again</p>
     <?php endif;?>
 
+    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#Modal1">
+      Add More Projects
+    </button>
+
     <div class="comment-widgets scrollable ps-container ps-theme-default" data-ps-id="b65c4487-f538-6a4a-baab-ff500e736f16">
 
       <?php if (count($projects) > 0): ?>
@@ -15,7 +19,9 @@
       <?php foreach ($projects as $project): ?>
       <div class="card">
         <div class="card-body">
-          <h4 class="card-title m-b-0"><?= $project->title?></h4>
+          <h4 class="card-title m-b-0">
+            <?= $project->title?>
+          </h4>
           <!-- Comment Row -->
           <div class="d-flex flex-row comment-row m-t-0">
             <?php if($project->type == 'video') :?>
@@ -36,7 +42,13 @@
 
             <?php if($project->type == 'audio') :?>
             <div class="p-2">
-              <img src="<?= Url::to('@web/uploads/student-projects/audios/'.$project->attachment); ?>" width="300px" height="300px">
+              <img src="<?= Url::to('@web/uploads/student-projects/audios/audio.png'); ?>" width="300px" height="300px">
+            </div>
+            <?php endif;?>
+
+            <?php if($project->type == 'pdf') :?>
+            <div class="p-2">
+              <img src="<?= Url::to('@web/uploads/student-projects/documents/pdf.jpg'); ?>" width="200px" height="200px">
             </div>
             <?php endif;?>
 
@@ -52,11 +64,51 @@
                   <?=$project->date?>
                 </span>
 
-                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#Modal1">
-                  Add More Projects
-                </button>
-                <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
-                  Delete</a>
+
+
+
+                <?php if($project->type == 'pdf') :?>
+                  <div class="p-2">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                      <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                        Delete</a>
+                      <a href="<?= Url::to('@web/uploads/student-projects/documents/'.$project->attachment)?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure?')"
+                        target='_blank'> View</a>
+
+                    </div>
+
+                  </div>
+                  <?php endif;?>
+
+                  <?php if($project->type == 'audio') :?>
+                  <div class="p-2">
+                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                      <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                        Delete</a>
+                      <a href="<?= Url::to('@web/uploads/student-projects/audios/'.$project->attachment)?>" class="btn btn-success btn-sm" onclick="return confirm('Are you sure?')"
+                        target='_blank'> Listen</a>
+
+                    </div>
+
+                  </div>
+                  <?php endif;?>
+
+                  <?php if($project->type == 'photo' || $project->type == 'video') :?>
+                    <div class="p-2">
+                      <div class="btn-group" role="group" aria-label="Basic example">
+
+                        <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                          Delete</a>
+    
+                      </div>
+
+                    </div>
+                  <?php endif;?>
+
+           
+
               </div>
             </div>
           </div>

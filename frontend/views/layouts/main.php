@@ -1,3 +1,4 @@
+
 <?php
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -7,7 +8,6 @@ use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use common\widgets\Alert;
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage(); ?>
@@ -36,7 +36,24 @@ AppAsset::register($this);
     </style>
 </head>
 <body>
- 
+  <!-- Modal -->
+  <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="courseModalLabel" aria-hidden="true">
+     <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+
+              </div>
+
+          </div>
+      </div>
+  </div>
+  <!-- Modal -->
   <!-- =====================================
   ==== Start Loading -->
   <div class="loading">
@@ -63,7 +80,29 @@ AppAsset::register($this);
     </button>
     <div class="navbar-collapse collapse dual-nav w-100">
         <ul class="navbar-nav">
-            
+            <li class="nav-item">
+
+                    <?=Html::a('HOME', Yii::$app->request->baseUrl.'/site/home', ['class' => 'nav-link pl-0']); ?>
+
+            </li>
+
+            <li class="nav-item">
+
+                    <?=Html::a('About', Yii::$app->request->baseUrl.'/site/about', ['class' => 'nav-link pl-0']); ?>
+
+            </li>
+            <li class="nav-item">
+
+                  <?=Html::a('COURSES', Yii::$app->request->baseUrl.'/courses/index', ['class' => 'nav-link']); ?>
+            </li>
+            <li class="nav-item">
+              <?=Html::a('ALUMNI', Yii::$app->request->baseUrl.'/alumni/index', ['class' => 'nav-link']); ?>
+
+            </li>
+            <li class="nav-item">
+
+                  <?=Html::a('INSTRUCTORS', Yii::$app->request->baseUrl.'/instructors/index', ['class' => 'nav-link']); ?>
+            </li>
 
         </ul>
     </div>
@@ -80,7 +119,21 @@ AppAsset::register($this);
                 <?=Html::a('LOGIN', Yii::$app->request->baseUrl.'/site/login', ['class' => 'btn btn-outline-white text-white']); ?>
 
             </li>
- 
+            <!-- <li class="nav-item">
+                <a class="btn  text-white" href="">
+                    <i class="fa fa-twitter"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="btn text-white" href="">
+                    <i class="fa fa-facebook"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="btn  text-white" href="">
+                    <i class="fa fa-instagram"></i>
+                </a>
+            </li> -->
         </ul>
     </div>
 </nav>
@@ -124,12 +177,10 @@ AppAsset::register($this);
 <?php $this->endBody(); ?>
 <script type="text/javascript">
         $('#carouselExample').on('slide.bs.carousel', function (e) {
-
     var $e = $(e.relatedTarget);
     var idx = $e.index();
     var itemsPerSlide = 4;
     var totalItems = $('.carousel-item').length;
-
     if (idx >= totalItems-(itemsPerSlide-1)) {
         var it = itemsPerSlide - (totalItems - idx);
         for (var i=0; i<it; i++) {

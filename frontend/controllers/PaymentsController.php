@@ -5,6 +5,7 @@ use Yii;
 use common\models\VouchersAssignment;
 use common\models\Voucher;
 use common\models\Payment;
+use common\models\Student;
 
 class PaymentsController extends \yii\web\Controller
 {
@@ -73,6 +74,13 @@ class PaymentsController extends \yii\web\Controller
                 try {
                     $db->createCommand()->update('vouchers', ['status' => 'used'], 'id='.$voucher->id)->execute();
 
+                    //find the student 
+                    //update or change the student record
+
+                    $student_model = Student::findOne($student_id);
+                    $student_model->payment_status = 'paid';
+                    $student_model->update();
+
 
                     //1. Populate the payment table
                       $transaction_ref = $this->generateUniqueTransactionCode();
@@ -94,7 +102,7 @@ class PaymentsController extends \yii\web\Controller
 
                       Yii::$app->session->setFlash('success', 'Payment Successful');
 
-                      return $this->redirect(['pay-success']);
+                      return $this->redirect('pay-success');
 
                   //  return 'Student confirm member';
 

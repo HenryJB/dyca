@@ -110,9 +110,6 @@ class SiteController extends Controller
 
                 return $this->redirect(['payments/index']);
 
-            }elseif (empty($student->photo)) {
-
-                return $this->redirect(['update-profile']);
             }else {
               return $this->redirect(Yii::$app->request->baseUrl.'/students/dashboard');
 
@@ -133,13 +130,15 @@ class SiteController extends Controller
     
    public function actionUpdateProfile()
    {
-     $student_session = Yii::$app->session;
-     $id = $student_session->get('id');
-       $student = $this->findModel($id);
-       $student->scenario= 'update-profile';
-       if ($student->load(Yii::$app->request->post()) && $student->save()) {
+        $student_session = Yii::$app->session;
+        $id = $student_session->get('id');
+        $student = $this->findModel($id);
+        $student->scenario= 'update-profile';
+       
+        if ($student->load(Yii::$app->request->post()) && $student->save()) {
            return $this->redirect(['student-projects/create']);
-       }
+        }
+        
        return $this->render('update-profile', [
            'model' => $student,
        ]);

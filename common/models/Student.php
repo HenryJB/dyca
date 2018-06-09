@@ -77,18 +77,27 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth', 'date_of_birthday', 'session_id', 'about', 'information_source', 'is_existing', 'date_registered'], 'required'],
-            [['gender', 'contact_address', 'payment_status', 'approval_status', 'about', 'information_source'], 'string'],
-            [['year', 'date_of_birth', 'date_of_birthday', 'date_registered'], 'safe'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'state_id', 'date_of_birth',
+              'date_of_birth', 'session_id', 'about', 'terms_condition', 'is_existing', 'date_registered'], 'required'],
+              ['local_government_id', 'required', 'when' => function ($model) {
+                  return $model->country == 160;
+              }, 'whenClient' => "function (attribute, value) {
+                  return $('#country').val() == '160';
+              }"],
+            [['gender', 'contact_address', 'payment_status', 'approval_status', 'about',  'information_source'], 'string'],
+            [['year', 'date_of_birth', 'date_registered'], 'safe'],
             [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 200],
             [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle', 'tag'], 'string', 'max' => 100],
-            [['occupation', 'photo', 'project'], 'string', 'max' => 255],
+            [['occupation', 'photo'], 'string', 'max' => 255],
             [['country', 'emergency_fullname'], 'string', 'max' => 150],
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
             [['email_address'], 'unique'],
+            [['date_registered'], 'safe'],
+            [['project','photo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4'],
         ];
     }
+    
 
     /**
      * {@inheritdoc}

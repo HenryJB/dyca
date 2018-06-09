@@ -77,27 +77,35 @@ class StudentsController extends Controller
     public function actionCreate()
     {
         $model = new Student();
+        $course_registration = new CourseRegistration(); 
 
         if ($model->load(Yii::$app->request->post())) {
 
             $model->year = date('Y');
             $model->is_existing = 0;
             $model->date_registered = date('Y-m-d');
-            $model->project = UploadedFile::getInstance($model, 'project');
 
             $user = new User();
             $user->username = $model->email_address;
             $user->email = $model->email_address;
             $user->setPassword($model->first_name);
-            $user->generateAuthKey();
-
+            $user->generateAuthKey();            
 
             if ($model->save() && $user->save()) {
 
-                if ($model->project == !null) {
+                $course_registration->student_id    =   $model->id;
+                $course_registration->course_id     =   $model->first_choice;
+                $course_registration->session_id    =   $model->session_id;
+                $course_registration->date          =   date('Y-m-d');
+
+                if($course_registration->save()){
+                    Yii::$app->session->setFlash('success', "Course Registered");
+                }
+
+                if ($model->project == !null ) {
                     $model->upload();
                 }
-                //Send email to user
+        
                 Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
 
                 return $this->redirect(['view', 'id' => $model->id]);
