@@ -39,7 +39,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup','register','testing'],
+                        'actions' => ['signup','register'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -100,7 +100,7 @@ class SiteController extends Controller
                 return $this->redirect(['students/dashboard']);
             }
 
-            return $this->redirect('index');
+            return $this->redirect(['index']);
         }
 
         return $this->renderPartial('login', [
@@ -128,7 +128,9 @@ class SiteController extends Controller
 
     public function actionTesting()
     {
-        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
+          Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
+
+        //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
 
     }
 
@@ -147,7 +149,7 @@ class SiteController extends Controller
 
         Yii::$app->user->logout();
 
-          return $this->redirect('index');
+        return $this->redirect(['index']);
     }
 
 

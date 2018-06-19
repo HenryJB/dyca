@@ -89,6 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card">
 
                 <?= Html::beginForm(['students/request-password-reset'], 'post',['id' => 'request-reset-form']) ?>
+
                     <div class="card-body">
                         <h4 class="card-title">Change Password</h4>
                         <div class="form-group row">

@@ -159,8 +159,9 @@ div#row__form {
         <div class="col-md-4 col-xl-4 mb-5 mt-md-0 mt-5 white-text text-center text-md-right">
           <h1 class="h1-responsive font-weight-bold wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;">Apply Right Now! </h1>
           <hr class="hr-light wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;">
-          <h6 class="mb-3 wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"> You Are About To UnderTake A Life Changing Journey</h6>
+          <h6 class="mb-3 wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"> You are about to undertake a life changing journey</h6>
           <a class="btn btn-outline-white wow fadeInLeft waves-effect waves-light" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;" href="http://www.delyorkcreative.academy">Learn more</a>
+          <?= Html::a('Have an account? Login', ['site/index'], ['class' => 'btn btn-outline-danger wow fadeInLeft waves-effect waves-light']) ?>
         </div>
         <!--Grid column-->
         <!--Grid column-->
@@ -214,8 +215,6 @@ div#row__form {
                   <label for="form2" class="text-white">Country</label>
                   <?= $form->field($model, 'country')->dropDownList(
                           ArrayHelper::map(Country::find()
-
-                                  ->groupBy('name')
                                   ->all(),
                                   'id',
                                   'name'
@@ -317,15 +316,7 @@ div#row__form {
                    
                </div>
                
-                <div class="form-group col-md-6">
-                   
-                    <div class="text-left">
                 
-                      <?= Html::a('Have an account? Login', ['site/index'], ['class' => '']) ?>
-                      
-                    </div>
-                   
-               </div>
                
                 
               </div>

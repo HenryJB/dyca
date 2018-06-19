@@ -208,34 +208,4 @@ class Student extends \yii\db\ActiveRecord
         }
     }
 
-    public function sendEmail($email)
-    {
-        /* @var $user User */
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
-            'username' => $email,
-        ]);
-
-        if (!$user) {
-            return false;
-        }
-
-        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
-            $user->generatePasswordResetToken();
-            if (!$user->save()) {
-                return false;
-            }
-        }
-
-        return Yii::$app
-            ->mailer
-            ->compose( '@frontend/mail/passwordResetToken.php',
-                ['user' => $user]
-            )
-            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
-            ->setTo($email)
-            ->setSubject('Password reset for ' . Yii::$app->name)
-            ->send();
-    }
-
 }

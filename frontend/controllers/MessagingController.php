@@ -6,42 +6,43 @@ use common\models\Course;
 use common\models\Email;
 use common\models\EmailTemplate;
 use common\models\Student;
-
+use common\models\User;
 use yii\helpers\Url;
 use yii;
 
 class MessagingController extends \yii\web\Controller
 {
 
-    public function sendMail($body, $attachment, $type, $subject, $name, $email)
+    public function actionPasswordReset($email)
     {
-        $message = Yii::$app->mailer->compose(
-            '@common/mail/layouts/registration.php',
-            [
-                'content' => $body,
-                'attachment' => $attachment,
-                'title' => $type,
-                'name' => $name,
-            ]
-        );
+        /* @var $user User */
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'username' => $email,
+        ]);
 
-        $message->setTo($email);
-        $message->setFrom(Yii::$app->params['supportEmail']);
-        $message->setSubject($subject);
-
-        if (!empty($attachment)) {
-            $path = Url::to('@frontend/web/uploads/attachments/' . $attachment);
-            $message->attach($path);
+        if (!$user) {
+            return false;
         }
-        try {
-            if ($message->send()) {
 
-                $this->saveEmailDb($email, 1);
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
             }
-
-        } catch (Exception $e) {
-            Yii::$app->session->setFlash('Could not Send mail');
         }
+
+         Yii::$app
+            ->mailer
+            ->compose( '@frontend/mail/passwordResetToken.php',
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($email)
+            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->send();    
+            
+            return true;
     }
 
     public function invoiceByVoucher($first_name, $last_name, $amount, $email_address, $subject)
@@ -138,6 +139,7 @@ class MessagingController extends \yii\web\Controller
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
             }
         } catch (Exception $e) {
+            Yii::$app->session->setFlash('error', 'Whoops please try again');
 
             return $this->redirect('students/profile');
 
@@ -145,8 +147,6 @@ class MessagingController extends \yii\web\Controller
 
         return $this->redirect('students/profile');
     }
-
-    //untagging
 
     public function actionTagging($body,$voucher,$id)
     {
@@ -187,10 +187,9 @@ class MessagingController extends \yii\web\Controller
 
         }
 
-        return $this->redirect('students/profile');
+        return $this->redirect(['students/profile']);
     }
 
-    //this code does not change most times
     public function saveEmailDb($email, $student_email_address, $template_id)
     {
         try {
@@ -213,7 +212,6 @@ class MessagingController extends \yii\web\Controller
 
     }
 
-    //this code does not change most times
     public function setMessageParameter($message, $receiver, $from, $subject)
     {
 
