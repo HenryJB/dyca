@@ -75,13 +75,13 @@ class SiteController extends Controller
         ];
     }
 
-  
+
     /**
      * Logs in a user.
      *
      * @return mixed
      */
-    
+
     public function actionIndex()
     {
 
@@ -90,36 +90,36 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
             $student = Student::find()->where(['email_address'=>$model->username])->one();
-          
+
             if(count($student)>0){
                 $student_session = Yii::$app->session;
                 $student_session->set('id', $student->id);
                 $student_session->set('photo', $student->photo);
                 $student_session->set('email_address', $student->email_address);
-                
+
                 return $this->redirect(['students/dashboard']);
             }
 
             return $this->redirect('index');
         }
 
-        return $this->renderPartial('login', [
+        return $this->renderPartial('index', [
             'model' => $model,
         ]);
     }
 
-    
+
    public function actionUpdateProfile()
    {
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
         $student = $this->findModel($id);
         $student->scenario= 'update-profile';
-       
+
         if ($student->load(Yii::$app->request->post()) && $student->save()) {
            return $this->redirect(['student-projects/create']);
         }
-        
+
        return $this->render('update-profile', [
            'model' => $student,
        ]);
@@ -164,7 +164,7 @@ class SiteController extends Controller
             if ($model->sendEmailSite()) {
                 Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
 
-                
+
                 return $this->redirect('request-password-reset');
             } else {
                 Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
