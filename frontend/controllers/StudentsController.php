@@ -76,15 +76,20 @@ class StudentsController extends Controller
      * @return mixed
      */
     public function actionApply()
-    {      
+    {
+
+
         $setting = Setting::find()->one();
         $model = new Student();
         $course_registration = new CourseRegistration(); 
 
         if($setting->reg_status == 'close'){
-            Yii::$app->session->setFlash('error', 'Registration Closed');            
+            Yii::$app->session->setFlash('error', 'Registration Closed');
             return $this->redirect(['site/index']);
         }
+
+        $model = new Student();
+        $course_registration = new CourseRegistration();
 
         if ($model->load(Yii::$app->request->post())) {
 
@@ -110,7 +115,7 @@ class StudentsController extends Controller
                 }catch(Exception $e){
                     Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
                 }
-        
+
                 Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
 
                 return $this->redirect(['site/index']);
@@ -129,7 +134,7 @@ class StudentsController extends Controller
         $states = State::find()->where(['country_id' => $id])->all();
         if (count($states) > 0) {
             foreach ($states as $state) {
-                echo '<option value="">select one... </option><option value="' . $state->id . '">' . $state->name . '</option>';
+                echo '<option value="' . $state->id . '">' . $state->name . '</option>';
             }
         } else {
             echo '<option> </option>';
@@ -221,8 +226,10 @@ class StudentsController extends Controller
         $student->scenario = Student::SCENARIO_PROFILE_UPDATE;
 
         $student->photo = $student->changeProfilePicture();
-        
-        $session->remove('photo');        
+
+        $session->remove('photo');
+
+
 
         if(!empty($student->errors) || empty($student->photo))
         {
@@ -235,7 +242,7 @@ class StudentsController extends Controller
             if($student->save())
             {
                 $session->set('photo', $student->photo);
-                
+
                 Yii::$app->session->setFlash('success', 'Image Upload Successful');
                 return $this->redirect('profile');
             }else{
@@ -425,7 +432,7 @@ class StudentsController extends Controller
 
             if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
                 Yii::$app->session->setFlash('success', 'New password saved.');
-    
+
                 return $this->redirect('profile');
             }
         } catch (InvalidParamException $e) {

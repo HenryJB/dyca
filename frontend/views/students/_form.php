@@ -11,6 +11,7 @@ use common\models\Country;
 use common\models\State;
 use common\models\Course;
 use common\models\Session;
+use common\models\LearningExperience;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Student */
@@ -27,17 +28,24 @@ use common\models\Session;
     <title>DCA ENROLL</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
-  
+
       <?= Html::cssFIle('@web/css/bootstrap.min.css'); ?>
-      <?= Html::cssFIle('@web/css/mdb.min.css'); ?>
+      <?= Html::cssFIle('@web/css/mdb.css'); ?>
       <?= Html::cssFIle('@web/css/signup/register.css'); ?>
     <style>
       /* Required for full background image */
-
+      @font-face {
+          font-family: 'futura_bk_btbook';
+          src: url('../fonts/futura/futura_book_font-webfont.woff2') format('woff2'),
+               url('../fonts/futura/futura_book_font-webfont.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+      }
       body {
         background-image: url("<?= Url::to('@web/img/dop_on_set.jpg')?>");
         background-repeat: no-repeat;
         background-size: cover;
+        font-family: 'futura_bk_btbook';
         background-position: center center;
       }
 
@@ -58,7 +66,7 @@ use common\models\Session;
           height: 650px;
         }
       }
-      
+
       .form-group {
     margin-bottom: 0.2rem;
 }
@@ -68,7 +76,7 @@ div#row__form {
 }
 
 .card {
-    background-color: rgba(126, 123, 132, 0.2);
+    background-color: rgba(6, 6, 6, 0.71);
 }
 
       .top-nav-collapse {
@@ -92,7 +100,7 @@ div#row__form {
       }
 
       .card {
-        background-color: rgba(126, 123, 132, 0.2);
+        background-color: rgba(6, 6, 6, 0.71);
       }
 
       .md-form label {
@@ -134,7 +142,7 @@ div#row__form {
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
       <div class="container">
-       
+
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7" aria-controls="navbarSupportedContent-7"
           aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -148,7 +156,7 @@ div#row__form {
 
 
           </ul>
-          
+
         </div>
       </div>
     </nav>
@@ -157,12 +165,24 @@ div#row__form {
       <div class="row" id="row__form">
         <!--Grid column-->
         <div class="col-md-4 col-xl-4 mb-5 mt-md-0 mt-5 white-text text-center text-md-right">
-          <h1 class="h1-responsive font-weight-bold wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;">Apply Right Now! </h1>
-          <hr class="hr-light wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;">
-          <h6 class="mb-3 wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"> You are about to undertake a life changing journey</h6>
-          <a class="btn btn-outline-white wow fadeInLeft waves-effect waves-light" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;" href="http://www.delyorkcreative.academy">Learn more</a>
-          <?= Html::a('Have an account? Login', ['site/index'], ['class' => 'btn btn-outline-danger wow fadeInLeft waves-effect waves-light']) ?>
+          <div class="col-md-12 col-xl-12">
+            <h1 class="h1-responsive font-weight-bold wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s; color:#a40000!important">Apply Right Now! </h1>
+            <hr class="hr-light wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;">
+            <h6 class="mb-3 wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"> You are about to undertake a life changing journey</h6>
+            <a class="btn btn-amber wow fadeInLeft waves-effect waves-light" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;" href="http://www.delyorkcreative.academy">Learn more</a>
+          </div>
+
+          <div class="col-md-12 col-xl-12" style="padding-top:40px;">
+            <h6 class="mb-3 wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"> Have you registered ?
+            <a class="btn btn-primary wow fadeInLeft waves-effect waves-light" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;" href="http://www.delyorkcreative.academy/portal/frontend/web/site/index">Login</a></h6>
+          </div>
+
+
+
         </div>
+
+
+
         <!--Grid column-->
         <!--Grid column-->
         <div class="col-md-8 col-xl-8 mb-4">
@@ -170,11 +190,11 @@ div#row__form {
           <div class="card wow fadeInRight" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInRight; animation-delay: 0.3s;">
             <div class="card-body">
               <!--Header-->
-              <div class="text-center">
+              <!-- <div class="text-center">
                 <h3 class="white-text">
                   <i class="fa fa-user white-text"></i> Register:</h3>
                 <hr class="hr-light">
-              </div>
+              </div> -->
               <!--Body-->
               <?php $form = ActiveForm::begin(['id'=>'student-form']); ?>
               <div class="form-row">
@@ -215,11 +235,12 @@ div#row__form {
                   <label for="form2" class="text-white">Country</label>
                   <?= $form->field($model, 'country')->dropDownList(
                           ArrayHelper::map(Country::find()
+                                  //->groupBy('name')
                                   ->all(),
                                   'id',
                                   'name'
                                 ),
-                          ['prompt' => 'Please select',
+                          ['options'=>['160'=>['selected'=>true]],
                           'onchange'=>'
                                 $.post( "'.Yii::$app->urlManager->createUrl('students/related-states?id=').'"+$(this).val(), function( data ) {
 
@@ -234,11 +255,13 @@ div#row__form {
                   <label for="form2" class="text-white">State</label>
                   <?= $form->field($model, 'state_id')->dropDownList(
                       ArrayHelper::map(State::find()
+                              ->where(['country_id'=>160])
                               ->all(),
                               'id',
                               'name'
                             ),
-                      ['prompt' => 'Please select',
+                      [
+                      'prompt'=>'select one ',
                       'onchange'=>'
                             $.post( "'.Yii::$app->urlManager->createUrl('students/related-local-government?id=').'"+$(this).val(), function( data ) {
                                 console.log(data);
@@ -262,7 +285,7 @@ div#row__form {
                 </div>
 
                 <div class="form-group col-md-6">
-                  <label for="form2" class="text-white">First Choice</label>
+                  <label for="form2" class="text-white">Course</label>
 
 
                   <?= $form->field($model, 'first_choice')->dropDownList(
@@ -276,7 +299,7 @@ div#row__form {
                           ])->label(false);?>
                 </div>
 
-               
+
 
                   <div class="form-group col-md-12">
                     <label for="form2" class="text-white">About</label>
@@ -295,11 +318,26 @@ div#row__form {
 
                           ])->label(false);?>
 
-                </div>   
-                
+                </div>
+
                 <div class="form-group col-md-6">
-                <label for="form2" class="text-white">Terms and Condition</label>
-                  <?= $form->field($model, 'terms_condition')->checkbox()->label(false) ?>
+                  <label for="form2" class="text-white">Learn Experience</label>
+
+                          <?= $form->field($model, 'learning_experience_id')->dropDownList(
+                              ArrayHelper::map(LearningExperience::find()
+                                      ->all(),
+                                      'id',
+                                      'name'
+                                    ),
+                              ['prompt' => 'Please select', 'options'=>['3'=>['selected'=>true]], 'class' =>'form-control form-control-sm rounded-0'
+
+                          ])->label(false);?>
+
+                </div>
+
+                <div class="form-group col-md-12">
+
+                  <?= $form->field($model, 'terms_condition')->checkbox() ?>
 
                 </div>
 
@@ -307,18 +345,22 @@ div#row__form {
 
 
                <div class="form-group col-md-6">
-                   
+
                     <div class="text-left">
-                
+
                       <?= Html::submitButton('Submit', ['class' => 'btn btn-danger waves-effect waves-light btn-block']) ?>
-                      
+
                     </div>
-                   
+
                </div>
-               
-                
-               
-                
+
+                <div class="form-group col-md-6">
+
+
+
+               </div>
+
+
               </div>
               <?php ActiveForm::end(); ?>
             </div>
@@ -336,7 +378,7 @@ div#row__form {
 
 
     <div class="hiddendiv common"></div>
-    
+
       <?= Html::jsFIle('@web/js/jquery-3.3.1.min.js'); ?>
       <?= Html::jsFIle('@web/js/popper.min.js'); ?>
       <?= Html::jsFIle('@web/js/bootstrap.min.js'); ?>
