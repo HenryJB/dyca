@@ -42,6 +42,14 @@
 
     <?= Html::cssFIle('@web/css/theme.css'); ?>
 
+    <style>
+
+        .page-content--bge5 {
+            background: #141619;
+            height: 100vh;
+        }
+    </style>
+
 </head>
 
 <body class="animsition">
@@ -52,10 +60,32 @@
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                              <?= Html::img('@web/images/dcalogo.png', ['alt' => '', 'id' => '', 'class' => '']); ?>
+                              <?= Html::img('@web/img/dcalogo.png', ['alt' => '', 'id' => '', 'class' => '']); ?>
                             </a>
                         </div>
                         <div class="login-form">
+                            
+                             <div class="center-block">
+                                <?php if (Yii::$app->session->hasFlash('success')): ?> 
+
+                                    <div class="alert alert-success alert-dismissable">
+                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                                                        
+                                        <?= Yii::$app->session->getFlash('success') ?>
+                                    </div>
+
+                                <?php endif; ?>
+
+                                <?php if (Yii::$app->session->hasFlash('error')): ?> 
+
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                                                        
+                                        <?= Yii::$app->session->getFlash('error') ?>
+                                    </div>
+
+                                <?php endif; ?>
+                            </div>
 
 
                             <?php $form = ActiveForm::begin(['id' => 'user-form']); ?>
@@ -80,19 +110,13 @@
                                         <a href="<?= Yii::$app->request->baseUrl.'/site/request-password-reset'?>">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--green m-b-20', 'name' => 'login-button']) ?>
+                                <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--red m-b-20', 'name' => 'login-button']) ?>
 
-                                <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
-
-                                    </div>
-                                </div>
                             <?php ActiveForm::end(); ?>
                             <div class="register-link">
                                 <p>
                                     Don't you have account?
-                                    <a href="<?= Yii::$app->request->baseUrl.'/site/register'?>">Sign Up Here</a>
+                                    <a href="<?= Yii::$app->request->baseUrl.'/students/apply'?>">Sign Up Here</a>
                                 </p>
                             </div>
                         </div>

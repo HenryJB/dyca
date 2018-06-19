@@ -2,24 +2,29 @@
 
 namespace frontend\controllers;
 
-use Yii;
+use common\models\Course;
+use common\models\CoursesCategory;
+
+use common\models\User;
+use common\models\Email;
+use common\models\LocalGovernment;
+use common\models\CourseRegistration;
+use common\models\State;
 use common\models\Student;
-use yii\data\ActiveDataProvider;
+use common\models\Setting;
+
+use common\models\Session;
+use common\models\StudentProject;
+use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResetPasswordForm;
+use Yii;
+use yii\filters\VerbFilter;
+use yii\helpers\Url;
+
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use common\models\AfricanState;
-use common\models\LocalGovernment;
-use common\models\Country;
-use common\models\State;
-use common\models\CoursesCategory;
-use common\models\Course;
-use common\models\StudentProject;
-use common\models\Email;
-use common\models\LoginForm;
-use common\models\Dcauser;
 use yii\web\UploadedFile;
-use yii\helpers\Url;
 
 /**
  * StudentController implements the CRUD actions for Student model.
@@ -40,16 +45,16 @@ class StudentsController extends Controller
             ],
 
             'access' => [
-                        'class' => \yii\filters\AccessControl::className(),
-                        'only' => ['update', 'profile',  'dashboard', 'change-picture','update-profile'],
-                        'rules' => [
-                            // allow authenticated users
-                            [
-                                'allow' => true,
-                                'roles' => ['@'],
-                            ],
-                            // everything else is denied
-                        ],
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['update', 'profile', 'dashboard', 'change-picture', 'update-profile'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
             ],
 
         ];
@@ -57,15 +62,121 @@ class StudentsController extends Controller
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['related-states', 'related-local-government', 'login', 'change-picture', ])) {
+        if (in_array($action->id, ['related-states', 'related-local-government', 'login', 'change-picture','request-password-reset'])) {
             $this->enableCsrfValidation = false;
         }
 
         return parent::beforeAction($action);
     }
 
+    /**
+     * Creates a new Student model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     *
+     * @return mixed
+     */
+    public function actionApply()
+    {
+        
+
+        $setting = Setting::find()->one();
+
+        if($setting->reg_status == 'close'){
+            Yii::$app->session->setFlash('error', 'Registration Closed');            
+            return $this->redirect(['site/index']);
+        }
+
+        $model = new Student();
+        $course_registration = new CourseRegistration(); 
+
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->year = date('Y');
+            $model->is_existing = 0;
+            $model->date_registered = date('Y-m-d');
+
+            $user = new User();
+            $user->username = $model->email_address;
+            $user->email = $model->email_address;
+            $user->setPassword($model->first_name);
+            $user->generateAuthKey();
+
+            if ($model->save() && $user->save()) {
+                $course_registration->student_id    =   $model->id;
+                $course_registration->course_id     =   $model->first_choice;
+                $course_registration->session_id    =   $model->session_id;
+                $course_registration->date          =   date('Y-m-d');
+
+                try{
+                    Yii::$app->session->setFlash('success', 'Registration Was Successful Please Check Your Email For Further Instructions');
+                    $course_registration->save();
+                }catch(Exception $e){
+                    Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
+                }
+        
+                Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
+
+                return $this->redirect(['site/index']);
+
+            }
+
+        }
+
+        return $this->renderPartial('create', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionRelatedStates($id)
+    {
+        $states = State::find()->where(['country_id' => $id])->all();
+        if (count($states) > 0) {
+            foreach ($states as $state) {
+                echo '<option value="">select one... </option><option value="' . $state->id . '">' . $state->name . '</option>';
+            }
+        } else {
+            echo '<option> </option>';
+        }
+    }
+
+    public function actionRelatedLocalGovernment($id)
+    {
+        $local_govts = LocalGovernment::find()->where(['state_id' => $id])->all();
+
+        if (count($local_govts) > 0) {
+            foreach ($local_govts as $local_govt) {
+                echo '<option value="">select one... </option><option value="' . $local_govt->id . '">' . $local_govt->name . '</option>';
+            }
+        } else {
+            echo '<option> </option>';
+        }
+    }
+
+    public function actionRelatedCourses($id)
+    {
+        $coursesCategory = CoursesCategory::find()->where(['id' => $id])->all();
+        if (count($coursesCategory) > 0) {
+            foreach ($coursesCategory as $category) {
+                echo '<option value="' . $category->id . '">' . $category->name . '</option>';
+            }
+        } else {
+            echo '<option> </option>';
+        }
+    }
 
     /**
+     * Logs out the current user.
+     *
+     * @return mixed
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->actionLogin();
+    }
+
+      /**
      * Displays a single Student model.
      *
      * @param int $id
@@ -80,173 +191,6 @@ class StudentsController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-
-    /**
-     * Creates a new Student model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     *
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new Student();
-
-        if ($model->load(Yii::$app->request->post())) {
-
-          $model->year = date('Y');
-          $model->is_existing = 0;
-          $model->date_registered = date('Y-m-d');
-        //  $model->project = UploadedFile::getInstance($model, 'project');
-
-          $user = new Dcauser();
-          //$user = new User();
-          $user->username = $model->email_address;
-          $user->email = $model->email_address;
-          $user->setPassword($model->first_name);
-          $user->generateAuthKey();
-
-          if($model->save() && $user->save()){
-            
-            //Send email to user
-            //Yii::$app->runAction('messaging/registration',['email'=>$model->email_address]);
-
-            return $this->redirect(['view', 'id' => $model->id]);
-
-          }else {
-              print_r($model->getErrors());
-          }
-
-        }
-
-        return $this->render('create', [
-             'model' => $model,
-         ]);
-    }
-
-    public function actionRelatedStates($id)
-    {
-        $states = State::find()->where(['country_id' => $id])->all();
-        if (count($states) > 0) {
-            foreach ($states as $state) {
-                echo '<option value="">select one... </option><option value="'.$state->id.'">'.$state->name.'</option>';
-            }
-        } else {
-            echo '<option> </option>';
-        }
-    }
-
-
-    public function actionRelatedLocalGovernment($id)
-    {
-        $local_govts = LocalGovernment::find()->where(['state_id' => $id])->all();
-
-        if (count($local_govts) > 0) {
-            foreach ($local_govts as $local_govt) {
-                echo '<option value="">select one... </option><option value="'.$local_govt->id.'">'.$local_govt->name.'</option>';
-            }
-        } else {
-            echo '<option> </option>';
-        }
-    }
-
-    public function actionRelatedCourses($id)
-    {
-        $coursesCategory = CoursesCategory::find()->where(['id' => $id])->all();
-        if (count($coursesCategory) > 0) {
-            foreach ($coursesCategory as $category) {
-                echo '<option value="'.$category->id.'">'.$category->name.'</option>';
-            }
-        } else {
-            echo '<option> </option>';
-        }
-    }
-
-    /**
-     * Updates an existing Student model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing Student model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     *
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    // public function actionLogin()
-    // {
-    //     $model = new LoginForm();
-    //     if ($model->load(Yii::$app->request->post()) && $model->login()) {
-    //         $email = Yii::$app->request->post('email_address');
-    //         $password = Yii::$app->request->post('password');
-    //
-    //         $student = Student::find()->where(['email_address' => $model->username])->one();
-    //         //mkdir (ini_get ('session.save_path', 0777, true));
-    //         $student_session = Yii::$app->session;
-    //         $student_session->set('id', $student->id);
-    //
-    //         if (count($student) > 0) {
-    //
-    //             if($student->payment_status==='not paid'){
-    //
-    //                 return $this->redirect(['payments/index']);
-    //
-    //             }elseif (empty($student->reason)) {
-    //
-    //                 return $this->redirect(['update-profile']);
-    //             }else {
-    //                 return $this->redirect(['dashboard']);
-    //
-    //               }
-    //
-    //
-    //         }
-    //     }
-    //
-    //     return $this->renderPartial('login', ['model'=>$model]);
-    // }
-
-
-    /**
-     * Logs out the current user.
-     *
-     * @return mixed
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->actionLogin();
-    }
-
 
     /**
      * Finds the Student model based on its primary key value.
@@ -267,18 +211,61 @@ class StudentsController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionChangePicture()
+
+    //TODO work on profile picture
+    public function actionProfilePicture()
+    {
+        $session = Yii::$app->session;
+
+        $student = $this->findModel($session->get('id'));
+
+        $student->scenario = Student::SCENARIO_PROFILE_UPDATE;
+
+        $student->photo = $student->changeProfilePicture();
+        
+        $session->remove('photo');
+        
+        
+
+        if(!empty($student->errors) || empty($student->photo))
+        {
+            Yii::$app->session->setFlash('error', $student->errors);
+            return $this->redirect('profile');
+        }
+
+        try{
+
+            if($student->save())
+            {
+                $session->set('photo', $student->photo);
+                
+                Yii::$app->session->setFlash('success', 'Image Upload Successful');
+                return $this->redirect('profile');
+            }else{
+                Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
+                return $this->redirect('profile');
+            }
+        }catch(Exception $e)
+        {
+            Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
+            return $this->redirect('profile');
+        }
+
+    }
+
+    //This function is unused.
+    public function actionChangePicture2()
     {
         $model = new Student();
 
         $requestval = \Yii::$app->request->post();
-        $con = 'id = '.$requestval['id'];
-        $generatedName=  Yii::$app->security->generateRandomString();
+        $con = 'id = ' . $requestval['id'];
+        $generatedName = Yii::$app->security->generateRandomString();
 
         $student = Student::find()->where(['id' => $requestval['id']])->one();
 
-        if (file_exists(Url::to('@frontend/web/uploads/students/'.$student->photo)) == true) {
-            if (unlink(Url::to('@frontend/web/uploads/students/'.$student->photo)) && unlink(Url::to('@web/uploads/students/thumbs/'.$student->photo))) {
+        if (file_exists(Url::to('@frontend/web/uploads/students/' . $student->photo)) == true) {
+            if (unlink(Url::to('@frontend/web/uploads/students/' . $student->photo)) && unlink(Url::to('@web/uploads/students/thumbs/' . $student->photo))) {
                 $filename = $this->save_base64_image($requestval['img'], $generatedName, '/web/uploads/students/');
                 $db = Yii::$app->db;
                 $transaction = $db->beginTransaction();
@@ -314,7 +301,7 @@ class StudentsController extends Controller
 
     public function actionDashboard()
     {
-      $this->layout = 'profile-layout';
+        $this->layout = 'profile-layout';
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
         $student = $this->findModel($id);
@@ -323,70 +310,46 @@ class StudentsController extends Controller
         $courses_applied = Course::find()->where(['id' => $student->first_choice])->all();
 
         //if (count($courses_applied) > 0) {
-            return $this->render('dashboard',
+        return $this->render('dashboard',
             ['model' => $student,
-            'emails' => $emails,
-          ]);
-      //  }
-    }
-
-
-    public function actionCoursesApplied()
-    {
-      $this->layout = 'profile-layout';
-      $student_session = Yii::$app->session;
-      $id = $student_session->get('id');
-      $student = $this->findModel($id);
-      $courses_applied = Course::find()->where(['id' => $student->first_choice])->all();
-      return $this->render('courses-applied', ['courses_applied' => $courses_applied,]);
-    }
-
-    public function actionProjects()
-    {
-      $this->layout = 'profile-layout';
-      $student_session = Yii::$app->session;
-      $id = $student_session->get('id');
-      $student = $this->findModel($id);
-      $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
-      return $this->render('projects', [  'projects' => $projects,]);
+                'emails' => $emails,
+            ]);
+        //  }
     }
 
     public function actionGrants()
     {
-      $this->layout = 'profile-layout';
-      $student_session = Yii::$app->session;
-      $id = $student_session->get('id');
-      $student = $this->findModel($id);
-      $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
-      return $this->render('grants', [  'projects' => $projects,]);
+        $this->layout = 'profile-layout';
+        $student_session = Yii::$app->session;
+        $id = $student_session->get('id');
+        $student = $this->findModel($id);
+        $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
+        return $this->render('grants', ['projects' => $projects]);
     }
-
-
 
     public function actionScholarship()
     {
-      $this->layout = 'profile-layout';
-      $student_session = Yii::$app->session;
-      $id = $student_session->get('id');
-      $student = $this->findModel($id);
-      $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
-      return $this->render('scholarship', [  'projects' => $projects,]);
+        $this->layout = 'profile-layout';
+        $student_session = Yii::$app->session;
+        $id = $student_session->get('id');
+        $student = $this->findModel($id);
+        $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
+        return $this->render('scholarship', ['projects' => $projects]);
     }
-
 
     /**
      * Creates a new StudentProject model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    //This function is not used
     public function actionNewProject()
     {
-      $session = Yii::$app->session;
+        $session = Yii::$app->session;
         $model = new StudentProject();
 
-
         if ($model->load(Yii::$app->request->post())) {
-            $model->student_id= $session->get('id');
+            $model->student_id = $session->get('id');
             $model->attachment = UploadedFile::getInstance($model, 'attachment');
             $model->date = date('Y-m-d');
 
@@ -403,32 +366,76 @@ class StudentsController extends Controller
         ]);
     }
 
-
-
-    /**
-     * Updates an existing Student model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdateProfile()
+    public function actionProfile()
     {
-      $student_session = Yii::$app->session;
-      $id = $student_session->get('id');
-        $student = $this->findModel($id);
-        $student->scenario= 'update-profile';
+        $this->layout = 'profile-layout';
 
-        if ($student->load(Yii::$app->request->post()) && $student->save()) {
-            return $this->redirect(['student-projects/create']);
+        $student_session = Yii::$app->session;
+
+        $model = $this->findModel($student_session->get('id'));
+
+        $model->scenario = Student::SCENARIO_PROFILE_UPDATE;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Profile Update Succesfully');
+                return $this->redirect('profile');
+            }
+
+            Yii::$app->session->setFlash('error', 'Profile Update Failed');
         }
 
-        return $this->render('update-profile', [
-            'model' => $student,
+        return $this->render('profile', [
+            'model' => $model,
         ]);
     }
 
+    /**
+     * Requests password reset.
+     *
+     * @return mixed
+     */
+    public function actionRequestPasswordReset()
+    {
+        $model = new Student();
 
+        if (Yii::$app->request->post('email') && filter_var(Yii::$app->request->post('email'), FILTER_VALIDATE_EMAIL)) {
+
+            if ($model->sendEmail(Yii::$app->request->post('email'))) {
+
+                Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
+
+                return true;
+            } else {
+                Yii::$app->session->setFlash('password_reset_error', 'Sorry, we are unable to reset password for the provided email address.');
+                return false;
+            }
+        }
+
+        return $this->redirect('profile');
+    }
+
+    public function actionResetPassword($token)
+    {
+        $this->layout = 'profile-layout';
+
+        try {
+            $model = new ResetPasswordForm($token);
+
+            if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+                Yii::$app->session->setFlash('success', 'New password saved.');
+    
+                return $this->redirect('profile');
+            }
+        } catch (InvalidParamException $e) {
+            Yii::$app->session->setFlash('error', 'Invalid Token');
+            return $this->redirect('profile');
+        }
+
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
+    }
 
     public function save_base64_image($base64_image_string, $output_file_without_extentnion, $path_with_end_slash = '')
     {
@@ -449,9 +456,9 @@ class StudentsController extends Controller
             }
             //if($extension=='javascript')$extension='js';
             //if($extension=='text')$extension='txt';
-            $output_file_with_extentnion .= $output_file_without_extentnion.'.'.$extension;
+            $output_file_with_extentnion .= $output_file_without_extentnion . '.' . $extension;
         }
-        file_put_contents(Url::to('@academy/web/uploads/students/'.$output_file_with_extentnion), base64_decode($data));
+        file_put_contents(Url::to('@academy/web/uploads/students/' . $output_file_with_extentnion), base64_decode($data));
 
         return $output_file_with_extentnion;
     }

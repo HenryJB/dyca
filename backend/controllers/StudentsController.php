@@ -152,17 +152,25 @@ class StudentsController extends Controller
     ///  $db = Yii::$app->db;
     //  $db->beginTransaction();
       try {
-          $tagging = new Tagging();
-          $tagging->student_id = $id;
-          $tagging->tag_id = $dca_tag;
 
-          if(!$tagging->save()){
+        $tagging = Tagging::find()->where(['tag_id' => $dca_tag, 'student_id' => $id])->one();
 
-            print_r($tagging->getErrors());
-            exit;
-          }
+        if(count($tagging) == 0){
+            $tagging = new Tagging();
+            $tagging->student_id = $id;
+            $tagging->tag_id = $dca_tag;
+  
+            if(!$tagging->save()){
+              print_r($tagging->getErrors());
+              exit;
+            }
+        }
+         
+
           $model = $this->findModel($id);
+          
           $tag = Tag::find()->where(['id'=>$dca_tag])->one();
+          
           if(count($tag)> 0 || $tag->voucher_category!==NULL){
               $selected_vouchers = Voucher::find()
               ->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
@@ -177,14 +185,19 @@ class StudentsController extends Controller
                   if(!$vouchers_assignment->save()){
                       //$msg = $vouchers_assignment->getErrors();
                       print_r($vouchers_assignment->getErrors());
-                      exit;
+                  }else{
+
+                   $update_voucher = Voucher::find()->where(['id'=>$selected_vouchers[0]->id])->one();
+                   $update_voucher->status= 'assigned';
+                   $update_voucher->update();
+
                   }
 
 
             }
               if($tag->message!==NULL && $tag->notify_status==1){
-                //send email
-                  //Yii::$app->runAction('messaging/sponsorship_received',['email'=>$model->email_address]);
+                
+                  Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id, 'email_template' => 3]);
               }
 
 

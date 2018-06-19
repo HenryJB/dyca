@@ -5,6 +5,7 @@ use Yii;
 use common\models\VouchersAssignment;
 use common\models\Voucher;
 use common\models\Payment;
+use common\models\Student;
 
 class PaymentsController extends \yii\web\Controller
 {
@@ -56,13 +57,18 @@ class PaymentsController extends \yii\web\Controller
             }
 
 
+            $today          = date_create(date('Y-m-d'));
+            $expiry_date    = date_create($voucher->expiry_date);
+
+            $dateObject = date_diff($today,$expiry_date);
+
 
             if($voucher->status=='used'){
 
               $session->setFlash('voucher-status', 'The voucher has already been used.');
               return $this->redirect(['students/view', 'id' =>$session->get('id')]);
 
-            }elseif ($voucher->status=='not used' && (date('Y-m-d') - $voucher->expiry_date)< 0) {
+            }elseif ($voucher->status=='not used' && (int)$dateObject->format("%a") < 0) {
 
               $session->setFlash('voucher-status', 'The voucher has expired.');
               return $this->redirect(['students/view', 'id' => $session->get('id')]);
@@ -70,6 +76,13 @@ class PaymentsController extends \yii\web\Controller
                 $db = Yii::$app->db;
                 try {
                     $db->createCommand()->update('vouchers', ['status' => 'used'], 'id='.$voucher->id)->execute();
+
+                    //find the student 
+                    //update or change the student record
+
+                    $student_model = Student::findOne($student_id);
+                    $student_model->payment_status = 'paid';
+                    $student_model->update();
 
 
                     //1. Populate the payment table
@@ -96,7 +109,11 @@ class PaymentsController extends \yii\web\Controller
 
                     //3. redirect to login
 
-                      return $this->redirect(['pay-success']);
+                      Yii::$app->session->setFlash('success', 'Payment Successful');
+
+                      Yii::$app->runAction('messaging/pay-success',['id'=>$student_id, 'email_template' => 5]);
+
+                      return $this->redirect('pay-success');
 
                   //  return 'Student confirm member';
 
@@ -108,16 +125,17 @@ class PaymentsController extends \yii\web\Controller
             }
 
 
-
-
         }else {
 
-          $session->setFlash('voucher-status', 'Please enter a valid voucher.');
+          $session->setFlash('error', 'Please enter a valid voucher.');
           return $this->redirect(['students/view', 'id' => $voucher_assigned->student_id]);
         }// end of if
 
         }
 
+      }
+      else{
+          return $this->redirect('index');
       }
 
 

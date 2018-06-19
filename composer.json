@@ -24,7 +24,8 @@
         "lesha724/yii2-document-viewer": "*",
         "yiisoft/yii2-imagine": "*",
         "circulon/yii2-columnlistview": "*",
-        "cics/yii2-video-embed-widget": "dev-master"
+        "2amigos/yii2-file-upload-widget": "~1.0",
+        "true/punycode": "~2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

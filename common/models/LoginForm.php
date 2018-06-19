@@ -3,7 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
-use common\models\User;
+use common\models\BackendUser;
 
 /**
  * Login form
@@ -71,7 +71,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = BackendUser::findByUsername($this->username);
         }
 
         return $this->_user;

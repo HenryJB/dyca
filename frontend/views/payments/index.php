@@ -13,8 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-
-
 <?= Html::cssFIle('@web/css/extra.css'); ?>
 <section>
         <div class="container">

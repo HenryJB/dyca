@@ -1,6 +1,7 @@
 <?php
 
 namespace common\models;
+use common\models\EmailTemplate;
 
 /**
  * This is the model class for table "emails".
@@ -27,7 +28,7 @@ class Email extends \yii\db\ActiveRecord
     {
         return [
             [['sender_email', 'receiver_email'], 'string', 'max' => 100],
-            [['email_template_id'], 'string', 'max' => 200],
+            [['email_template_id'], 'integer'],
             [['date'], 'string', 'max' => 50],
         ];
     }
@@ -45,4 +46,10 @@ class Email extends \yii\db\ActiveRecord
             'date' => 'Date',
         ];
     }
+
+    public function getEmailTemplate()
+    {
+        return $this->hasOne(EmailTemplate::className(), ['id' => 'email_template_id']);
+    }
+
 }

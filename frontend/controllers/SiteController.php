@@ -3,7 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Country;
 use common\models\Course;
-use common\models\LoginForm;
+use frontend\models\LoginForm;
 use common\models\Session;
 use common\models\Student;
 
@@ -39,7 +39,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup','register'],
+                        'actions' => ['signup','register','testing'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -75,54 +75,61 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
-
+  
     /**
      * Logs in a user.
      *
      * @return mixed
      */
-    public function actionLogin()
+    
+    public function actionIndex()
     {
 
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-
-          $student = Student::find()->where(['email_address'=>$model->username])->one();
-          if(count($student)>0){
-            $student_session = Yii::$app->session;
-            $student_session->set('id', $student->id);
-
-            if($student->payment_status==='not paid'){
-
-                return $this->redirect(['payments/index']);
-
-            }else {
-              return $this->redirect(Yii::$app->request->baseUrl.'/students/dashboard');
-
+            $student = Student::find()->where(['email_address'=>$model->username])->one();
+          
+            if(count($student)>0){
+                $student_session = Yii::$app->session;
+                $student_session->set('id', $student->id);
+                $student_session->set('photo', $student->photo);
+                $student_session->set('email_address', $student->email_address);
+                
+                return $this->redirect(['students/dashboard']);
             }
 
-
-          }
-
-
-        } else {
-            $model->password = '';
-
-            return $this->renderPartial('login', [
-                'model' => $model,
-            ]);
+            return $this->redirect('index');
         }
+
+        return $this->renderPartial('login', [
+            'model' => $model,
+        ]);
+    }
+
+    
+   public function actionUpdateProfile()
+   {
+        $student_session = Yii::$app->session;
+        $id = $student_session->get('id');
+        $student = $this->findModel($id);
+        $student->scenario= 'update-profile';
+       
+        if ($student->load(Yii::$app->request->post()) && $student->save()) {
+           return $this->redirect(['student-projects/create']);
+        }
+        
+       return $this->render('update-profile', [
+           'model' => $student,
+       ]);
+   }
+
+
+    public function actionTesting()
+    {
+        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
+
     }
 
 
@@ -134,9 +141,13 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        $student_session = Yii::$app->session;
+
+        $student_session->destroy();
+
         Yii::$app->user->logout();
 
-          return $this->redirect('login');
+          return $this->redirect('index');
     }
 
 
@@ -150,16 +161,19 @@ class SiteController extends Controller
     {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
+            if ($model->sendEmailSite()) {
                 Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
 
-                return $this->goHome();
+                
+                return $this->redirect('request-password-reset');
             } else {
-                Yii::$app->session->setFlash('password_reset_error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+
+                return $this->redirect('request-password-reset');
             }
         }
 
-        return $this->render('requestPasswordResetToken', [
+        return $this->renderPartial('requestPasswordResetToken', [
             'model' => $model,
         ]);
     }
@@ -185,7 +199,7 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        return $this->render('resetPassword', [
+        return $this->renderPartial('resetPassword', [
             'model' => $model,
         ]);
     }

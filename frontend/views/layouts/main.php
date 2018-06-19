@@ -1,3 +1,4 @@
+
 <?php
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -7,7 +8,6 @@ use yii\helpers\Url;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use common\widgets\Alert;
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage(); ?>
@@ -19,44 +19,12 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags(); ?>
     <title><?= Html::encode($this->title); ?></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <?php $this->head(); ?>
-    <style type="text/css">
-      .content{padding-top:80px; padding-bottom:80px;}
-.mb40{margin-bottom:40px;}
-.team-block { margin-bottom: 20px; }
-.team-content { position: absolute; background-color: rgba(17, 24, 31, 0.8); bottom: 0px; display: inline-block; width: 100%; color: #fff; padding: 30px; }
-.team-img { position: relative; }
-.team-img img { width: 100%; }
-.team-title { }
-.team-meta { color: #9da4aa; font-weight: 400; font-size: 16px; }
-.overlay { border-radius: 0px; position: absolute; top: 0; bottom: 0; left: 0; right: 0; height: 100%; width: 100%; opacity: 0; transition: 1s ease; background-color: #11181f; }
-.team-img:hover .overlay { opacity: .8; }
-.team-img:hover .team-content { opacity: 0; }
-.text { color: #fff; position: absolute; top: 30%; left: 30%; transform: translate(-26%, -26%); -ms-transform: translate(-26%, -26%); right: 0; font-weight: 400; font-size: 16px; }
-    </style>
+
 </head>
 <body>
-  <!-- Modal -->
-  <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="courseModalLabel" aria-hidden="true">
-     <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-              <div class="modal-header">
-
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-
-              </div>
-
-          </div>
-      </div>
-  </div>
-  <!-- Modal -->
-  <!-- =====================================
-  ==== Start Loading -->
-  <div class="loading">
+      <div class="loading">
       <div class="text-center middle">
           <div class="lds-ellipsis">
               <div></div>
@@ -66,81 +34,32 @@ AppAsset::register($this);
           </div>
       </div>
   </div>
-  <!-- End Loading ====
-  ======================================= -->
-
-<?php $this->beginBody(); ?>
-
-<!-- =====================================
-==== Start Navbar -->
-
-<nav class="navbar navbar-dark navbar-expand-lg  justify-content-between">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".dual-nav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse collapse dual-nav w-100">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-
-                    <?=Html::a('HOME', Yii::$app->request->baseUrl.'/site/home', ['class' => 'nav-link pl-0']); ?>
-
+     <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar"
+  
+       <div class="container">
+       
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7" aria-controls="navbarSupportedContent-7"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse" id="navbarSupportedContent-7" style="">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+              <img src="http://www.delyorkcreative.academy/wp-content/uploads/2018/05/DCA-Logo-36.png" alt="logo" width="112" height="69"
+                class="imf-fluid">
             </li>
 
-            <li class="nav-item">
 
-                    <?=Html::a('About', Yii::$app->request->baseUrl.'/site/about', ['class' => 'nav-link pl-0']); ?>
-
-            </li>
-            <li class="nav-item">
-
-                  <?=Html::a('COURSES', Yii::$app->request->baseUrl.'/courses/index', ['class' => 'nav-link']); ?>
-            </li>
-            <li class="nav-item">
-              <?=Html::a('ALUMNI', Yii::$app->request->baseUrl.'/alumni/index', ['class' => 'nav-link']); ?>
-
-            </li>
-            <li class="nav-item">
-
-                  <?=Html::a('INSTRUCTORS', Yii::$app->request->baseUrl.'/instructors/index', ['class' => 'nav-link']); ?>
-            </li>
-
-        </ul>
-    </div>
-    <a href="<?=Yii::$app->request->baseUrl?>/site/index" class="navbar-brand mx-auto d-block text-cente">
-        <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" id="img-brand" width="80px" height="50px">
-    </a>
-    <div class="navbar-collapse collapse dual-nav w-100">
-        <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item" id="apply_now">
-              <?=Html::a('APPLY NOW', Yii::$app->request->baseUrl.'/students/create', ['class' => 'btn btn-outline-white  btn-danger']); ?>
-
-            </li>
-            <li class="nav-item" id="login">
-                <?=Html::a('LOGIN', Yii::$app->request->baseUrl.'/site/login', ['class' => 'btn btn-outline-white text-white']); ?>
-
-            </li>
-            <!-- <li class="nav-item">
-                <a class="btn  text-white" href="">
-                    <i class="fa fa-twitter"></i>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="btn text-white" href="">
-                    <i class="fa fa-facebook"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="btn  text-white" href="">
-                    <i class="fa fa-instagram"></i>
-                </a>
-            </li> -->
-        </ul>
-    </div>
-</nav>
-<!-- End Navbar ====
-======================================= -->
+          </ul>
+          
+        </div>
+      </div>
+    </nav>
+    
     <?= $content; ?>
+
+<?php $this->beginBody(); ?> 
+
 <!-- =====================================
 ==== Start Footer -->
 <footer class="section-padding">
@@ -176,28 +95,8 @@ AppAsset::register($this);
 <!-- End Footer ====
 ======================================= -->
 <?php $this->endBody(); ?>
-<script type="text/javascript">
-        $('#carouselExample').on('slide.bs.carousel', function (e) {
 
-    var $e = $(e.relatedTarget);
-    var idx = $e.index();
-    var itemsPerSlide = 4;
-    var totalItems = $('.carousel-item').length;
 
-    if (idx >= totalItems-(itemsPerSlide-1)) {
-        var it = itemsPerSlide - (totalItems - idx);
-        for (var i=0; i<it; i++) {
-            // append slides to end
-            if (e.direction=="left") {
-                $('.carousel-item').eq(i).appendTo('.carousel-inner');
-            }
-            else {
-                $('.carousel-item').eq(0).appendTo('.carousel-inner');
-            }
-        }
-    }
-});
-    </script>
 </body>
 </html>
 <?php $this->endPage(); ?>
