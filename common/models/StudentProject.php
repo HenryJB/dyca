@@ -43,7 +43,7 @@ class StudentProject extends \yii\db\ActiveRecord
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['url'], 'string', 'max' => 50],
-            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg,jpeg, gif, pdf, mp4, mp3'],
+            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg,jpeg, gif, pdf, mp4, mp3','maxSize' => 2048000, 'tooBig' => 'Limit is 2MB'],
         ];
     }
 

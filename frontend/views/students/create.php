@@ -9,10 +9,7 @@ use yii\helpers\Html;
 $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="student-create">
 
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
-</div>

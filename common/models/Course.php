@@ -46,7 +46,7 @@ class Course extends \yii\db\ActiveRecord
             [['fee'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['duration'], 'string', 'max' => 100],
-            [['photo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif'],
+            [['photo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif','maxSize' => 2048000, 'tooBig' => 'Limit is 2MB'],
             [['name'], 'unique'],
             [['course_category'], 'exist', 'skipOnError' => true, 'targetClass' => CoursesCategory::className(), 'targetAttribute' => ['course_category' => 'id']],
         ];

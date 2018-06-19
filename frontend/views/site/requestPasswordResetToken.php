@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <?php ActiveForm::end(); ?>
 
                                 <p class="text-white">
-                                    <a href="<?= Yii::$app->request->baseUrl.'/site/login'?>" class = 'au-btn au-btn--block au-btn--red m-b-20 text-center'>Login</a>
+                                    <a href="<?= Yii::$app->request->baseUrl.'/site/index'?>" class = 'au-btn au-btn--block au-btn--red m-b-20 text-center'>Login</a>
                                 </p>
                            
                         </div>

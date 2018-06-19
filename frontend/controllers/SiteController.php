@@ -75,56 +75,37 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
-
+  
     /**
      * Logs in a user.
      *
      * @return mixed
      */
-    public function actionLogin()
+    
+    public function actionIndex()
     {
 
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-
-          $student = Student::find()->where(['email_address'=>$model->username])->one();
-          if(count($student)>0){
-            $student_session = Yii::$app->session;
-            $student_session->set('id', $student->id);
-            $student_session->set('photo', $student->photo);
-            $student_session->set('email_address', $student->email_address);
-            
-
-            if($student->payment_status==='not paid'){
-
-                return $this->redirect(['payments/index']);
-
-            }else {
-              return $this->redirect(Yii::$app->request->baseUrl.'/students/dashboard');
-
+            $student = Student::find()->where(['email_address'=>$model->username])->one();
+          
+            if(count($student)>0){
+                $student_session = Yii::$app->session;
+                $student_session->set('id', $student->id);
+                $student_session->set('photo', $student->photo);
+                $student_session->set('email_address', $student->email_address);
+                
+                return $this->redirect(['students/dashboard']);
             }
 
-          }
-
-
-        } else {
-            $model->password = '';
-
-            return $this->renderPartial('login', [
-                'model' => $model,
-            ]);
+            return $this->redirect('index');
         }
+
+        return $this->renderPartial('login', [
+            'model' => $model,
+        ]);
     }
 
     
@@ -166,7 +147,7 @@ class SiteController extends Controller
 
         Yii::$app->user->logout();
 
-          return $this->redirect('login');
+          return $this->redirect('index');
     }
 
 

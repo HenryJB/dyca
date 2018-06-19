@@ -51,10 +51,11 @@
 
                 <?php endforeach; ?>
                 <?php else:?>
-                <div class="comment-footer ml-4">
-                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#Modal1">
-                        Apply to another
-                    </button>
+                 <div class="alert alert-info padding-box mt-2 mb-2">
+                    <p class="">
+                        No Courses
+                    </p>
+                    
                 </div>
 
                 <?php endif; ?>

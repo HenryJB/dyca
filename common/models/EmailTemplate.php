@@ -30,7 +30,7 @@ class EmailTemplate extends \yii\db\ActiveRecord
         return [
             [['type', 'body', 'subject'], 'required'],
             [['type', 'subject'], 'string', 'max' => 200],
-            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf,docx,png,jpg,jpeg,gif'],
+            [['attachment'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf,docx,png,jpg,jpeg,gif','maxSize' => 2048000, 'tooBig' => 'Limit is 2MB'],
         ];
     }
 

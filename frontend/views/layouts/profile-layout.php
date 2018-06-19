@@ -4,6 +4,8 @@
     use dosamigos\fileupload\FileUpload;
 
     use common\models\Student;
+    
+    $session = Yii::$app->session;
 
 ?>
     <!DOCTYPE html>
@@ -228,7 +230,7 @@
                                     <?php $session = Yii::$app->session; ?>
 
                                      <?php if(!empty($session->get('photo'))): ?>
-                                     <img src="<?= Url::to('@web/uploads/profiles/'.$session->get('photo')); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
+                                     <img src="<?= Url::to('@web/uploads/students/'.$session->get('photo')); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
                                     <?php else:?>
                                     <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
                                      <?php endif; ?>

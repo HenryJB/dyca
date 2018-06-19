@@ -1,8 +1,6 @@
-<?php
-/* @var $this yii\web\View */
-?>
-<h1>payment/history</h1>
+ <div class="alert alert-info padding-box mt-2 mb-2">
+    <p class="">
+      No Payment History
+    </p>
 
-<p>
-   Nothing to display here
-</p>
+  </div>

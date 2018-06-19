@@ -18,8 +18,14 @@ class EmailController extends \yii\web\Controller
         $session = Yii::$app->session;
 
         $student =  Student::findOne($session->get('id'));
-
-        $emails = Email::find()->where(['receiver_email' => $student->email_address])->all();
+        
+        $emails = null;
+        
+       if(count($student) > 0){
+           
+            $emails = Email::find()->where(['receiver_email' => $student->email_address])->all();
+           
+       }
 
         return $this->render('index',[
             'emails' => $emails,

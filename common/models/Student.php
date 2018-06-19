@@ -94,7 +94,7 @@ class Student extends \yii\db\ActiveRecord
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
             [['email_address'], 'unique'],
             [['date_registered'], 'safe'],
-            [['project','photo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4'],
+            [['project','photo'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png, pdf, mp3, mov, mp4','maxSize' => 2048000, 'tooBig' => 'Limit is 2MB'],
         ];
     }
     
@@ -135,7 +135,7 @@ class Student extends \yii\db\ActiveRecord
             'sponsorship_status' => 'Sponsorship Status',
             'is_existing' => 'Is Existing',
             'tag' => 'Tag',
-            'terms_condition' => 'Terms Condition',
+            'terms_condition' => '',
             'date_registered' => 'Date Registered',
             'emergency_fullname' => 'Emergency Fullname',
             'emergency_relationship' => 'Emergency Relationship',

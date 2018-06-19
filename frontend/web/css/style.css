@@ -1,3 +1,35 @@
+@font-face {
+    font-family: 'bebas_neuebold';
+    src: url('../fonts/bebas/bebasneue_bold-webfont.woff2') format('woff2'),
+         url('../fonts/custom-fonts/bebas/bebasneue_bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'futura_bk_btbook';
+    src: url('../fonts/futura/futura_book_font-webfont.woff2') format('woff2'),
+         url('../fonts/futura/futura_book_font-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'bebas_neue_regular';
+    src: url('../fonts/bebas/bebasneue_regular-webfont.woff2') format('woff2'),
+         url('../fonts/bebas/bebasneue_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+    font-family: futura_bk_btbook, sans-serif;
+    font-size: 15px;
+}
+
 .img-fluid {
     max-width: 100%;
     height: auto;
@@ -7,3 +39,13 @@
   height:100vh;
 }
 
+.site-error {
+    margin-top: 200px;
+    color: white;
+    text-align: center;
+}
+
+div.site-error > div.alert.alert-danger {
+    width: 323px;
+    margin: 42px auto;
+}

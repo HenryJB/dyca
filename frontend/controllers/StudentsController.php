@@ -11,6 +11,7 @@ use common\models\LocalGovernment;
 use common\models\CourseRegistration;
 use common\models\State;
 use common\models\Student;
+use common\models\Setting;
 
 use common\models\Session;
 use common\models\StudentProject;
@@ -74,8 +75,17 @@ class StudentsController extends Controller
      *
      * @return mixed
      */
-    public function actionCreate()
+    public function actionApply()
     {
+        
+
+        $setting = Setting::find()->one();
+
+        if($setting->reg_status == 'close'){
+            Yii::$app->session->setFlash('error', 'Registration Closed');            
+            return $this->redirect(['site/index']);
+        }
+
         $model = new Student();
         $course_registration = new CourseRegistration(); 
 
@@ -89,16 +99,16 @@ class StudentsController extends Controller
             $user->username = $model->email_address;
             $user->email = $model->email_address;
             $user->setPassword($model->first_name);
-            $user->generateAuthKey();            
+            $user->generateAuthKey();
 
             if ($model->save() && $user->save()) {
-
                 $course_registration->student_id    =   $model->id;
                 $course_registration->course_id     =   $model->first_choice;
                 $course_registration->session_id    =   $model->session_id;
                 $course_registration->date          =   date('Y-m-d');
 
                 try{
+                    Yii::$app->session->setFlash('success', 'Registration Was Successful Please Check Your Email For Further Instructions');
                     $course_registration->save();
                 }catch(Exception $e){
                     Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
@@ -106,15 +116,13 @@ class StudentsController extends Controller
         
                 Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
 
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['site/index']);
 
-            } else {
-                //print_r($model->getErrors());
             }
 
         }
 
-        return $this->render('create', [
+        return $this->renderPartial('create', [
             'model' => $model,
         ]);
     }
@@ -214,6 +222,10 @@ class StudentsController extends Controller
         $student->scenario = Student::SCENARIO_PROFILE_UPDATE;
 
         $student->photo = $student->changeProfilePicture();
+        
+        $session->remove('photo');
+        
+        
 
         if(!empty($student->errors) || empty($student->photo))
         {
@@ -225,6 +237,8 @@ class StudentsController extends Controller
 
             if($student->save())
             {
+                $session->set('photo', $student->photo);
+                
                 Yii::$app->session->setFlash('success', 'Image Upload Successful');
                 return $this->redirect('profile');
             }else{
