@@ -77,8 +77,6 @@ class StudentsController extends Controller
      */
     public function actionApply()
     {
-
-
         $setting = Setting::find()->one();
         $model = new Student();
         $course_registration = new CourseRegistration(); 
@@ -94,7 +92,6 @@ class StudentsController extends Controller
         if ($model->load(Yii::$app->request->post())) {
 
             $model->year = date('Y');
-            $model->is_existing = 0;
             $model->date_registered = date('Y-m-d');
 
             $user = new User();

@@ -83,6 +83,8 @@ class MessagingController extends \yii\web\Controller
                     'title' => $template->subject,
                     'name' => $firstname . ' ' . $lastname,
                     'logo' => Url::to('@frontend/web/img/dcalogo.png'), 
+                    'username' => $email_address,
+                    'password' => $firstname,
                 ]
             );
 
@@ -96,11 +98,10 @@ class MessagingController extends \yii\web\Controller
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
             }
         } catch (Exception $e) {
-
-            return $this->redirect('students/profile');
+            Yii::$app->session->setFlash('error', 'Whoops please try again');
         }
 
-        return $this->redirect('students/profile');
+        return $this->redirect(['site/index']);
     }
 
     public function actionCourseApplied($course_id)

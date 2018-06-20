@@ -18,10 +18,6 @@ class PaymentsController extends \yii\web\Controller
       return parent::beforeAction($action);
   }
 
-
-
-
-
     public function actionIndex()
     {
         $session = Yii::$app->session;
@@ -40,7 +36,7 @@ class PaymentsController extends \yii\web\Controller
     public function actionPayVoucher()
     {
 
-      if(Yii::$app->request->post()){
+      if(Yii::$app->request->post() && !empty(Yii::$app->request->post('voucher'))){
         $session = Yii::$app->session;
         $voucherCode = Yii::$app->request->post('voucher');
         $student_id =null;
@@ -135,6 +131,8 @@ class PaymentsController extends \yii\web\Controller
 
       }
       else{
+        
+        Yii::$app->session->setFlash('error', 'Please input a valid voucher');
           return $this->redirect('index');
       }
 

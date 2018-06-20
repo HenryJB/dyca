@@ -13,58 +13,72 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 
-<?= Html::cssFIle('@web/css/extra.css'); ?>
-<section>
-        <div class="container">
-            <div class="row">
-                <div class="board">
+  <?= Html::cssFIle('@web/css/extra.css'); ?>
+    <section>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="board">
 
-                    <div class="board-inner">
+            <div class="board-inner">
 
-                   </div>
+            </div>
 
-                     <div class="tab-content">
-                      <div>
+            <div class="tab-content">
+              <div>
 
-                          <h3 class="head text-center">Payment is required to login.</h3>
-                          <p class=" text-center">
-                            Please proceed to pay your registation fees <br />
-                              by clicking on the button below.
-                          </p>
-                          <p class="narrow text-center">
-                                Note: You will be redirected to a secure payment platform where your card details will be required.
-                          </p>
+                <h3 class="head text-center">Payment is required to login.</h3>
+                
+                <p class=" text-center">
+                  Please proceed to pay your registation fees
+                  <br /> by clicking on the button below.
+                </p>
 
-                          <p class="text-center">
-                            <button style="height:50px;" class="btn  btn-block btn-warning btn-outline-rounded">PAY NOW</button>
+                <p class="narrow text-center">
+                  Note: You will be redirected to a secure payment platform where your card details will be required.
+                </p>
 
-                          </p>
+                <p class="text-center">
+                  <button style="height:50px;" class="btn  btn-block btn-warning btn-outline-rounded">PAY NOW</button>
+                </p>
 
-                          <p class="text-center">
-                            OR
+                <p class="text-center">
+                  OR
+                </p>
 
-                          </p>
-                          <?php echo Yii::$app->session->getFlash('voucher-status'); ?>
-                          <form action="<?= Yii::$app->request->baseUrl?>/payments/pay-voucher" method="post" class="form-horizontal">
-                            <div class="row">
-                              <div class="col-sm-12 col-md-12 col-lg-12">
-                                <div class="input-group input-group-sm">
-                                  <input type="text" style="height:45px!important; margin-top:8px;" class="form-control" name="voucher" id="voucher" class="form-control"  placeholder="Enter voucher code">
-                                  <span class="input-group-btn">
-                                    <input type="submit" class="btn btn-danger" value="Submit" />
-                                  </span>
-                                </div><!-- /input-group -->
-                              </div><!-- /.col-lg-6 -->
-                            </div>
+                <?php echo Yii::$app->session->getFlash('voucher-status'); ?>
+                <form action="<?= Yii::$app->request->baseUrl?>/payments/pay-voucher" method="post" class="form-horizontal">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                    <?php if (Yii::$app->session->hasFlash('error')): ?> 
 
-                          </form>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                
+                                
+                            <?= Yii::$app->session->getFlash('error') ?>
+                        </div>
+
+                        <?php endif; ?>
+                      <div class="input-group input-group-sm">
+                        <input type="text" style="height:45px!important; margin-top:8px;" class="form-control" name="voucher" id="voucher" class="form-control"
+                          placeholder="Enter voucher code">
+                        <span class="input-group-btn">
+                          <input type="submit" class="btn btn-danger" value="Submit" />
+                        </span>
                       </div>
-
-
-                      <div class="clearfix"></div>
-                      </div>
-
+                      <!-- /input-group -->
+                    </div>
+                    <!-- /.col-lg-6 -->
                   </div>
+
+                </form>
               </div>
+
+
+              <div class="clearfix"></div>
+            </div>
+
           </div>
-</section>
+        </div>
+      </div>
+    </section>
