@@ -125,13 +125,13 @@ class SiteController extends Controller
 
     public function actionTesting()
     {
-        //Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
+        Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
         
-        Yii::$app->runAction('messaging/registration', [
-            'email_address' => "spencer@mail.com",
-            'firstname' => 'John',
-            'lastname'   => 'Samuel'
-            ]);
+        // Yii::$app->runAction('messaging/registration', [
+        //     'email_address' => "spencer@mail.com",
+        //     'firstname' => 'John',
+        //     'lastname'   => 'Samuel'
+        //     ]);
         
         //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
 

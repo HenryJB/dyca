@@ -270,7 +270,7 @@
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody><tr>
                             <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
-                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal; text-align:center"><?= $title ?></h1>
+                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal; text-align:center ;text-transform: uppercase;"><?= $title ?></h1>
                                 <p style="margin: 0 0 10px;">Hi <?= $name ?></p>
                                 <p style="margin: 0 0 10px;"><?= $content ?></p>
                                 <p style="margin: 0 0 10px;"><?= $voucher ?></p>

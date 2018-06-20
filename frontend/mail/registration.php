@@ -1,4 +1,4 @@
-
+<?php use yii\helpers\Url;?>
 
 <html>
 <head>
@@ -30,6 +30,13 @@
     <!-- CSS Reset : BEGIN -->
     <style>
 
+        @font-face {
+            font-family: 'futura_bk_btbook';
+            src: url(<?= Url::to('@web/fonts/futura_book-webfont.woff') ?>) format('woff2'),
+            font-weight: normal;
+            font-style: normal;
+        }
+
         /* What it does: Remove spaces around the email design added by some email clients. */
         /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
         html,
@@ -38,6 +45,8 @@
             padding: 0 !important;
             height: 100% !important;
             width: 100% !important;
+            font-family: futura_bk_btbook, sans-serif;
+            font-size: 15px;
         }
 
         /* What it does: Stops email clients resizing small text. */
@@ -271,7 +280,7 @@
                     <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                         <tbody><tr>
                             <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
-                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal; text-align:center"><?= $title ?></h1>
+                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal; text-align:center; text-transform: uppercase;"><?= $title ?></h1>
                                 <p style="margin: 0 0 10px;">Hi <?= $name ?></p>
                                 <p style="margin: 0 0 10px;"><?= $content ?></p>
                                 <p style="margin: 0 0 10px; color:red;">USERNAME : <?= $username ?></p>
@@ -292,22 +301,7 @@
                                 <!-- Button : END -->
                             </td>
                         </tr>
-                        <tr>
-                            <td style="padding: 0 20px 20px;">
-                                <!-- Button : BEGIN -->
-                                <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: auto;">
-                                    <tbody><tr>
-                                    <p style="margin: 0 0 10px; color:red;">USERNAME : <?= $username ?></p>
-                                    <p style="margin: 0 0 10px; color:red;">PASSWORD : <?= $password ?></p>
-                                    <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
-                                        <p style="margin: 0 0 10px; color:red">NB :Please be advised that for your own security your password needs to be changed</p>
-                                    </td>
-                                    </tr>
-                                </tbody></table>
-                                <!-- Button : END -->
-                            </td>
-                        </tr>
-
+            
                     </tbody></table>
                 </td>
             </tr>
