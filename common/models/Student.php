@@ -31,7 +31,6 @@ use yii\helpers\Url;
  * @property string $date_of_birth
  * @property int $first_choice
  * @property int $second_choice
- * @property string $date_of_birthday
  * @property int $session_id
  * @property int $learning_experience_id
  * @property string $about
@@ -39,8 +38,6 @@ use yii\helpers\Url;
  * @property string $information_source
  * @property int $sponsor_aid
  * @property int $sponsorship_status
- * @property int $is_existing
- * @property string $tag
  * @property int $terms_condition
  * @property string $date_registered
  * @property string $emergency_fullname
@@ -69,12 +66,12 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth', 'date_of_birthday', 'session_id', 'learning_experience_id', 'about', 'information_source', 'is_existing', 'date_registered'], 'required'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth',  'session_id', 'learning_experience_id', 'about',  'date_registered'], 'required'],
             [['gender', 'contact_address', 'payment_status', 'approval_status', 'about', 'information_source'], 'string'],
-            [['year', 'date_of_birth', 'date_of_birthday', 'date_registered'], 'safe'],
-            [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'learning_experience_id', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
+            [['year', 'date_of_birth', 'date_registered'], 'safe'],
+            [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'learning_experience_id', 'sponsor_aid', 'sponsorship_status', 'terms_condition'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 200],
-            [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle', 'tag'], 'string', 'max' => 100],
+            [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle'], 'string', 'max' => 100],
             [['occupation', 'photo', 'project'], 'string', 'max' => 255],
             [['country', 'emergency_fullname'], 'string', 'max' => 150],
             [['emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'string', 'max' => 50],
@@ -134,7 +131,6 @@ class Student extends \yii\db\ActiveRecord
             'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
-            'date_of_birthday' => 'Date Of Birthday',
             'session_id' => 'Session ID',
             'learning_experience_id' => 'Learning Experience',
             'about' => 'About',
@@ -142,8 +138,6 @@ class Student extends \yii\db\ActiveRecord
             'information_source' => 'Information Source',
             'sponsor_aid' => 'Sponsor Aid',
             'sponsorship_status' => 'Sponsorship Status',
-            'is_existing' => 'Is Existing',
-            'tag' => 'Tag',
             'terms_condition' => 'Terms Condition',
             'date_registered' => 'Date Registered',
             'emergency_fullname' => 'Emergency Fullname',

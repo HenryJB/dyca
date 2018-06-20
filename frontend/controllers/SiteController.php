@@ -97,7 +97,15 @@ class SiteController extends Controller
                 $student_session->set('photo', $student->photo);
                 $student_session->set('email_address', $student->email_address);
 
-                return $this->redirect(['students/dashboard']);
+                if($student->payment_status=='paid'){
+
+                  return $this->redirect(['students/dashboard']);
+                }else {
+
+                  return $this->redirect(['payments/index']);
+                }
+
+
             }
 
             return $this->redirect('index');

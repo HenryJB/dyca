@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                       <div class="input-group input-group-sm">
-                        <input type="text" style="height:45px!important; margin-top:8px;" class="form-control" name="voucher" id="voucher" class="form-control"
+                        <input type="text" required style="height:45px!important; margin-top:8px;" class="form-control" name="voucher" id="voucher" class="form-control"
                           placeholder="Enter voucher code">
                         <span class="input-group-btn">
                           <input type="submit" class="btn btn-danger" value="Submit" />

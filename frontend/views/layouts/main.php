@@ -35,9 +35,9 @@ AppAsset::register($this);
       </div>
   </div>
      <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar"
-  
+
        <div class="container">
-       
+
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7" aria-controls="navbarSupportedContent-7"
           aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -45,20 +45,20 @@ AppAsset::register($this);
         <div class="navbar-collapse collapse" id="navbarSupportedContent-7" style="">
           <ul class="navbar-nav mx-auto">
             <li class="nav-item active">
-              <img src="http://www.delyorkcreative.academy/wp-content/uploads/2018/05/DCA-Logo-36.png" alt="logo" width="112" height="69"
+              <img src="http://www.delyorkcreative.academy/wp-content/uploads/2018/05/DCA-Logo-36.png" alt="logo" width="65" height="35"
                 class="imf-fluid">
             </li>
 
 
           </ul>
-          
+
         </div>
       </div>
     </nav>
-    
+
     <?= $content; ?>
 
-<?php $this->beginBody(); ?> 
+<?php $this->beginBody(); ?>
 
 <!-- =====================================
 ==== Start Footer -->

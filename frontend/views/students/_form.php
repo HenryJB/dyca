@@ -110,6 +110,9 @@ div#row__form {
       h6 {
         line-height: 1.2;
       }
+      .help-block{
+        color: #a40000;
+      }
     </style>
     <style type="text/css">
       /* Chart.js */

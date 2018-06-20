@@ -66,18 +66,18 @@ class PaymentsController extends \yii\web\Controller
             if($voucher->status=='used'){
 
               $session->setFlash('voucher-status', 'The voucher has already been used.');
-              return $this->redirect(['students/view', 'id' =>$session->get('id')]);
+              return $this->redirect(['students/view']);
 
             }elseif ($voucher->status=='not used' && (int)$dateObject->format("%a") < 0) {
 
               $session->setFlash('voucher-status', 'The voucher has expired.');
-              return $this->redirect(['students/view', 'id' => $session->get('id')]);
+              return $this->redirect(['students/view']);
             }else {
                 $db = Yii::$app->db;
                 try {
                     $db->createCommand()->update('vouchers', ['status' => 'used'], 'id='.$voucher->id)->execute();
 
-                    //find the student 
+                    //find the student
                     //update or change the student record
 
                     $student_model = Student::findOne($student_id);
@@ -127,8 +127,8 @@ class PaymentsController extends \yii\web\Controller
 
         }else {
 
-          $session->setFlash('error', 'Please enter a valid voucher.');
-          return $this->redirect(['students/view', 'id' => $voucher_assigned->student_id]);
+          $session->setFlash('voucher-status', 'Please enter a valid voucher.');
+          return $this->redirect(['students/view']);
         }// end of if
 
         }
@@ -202,8 +202,8 @@ class PaymentsController extends \yii\web\Controller
 
             if ($code_response === "00") {
 
-                $msg_to_d = "A student has placed an order with this order code:" . $this->session->userdata('order_code'); //$orders;
-                $order_msg_to_customer = 'Thank you. Your payment has been approved and order being processed. order code:' . $this->session->userdata('order_code');
+                $msg_to_dca = "A student has payment registration fee. Payment code:" . $this->session->userdata('order_code'); //$orders;
+                $order_msg_to_student = 'Thank you. Your payment has been approved and payment being processed. payment code:' . $this->session->userdata('order_code');
 
                 //sms functions
 
@@ -270,7 +270,7 @@ class PaymentsController extends \yii\web\Controller
                 redirect('payments/receipt');
             } else {
                 $transaction_info = array(
-                    'transaction_response' => "Your transaction was not successfully approved by Interswitch",
+                    'transaction_response' => "Your transaction was not successfully approved by GT Pay",
                     'transaction_reason' => $page['response_data']['ResponseDescription'],
                     'payment_reference' => $page['response_data']['PaymentReference']
                 );
