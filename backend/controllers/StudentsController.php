@@ -35,6 +35,18 @@ class StudentsController extends Controller
                     'delete' => ['POST', 'GET'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => ['index', 'tag', 'view', 'create', 'update','confirm-member','sponsor','related-states','related-local-government'],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    // everything else is denied
+                ],
+            ],
         ];
     }
 
@@ -161,6 +173,8 @@ class StudentsController extends Controller
             $tagging->tag_id = $dca_tag;
   
             if(!$tagging->save()){
+                //TODO set flash session here
+                //TODO do a redirect here
               print_r($tagging->getErrors());
               exit;
             }
@@ -195,7 +209,7 @@ class StudentsController extends Controller
 
 
             }
-              if($tag->message!==NULL && $tag->notify_status==1){
+              if($tag->message != NULL && $tag->notify_status==1){
                 
                   Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id, 'email_template' => 3]);
               }
@@ -206,6 +220,8 @@ class StudentsController extends Controller
           return $this->redirect(['view', 'id' => $id]);
 
       } catch (\Exception $e) {
+          //TODO add session falsh here to this place
+          //REDIRECT BACK
         //  $transaction->rollBack();
           throw $e;
       }

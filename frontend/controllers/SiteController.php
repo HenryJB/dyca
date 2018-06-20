@@ -84,28 +84,25 @@ class SiteController extends Controller
             if (count($student) > 0) 
             {
 
-                if ($student->payment_status === 'not paid') 
-                {
-                    return $this->redirect(['payments/index']);
-                    
-                } else {
+                if($student->payment_status=='paid'){
 
-                    $student_session = Yii::$app->session;
-                    $student_session->set('id', $student->id);
-                    $student_session->set('photo', $student->photo);
-                    $student_session->set('email_address', $student->email_address);
+                  return $this->redirect(['students/dashboard']);
+                }else {
 
-                    return $this->redirect(['students/dashboard']);
+                  return $this->redirect(['payments/index']);
+                }
+
+
+            }
 
                 }
 
-            }
-        }
+                return $this->renderPartial('index', [
+                    'model' => $model,
+                ]);
 
-        return $this->renderPartial('index', [
-            'model' => $model,
-        ]);
-    }
+            }
+        
 
     public function actionUpdateProfile()
     {
@@ -125,15 +122,17 @@ class SiteController extends Controller
 
     public function actionTesting()
     {
-        Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
+        //Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
         
         // Yii::$app->runAction('messaging/registration', [
         //     'email_address' => "spencer@mail.com",
         //     'firstname' => 'John',
         //     'lastname'   => 'Samuel'
         //     ]);
+
         
-        //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
+        
+        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
 
     }
 

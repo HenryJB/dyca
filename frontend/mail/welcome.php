@@ -32,7 +32,7 @@
 
         @font-face {
             font-family: 'futura_bk_btbook';
-            src: url('https://www.delyorkcreative.academy/wp-content/themes/uncode-child/fonts/futura_book_font-webfont.woff') format('woff2'),
+            src: url(<?= Url::to('@web/fonts/futura_book-webfont.woff') ?>) format('woff2'),
             font-weight: normal;
             font-style: normal;
         }
@@ -283,14 +283,7 @@
                                 <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal; text-align:center; text-transform: uppercase;"><?= $title ?></h1>
                                 <p style="margin: 0 0 10px;">Hi <?= $name ?></p>
                                 <p style="margin: 0 0 10px;"><?= $content ?></p>
-                                <p style="margin: 0 0 10px;">
-                                    <span style="border-bottom:3px solid #a40000;">USERNAME : <?= $username ?></span>
-                                </p>
-                                <p style="margin: 0 0 10px; border-bottom:3px solid #a40000;">
-                                    <span style="border-bottom:3px solid #a40000;"></span>PASSWORD : <?= $password ?>
-                                </p>
-                                <p style="margin: 0 0 10px; border-bottom:3px solid #a40000;">
-                                    <span>NB :Please be advised that for your own security your password needs to be changed</span></p>
+
                             </td>
                         </tr>
                         <tr>
@@ -298,8 +291,8 @@
                                 <!-- Button : BEGIN -->
                                 <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: auto;">
                                     <tbody><tr>
-                                        <td class="button-td button-td-primary" style="border-radius: 4px; background: #222222;">
-											<a class="button-a button-a-primary" href="<?= Yii::$app->request->baseUrl.'/payments/index' ?>" style="background:#a40000; border: 1px solid #a40000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Pay</a>
+                                        <td class="button-td button-td-primary" style="border-radius: 4px; background: #222222;">                                        
+											<a class="button-a button-a-primary" href="<?= Yii::$app->request->baseUrl.'/payments/index' ?>" style="background:#a40000; border: 1px solid #a40000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Proceed To Pay</a>
 										</td>
                                     </tr>
                                 </tbody></table>

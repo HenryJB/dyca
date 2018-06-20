@@ -31,7 +31,6 @@ use yii\helpers\Url;
  * @property string $date_of_birth
  * @property int $first_choice
  * @property int $second_choice
- * @property string $date_of_birthday
  * @property int $session_id
  * @property int $learning_experience_id
  * @property string $about
@@ -67,9 +66,10 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth', 'session_id', 'learning_experience_id', 'about',  'date_registered'], 'required'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth',  'session_id', 'learning_experience_id', 'about',  'date_registered'], 'required'],
             [['gender', 'contact_address', 'payment_status', 'approval_status', 'about', 'information_source'], 'string'],
-            [['year', 'date_of_birth', 'date_of_birthday', 'date_registered'], 'safe'],
+            [['year', 'date_of_birth', 'date_registered'], 'safe'],
+            [['date_of_birth'], 'validateAge'],
             [['state_id', 'local_government_id', 'first_choice', 'second_choice', 'session_id', 'learning_experience_id', 'sponsor_aid', 'sponsorship_status', 'terms_condition'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 200],
             [['email_address', 'phone_number', 'facebook_id', 'twitter_handle', 'instagram_handle'], 'string', 'max' => 100],
@@ -92,16 +92,25 @@ class Student extends \yii\db\ActiveRecord
 
 
     public function scenarios()
-{
-    $scenarios = parent::scenarios();
-    $scenarios[self::SCENARIO_PROFILE_UPDATE] = [
-        'first_name', 'last_name', 'email_address', 'contact_address', 'phone_number','date_of_birth','about'
-    ];
+    {
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_PROFILE_UPDATE] = [
+            'first_name', 'last_name', 'email_address', 'contact_address', 'phone_number','date_of_birth','about'
+        ];
 
-    $scenarios[self::SCENARIO_UPDATE_PROFILE_PICTURE] = ['photo'];
+        $scenarios[self::SCENARIO_UPDATE_PROFILE_PICTURE] = ['photo'];
 
-    return $scenarios;
-}
+        return $scenarios;
+    }
+
+    public function validateAge($attribute, $params)
+    {
+        (int)$age = date("Y") - date("Y", strtotime($this->date_of_birth));
+
+        if ($age < 18) {
+            $this->addError('date_of_birth', 'You Must Be At Least 18 Years Of Age');
+        }
+    }
 
 
 

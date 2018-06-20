@@ -28,6 +28,13 @@
 
     <!-- CSS Reset : BEGIN -->
     <style>
+        @font-face {
+            font-family: 'futura_bk_btbook';
+            src: url('https://www.delyorkcreative.academy/wp-content/themes/uncode-child/fonts/futura_book_font-webfont.woff') format('woff'),
+             url('https://www.delyorkcreative.academy/wp-content/themes/uncode-child/fonts/futura_book_font-webfont.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
 
         /* What it does: Remove spaces around the email design added by some email clients. */
         /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
@@ -37,7 +44,9 @@
             padding: 0 !important;
             height: 100% !important;
             width: 100% !important;
+            font-family: futura_bk_btbook;
         }
+        
 
         /* What it does: Stops email clients resizing small text. */
         * {
@@ -259,7 +268,7 @@
             <!-- Hero Image, Flush : BEGIN -->
             <tr>
                 <td style="background-color: #ffffff;">
-                    <img src="http://placehold.it/1200x600" width="600" height="" alt="alt_text" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
+                    <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/makeup-and-effects-header-02.png" width="600" height="" alt="alt_text" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
                 </td>
             </tr>
             <!-- Hero Image, Flush : END -->
@@ -327,7 +336,7 @@
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tbody><tr>
 	                                    <td style="padding: 10px; text-align: center">
-	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                        <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/Home-page-18.png" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
 	                                    </td>
 	                                </tr>
 	                                <tr>
@@ -344,7 +353,7 @@
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tbody><tr>
 	                                    <td style="padding: 10px; text-align: center">
-	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                        <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/Home-page-13.png" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
 	                                    </td>
 	                                </tr>
 	                                <tr>
@@ -361,7 +370,7 @@
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tbody><tr>
 	                                    <td style="padding: 10px; text-align: center">
-	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                        <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/Home-page-15.png" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
 	                                    </td>
 	                                </tr>
 	                                <tr>

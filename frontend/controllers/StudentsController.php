@@ -77,6 +77,8 @@ class StudentsController extends Controller
      */
     public function actionApply()
     {
+        $session = Yii::$app->session;
+
         $setting = Setting::find()->one();
         $model = new Student();
         $course_registration = new CourseRegistration(); 
@@ -105,18 +107,23 @@ class StudentsController extends Controller
                 $course_registration->course_id     =   $model->first_choice;
                 $course_registration->session_id    =   $model->session_id;
                 $course_registration->date          =   date('Y-m-d');
-
+                $session->set('id', $model->id);
                 try{
+                  $course_registration->save();
                     Yii::$app->session->setFlash('success', 'Registration Was Successful Please Check Your Email For Further Instructions');
-                    $course_registration->save();
+                    //send welcome mail to the student
+                    Yii::$app->runAction('messaging/welcome', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
+                    return $this->redirect('view');
+
                 }catch(Exception $e){
                     Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
                 }
 
-                Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
-
                 return $this->redirect(['site/index']);
 
+            }else {
+              print_r($model->getErrors());
+            //  exit;
             }
 
         }
@@ -144,7 +151,7 @@ class StudentsController extends Controller
 
         if (count($local_govts) > 0) {
             foreach ($local_govts as $local_govt) {
-                echo '<option value="">select one... </option><option value="' . $local_govt->id . '">' . $local_govt->name . '</option>';
+                echo '<option value="' . $local_govt->id . '">' . $local_govt->name . '</option>';
             }
         } else {
             echo '<option> </option>';
@@ -186,11 +193,19 @@ class StudentsController extends Controller
      *
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView()
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $session= Yii::$app->session;
+        $id = $session->get('id');
+
+        if($id!==null){
+          return $this->render('view', [
+              'model' => $this->findModel($id),
+          ]);
+        }else {
+          return $this->redirect('apply');
+        }
+
     }
 
     /**
