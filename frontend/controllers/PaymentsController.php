@@ -11,6 +11,7 @@ class PaymentsController extends \yii\web\Controller
 {
   public function beforeAction($action)
   {
+
       if (in_array($action->id, ['pay-voucher'])) {
           $this->enableCsrfValidation = false;
       }
@@ -27,12 +28,33 @@ class PaymentsController extends \yii\web\Controller
         $session = Yii::$app->session;
         $user_id = $session->get('id');
 
-        $payment = Payment::find()->where(['student_id'=>$user_id])->one();
+        if($user_id!==null){
 
-        if(count($payment)>0){
-            return $this->redirect(['students/dashboard']);
+          $payment = Payment::find()->where(['student_id'=>$user_id])->one();
+
+          if(count($payment)>0){
+              return $this->redirect(['students/dashboard']);
+          }
+          return $this->render('index');
+
+        }else {
+          $id = Yii::$app->getRequest()->getQueryParam('id');
+          printf($id);
+          exit;
         }
-        return $this->render('index');
+
+
+    }
+
+    public function actionRegistrationFees()
+    {
+
+    }
+
+
+    public function actionTuitionFees()
+    {
+
     }
 
 
@@ -111,7 +133,7 @@ class PaymentsController extends \yii\web\Controller
 
                       Yii::$app->session->setFlash('success', 'Payment Successful');
 
-                      Yii::$app->runAction('messaging/pay-success',['id'=>$student_id, 'email_template' => 5]);
+                      Yii::$app->runAction('messaging/registration',['email_address'=>$student_model->email_address, 'firstname'=>$student_model->first_name, 'lastname'=>$student_model->last_name]);
 
                       return $this->redirect('pay-success');
 

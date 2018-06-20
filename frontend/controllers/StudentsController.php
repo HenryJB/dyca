@@ -107,16 +107,16 @@ class StudentsController extends Controller
                 $course_registration->date          =   date('Y-m-d');
                 $session->set('id', $model->id);
                 try{
-                  $course_registration->save();
+                    $course_registration->save();
                     Yii::$app->session->setFlash('success', 'Registration Was Successful Please Check Your Email For Further Instructions');
+
+                    //send a welcome notification
+                    Yii::$app->runAction('messaging/welcome', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
                     return $this->redirect('view');
 
                 }catch(Exception $e){
                     Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
                 }
-
-                Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
-
                 return $this->redirect(['site/index']);
 
             }else {
@@ -194,12 +194,13 @@ class StudentsController extends Controller
         $session= Yii::$app->session;
         $id = $session->get('id');
 
+        
         if($id!==null){
           return $this->render('view', [
               'model' => $this->findModel($id),
           ]);
         }else {
-          return $this->redirect('apply');
+          return $this->redirect(['students/login']);
         }
 
     }

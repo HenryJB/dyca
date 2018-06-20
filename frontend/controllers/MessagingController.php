@@ -1,46 +1,77 @@
 <?php
-
 namespace frontend\controllers;
 
 use common\models\Course;
 use common\models\Email;
 use common\models\EmailTemplate;
 use common\models\Student;
-
-use yii\helpers\Url;
+use common\models\User;
 use yii;
+use yii\helpers\Url;
 
 class MessagingController extends \yii\web\Controller
 {
 
-    public function sendMail($body, $attachment, $type, $subject, $name, $email)
+    public function actionPasswordReset($email)
     {
+        /* @var $user User */
+        $user = User::findOne([
+            'status' => User::STATUS_ACTIVE,
+            'username' => $email,
+        ]);
+
+        if (!$user) {
+            return false;
+        }
+
+        if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            $user->generatePasswordResetToken();
+            if (!$user->save()) {
+                return false;
+            }
+        }
+
+        Yii::$app
+            ->mailer
+            ->compose('@frontend/mail/passwordResetToken.php',
+                ['user' => $user]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name . ' robot'])
+            ->setTo($email)
+            ->setSubject('Password reset for ' . Yii::$app->name)
+            ->send();
+
+        return true;
+    }
+
+    //TODO : ADD VALUE PROPOSITION CODE FOR USER INTERFACE
+    //TODO: ADD LINK FOR PAYING PAYING REGISTRATION
+    public function actionWelcome($email_address, $firstname, $lastname){
+        $email = new Email();
+
+        $template = EmailTemplate::findOne(6);
+
         $message = Yii::$app->mailer->compose(
-            '@common/mail/layouts/registration.php',
+            '@frontend/mail/welcome.php',
             [
-                'content' => $body,
-                'attachment' => $attachment,
-                'title' => $type,
-                'name' => $name,
+                'content' => $template->body,
+                'title' => $template->subject,
+                'name' => $firstname . ' ' . $lastname,
             ]
         );
 
-        $message->setTo($email);
-        $message->setFrom(Yii::$app->params['supportEmail']);
-        $message->setSubject($subject);
+        $email_response = $this->saveEmailDb($email, $email_address, $template->id);
 
-        if (!empty($attachment)) {
-            $path = Url::to('@frontend/web/uploads/attachments/' . $attachment);
-            $message->attach($path);
-        }
         try {
-            if ($message->send()) {
+            if ($email_response) {
+                $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
 
-                $this->saveEmailDb($email, 1);
+                Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to send registration mail');
             }
-
         } catch (Exception $e) {
-            Yii::$app->session->setFlash('Could not Send mail');
+            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
         }
     }
 
@@ -66,40 +97,37 @@ class MessagingController extends \yii\web\Controller
 
     }
 
-
-    public function actionRegistration($email_address,$firstname,$lastname)
+    public function actionRegistration($email_address, $firstname, $lastname)
     {
         $email = new Email();
 
         $template = EmailTemplate::findOne(1);
 
+        $message = Yii::$app->mailer->compose(
+            '@frontend/mail/registration.php',
+            [
+                'content' => $template->body,
+                'title' => $template->subject,
+                'name' => $firstname . ' ' . $lastname,
+                'logo' => Url::to('@frontend/web/img/dcalogo.png'),
+                'username' => $email_address,
+                'password' => $firstname,
+            ]
+        );
+
+        $email_response = $this->saveEmailDb($email, $email_address, $template->id);
+
         try {
-
-            $message = Yii::$app->mailer->compose(
-                '@frontend/mail/registration.php',
-                [
-                    'content' => $template->body,
-                    'title' => $template->subject,
-                    'name' => $firstname . ' ' . $lastname,
-                    'logo' => Url::to('@frontend/web/img/dcalogo.png'), 
-                ]
-            );
-
-            $email_response = $this->saveEmailDb($email, $email_address, $template->id);
-
             if ($email_response) {
                 $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
 
                 Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
             } else {
-                Yii::$app->session->setFlash('error', 'Whoops please try again');
+                Yii::$app->session->setFlash('error', 'Failed to send registration mail');
             }
         } catch (Exception $e) {
-
-            return $this->redirect('students/profile');
+            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
         }
-
-        return $this->redirect('students/profile');
     }
 
     public function actionCourseApplied($course_id)
@@ -124,7 +152,7 @@ class MessagingController extends \yii\web\Controller
                     'title' => $template->subject,
                     'name' => $student->first_name . ' ' . $student->last_name,
                     'course' => $course->name,
-                    'logo' => Url::to('@frontend/web/img/dcalogo.png'), 
+                    'logo' => Url::to('@frontend/web/img/dcalogo.png'),
                 ]
             );
 
@@ -138,20 +166,13 @@ class MessagingController extends \yii\web\Controller
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
             }
         } catch (Exception $e) {
-
-            return $this->redirect('students/profile');
+            Yii::$app->session->setFlash('error', 'Whoops please try again');
 
         }
-
-        return $this->redirect('students/profile');
     }
 
-    //untagging
-
-    public function actionTagging($body,$voucher,$id)
+    public function actionTagging($body, $voucher, $id)
     {
-        //This method depends on email_template_id of 3 for tagging
-
         $email = new Email();
 
         $student = Student::findOne($id);
@@ -163,10 +184,10 @@ class MessagingController extends \yii\web\Controller
             $message = Yii::$app->mailer->compose(
                 '@frontend/mail/tag.php',
                 [
-                    'content'   => $body,
-                    'title'     => 'DCA TRANSACTION',
-                    'name'      => $student->first_name . ' ' . $student->last_name,
-                    'voucher'   => $voucher,
+                    'content' => $body,
+                    'title' => 'DCA TRANSACTION',
+                    'name' => $student->first_name . ' ' . $student->last_name,
+                    'voucher' => $voucher,
                 ]
             );
 
@@ -175,22 +196,16 @@ class MessagingController extends \yii\web\Controller
             if ($email_response) {
                 $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'], 'DCA TRANSACTION');
                 Yii::$app->session->setFlash('sucess', 'An email has been sent to your mail box');
-            } else 
-            {
+            } else {
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
             }
-        } 
-        catch (Exception $e) 
-        {
+        } catch (Exception $e) {
 
             Yii::$app->session->setFlash('error', 'Whoops please try again');
 
         }
-
-        return $this->redirect('students/profile');
     }
 
-    //this code does not change most times
     public function saveEmailDb($email, $student_email_address, $template_id)
     {
         try {
@@ -213,7 +228,6 @@ class MessagingController extends \yii\web\Controller
 
     }
 
-    //this code does not change most times
     public function setMessageParameter($message, $receiver, $from, $subject)
     {
 

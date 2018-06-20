@@ -7,408 +7,395 @@ use yii\helpers\Html;
 $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password', 'token' => $user->password_reset_token]);
 ?>
 
-
-
 <head>
+    <meta charset="utf-8"> <!-- utf-8 works for most cases -->
+    <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
+    <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
+    <title></title> <!-- The title tag shows in email notifications, like Android 4.4. -->
 
-<!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+    <!-- Web Font / @font-face : BEGIN -->
+    <!-- NOTE: If web fonts are not required, lines 10 - 27 can be safely removed. -->
 
-<title>Delyork Creative Academy</title>
+    <!-- Desktop Outlook chokes on web font references and defaults to Times New Roman, so we force a safe fallback font. -->
+    <!--[if mso]>
+        <style>
+            * {
+                font-family: sans-serif !important;
+            }
+        </style>
+    <![endif]-->
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- All other clients get the webfont reference; some will render the font and others will silently fail to the fallbacks. More on that here: http://stylecampaign.com/blog/2015/02/webfont-support-in-email/ -->
+    <!--[if !mso]><!-->
+    <!-- insert web font reference, eg: <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'> -->
+    <!--<![endif]-->
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Web Font / @font-face : END -->
 
-<link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i,900" rel="stylesheet" type="text/css">
+    <!-- CSS Reset : BEGIN -->
+    <style>
 
-<style type="text/css">
-    a {
-
-        outline: none;
-
-        color: #fff;
-
-        text-decoration: underline;
-
-    }
-
-    a:hover {
-        text-decoration: none !important;
-    }
-
-    .h-u a {
-        text-decoration: none;
-    }
-
-    .h-u a:hover {
-        text-decoration: underline !important;
-    }
-
-    a[x-apple-data-detectors] {
-        color: inherit !important;
-        text-decoration: none !important;
-    }
-
-    a[href^="tel"]:hover {
-        text-decoration: none !important;
-    }
-
-    .active-i a:hover,
-
-    .active-t:hover {
-        opacity: 0.8;
-    }
-
-    .active-i a,
-
-    .active-t {
-        transition: all 0.3s ease;
-    }
-
-    a img {
-        border: none;
-    }
-
-    b,
-    strong {
-        font-weight: 700;
-    }
-
-    p {
-        margin: 0;
-        color: white;
-    }
-
-    th {
-        padding: 0;
-    }
-
-    table td {
-        mso-line-height-rule: exactly;
-    }
-
-    .ns span,
-    .ns a {
-        color: inherit !important;
-        text-decoration: none !important;
-        border: none !important;
-    }
-
-    [style*="Lato"] {
-        font-family: Lato, Arial, Helvetica, sans-serif !important;
-    }
-
-    .l-white a {
-        color: #fff;
-    }
-
-    .l-grey a {
-        color: #8a8a8a;
-    }
-
-    .text-white {
-        color: white;
-    }
-
-    @media only screen and (max-width:375px) and (min-width:374px) {
-
-        .gmail-fix {
-            min-width: 374px !important;
-        }
-
-    }
-
-    @media only screen and (max-width:414px) and (min-width:413px) {
-
-        .gmail-fix {
-            min-width: 413px !important;
-        }
-
-    }
-
-    @media only screen and (max-width:617px) {
-
-        .w-100p {
-            width: 50% !important;
-        }
-
-        .hm {
-            display: none !important;
-            width: 0 !important;
-            height: 0 !important;
+        /* What it does: Remove spaces around the email design added by some email clients. */
+        /* Beware: It can remove the padding / margin and add a background color to the compose a reply window. */
+        html,
+        body {
+            margin: 0 auto !important;
             padding: 0 !important;
-            font-size: 0 !important;
-            line-height: 0 !important;
-        }
-
-        .wi-100p img {
+            height: 100% !important;
             width: 100% !important;
-            height: auto !important;
         }
 
-        .plr-0 {
-            padding-left: 0 !important;
-            padding-right: 0 !important;
+        /* What it does: Stops email clients resizing small text. */
+        * {
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%;
         }
 
-        .plr-10 {
-            padding-left: 10px !important;
-            padding-right: 10px !important;
+        /* What it does: Centers email on Android 4.4 */
+        div[style*="margin: 16px 0"] {
+            margin: 0 !important;
         }
 
-        .pb-10 {
-            padding-bottom: 10px !important;
+        /* What it does: Stops Outlook from adding extra spacing to tables. */
+        table,
+        td {
+            mso-table-lspace: 0pt !important;
+            mso-table-rspace: 0pt !important;
         }
 
-        .pb-25 {
-            padding-bottom: 25px !important;
+        /* What it does: Fixes webkit padding issue. Fix for Yahoo mail table alignment bug. Applies table-layout to the first 2 tables then removes for anything nested deeper. */
+        table {
+            border-spacing: 0 !important;
+            border-collapse: collapse !important;
+            table-layout: fixed !important;
+            margin: 0 auto !important;
+        }
+        table table table {
+            table-layout: auto;
         }
 
-        .fs-22 {
-            font-size: 22px !important;
+        /* What it does: Prevents Windows 10 Mail from underlining links despite inline CSS. Styles for underlined links should be inline. */
+        a {
+            text-decoration: none;
         }
 
-        .lh-38 {
-            line-height: 38px !important;
+        /* What it does: Uses a better rendering method when resizing images in IE. */
+        img {
+            -ms-interpolation-mode:bicubic;
         }
 
-    }
-</style>
+        /* What it does: A work-around for email clients meddling in triggered links. */
+        *[x-apple-data-detectors],  /* iOS */
+        .unstyle-auto-detected-links *,
+        .aBn {
+            border-bottom: 0 !important;
+            cursor: default !important;
+            color: inherit !important;
+            text-decoration: none !important;
+            font-size: inherit !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            line-height: inherit !important;
+        }
 
-<style type="text/css">
-    @import url(link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700,700i,900");
-</style>
+        /* What it does: Prevents Gmail from displaying a download button on large, non-linked images. */
+        .a6S {
+           display: none !important;
+           opacity: 0.01 !important;
+       }
+       /* If the above doesn't work, add a .g-img class to any image in question. */
+       img.g-img + div {
+           display: none !important;
+       }
+
+        /* What it does: Removes right gutter in Gmail iOS app: https://github.com/TedGoas/Cerberus/issues/89  */
+        /* Create one of these media queries for each additional viewport size you'd like to fix */
+
+        /* iPhone 4, 4S, 5, 5S, 5C, and 5SE */
+        @media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
+            .email-container {
+                min-width: 320px !important;
+            }
+        }
+        /* iPhone 6, 6S, 7, 8, and X */
+        @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+            .email-container {
+                min-width: 375px !important;
+            }
+        }
+        /* iPhone 6+, 7+, and 8+ */
+        @media only screen and (min-device-width: 414px) {
+            .email-container {
+                min-width: 414px !important;
+            }
+        }
+
+    </style>
+    <!-- CSS Reset : END -->
+	<!-- Reset list spacing because Outlook ignores much of our inline CSS. -->
+	<!--[if mso]>
+	<style type="text/css">
+		ul,
+		ol {
+			margin: 0 !important;
+		}
+		li {
+			margin-left: 30px !important;
+		}
+		li.list-item-first {
+			margin-top: 0 !important;
+		}
+		li.list-item-last {
+			margin-bottom: 10px !important;
+		}
+	</style>
+	<![endif]-->
+
+    <!-- Progressive Enhancements : BEGIN -->
+    <style>
+
+        /* What it does: Hover styles for buttons */
+        .button-td,
+        .button-a {
+            transition: all 100ms ease-in;
+        }
+	    .button-td-primary:hover,
+	    .button-a-primary:hover {
+	        background: #555555 !important;
+	        border-color: #555555 !important;
+	    }
+
+        /* Media Queries */
+        @media screen and (max-width: 600px) {
+
+            .email-container {
+                width: 100% !important;
+                margin: auto !important;
+            }
+
+            /* What it does: Forces elements to resize to the full width of their container. Useful for resizing images beyond their max-width. */
+            .fluid {
+                max-width: 100% !important;
+                height: auto !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+
+            /* What it does: Forces table cells into full-width rows. */
+            .stack-column,
+            .stack-column-center {
+                display: block !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                direction: ltr !important;
+            }
+            /* And center justify these ones. */
+            .stack-column-center {
+                text-align: center !important;
+            }
+
+            /* What it does: Generic utility class for centering. Useful for images, buttons, and nested tables. */
+            .center-on-narrow {
+                text-align: center !important;
+                display: block !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                float: none !important;
+            }
+            table.center-on-narrow {
+                display: inline-block !important;
+            }
+
+            /* What it does: Adjust typography on small screens to improve readability */
+            .email-container p {
+                font-size: 17px !important;
+            }
+        }
+
+    </style>
+    <!-- Progressive Enhancements : END -->
+
+    <!-- What it does: Makes background images in 72ppi Outlook render at correct size. -->
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
 
 </head>
-
-<body style="margin:0; padding:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
-
-
-<table class="gmail-fix" width="100%" style="min-width:320px;" cellspacing="0" cellpadding="0">
-
-    <tbody>
-        <tr>
-
-            <td>
-
-                <table class="w-100p" width="600" align="center" style="max-width:600px; margin:0 auto;" cellpadding="0" cellspacing="0">
-
-                    <tbody>
-                        <tr>
-                            <td style="background:#000 url(<?= Yii::$app->request->baseUrl?>) no-repeat center top;">
-                                <!--[if gte mso 9]>
-                                <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px; height:2061px;">
-                                    <v:fill type="tile" src="https://gallery.mailchimp.com/e18548847fbb96bf384241ca5/images/21e20f89-5682-4fb0-bf50-fb54803baed8.png" color="#000000" />
-                                    <v:textbox style="padding-top:0; padding-bottom:0; padding-left:0; padding-right:0;">
-                                        <![endif]-->
-
-                                <table width="100%" cellpadding="0" cellspacing="0">
-
-                                    <tbody>
-                                        <tr>
-
-                                            <td class="hm" width="20"></td>
-
-                                            <td class="plr-10" valign="top">
-
-                                                <table width="100%" cellpadding="0" cellspacing="0">
-
-                                                    <!-- header -->
-
-                                                    <tbody>
-                                                        <tr>
-
-                                                            <td align="center" style="padding:30px 0 35px;">
-
-                                                                <a style="text-decoration:none;" href="<?= Yii::$app->request->baseUrl?>" target="_blank">
-
-                                                                    <img src="http://delyorkcreative.academy/img/dcalogo.png" width="149" style="font:700 16px/20px Lato, Arial, Helvetica, sans-serif; color:#fff; width:149px; vertical-align:top;"
-                                                                        alt="MasterClass">
-
-                                                                </a>
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <!-- content -->
-
-                                                        <!-- block 1 -->
-
-                                                        <tr>
-
-                                                            <td class="l-white fs-22 lh-38 pb-25" align="center" style="padding:0 10px 42px 10px; font: 30px/50px Lato, Helvetica, Arial, sans-serif; color:#fff; letter-spacing:3px;">
-
-                                                                <a style="color:#fff; text-decoration:none;" href="<?= Yii::$app->request->baseUrl?>" target="_blank">Hi
-                                                                    
-                                                                    <?= Html::encode($user->username)?>
-                                                                </a>
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <tr>
-
-                                                            <td class="pb-10" style="padding:0 0 35px;">
-
-                                                                <table class="w-100p" width="558" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
-
-                                                                    <tbody>
-                                                                        <tr>
-
-                                                                            <td class="wi-100p" align="center">
-
-                                                                                <p>Follow the link below to reset your password:</p>
-
-                                                                                <p><?= Html::a(Html::encode($resetLink), $resetLink) ?></p>
-
-                                                                                    <a style="text-decoration:none;" href="<?= Yii::$app->request->baseUrl?>" target="_blank">
-
-                                                                                        <img src="http://delyorkcreative.academy/img/drones.png" width="558"
-                                                                                            style="width:558px; max-width:420px; margin-top:30px; vertical-align:top;"
-                                                                                            alt="Introducing Our New MasterClass iPhone App">
-
-                                                                                    </a>
-
-                                                                            </td>
-
-                                                                        </tr>
-
-                                                                    </tbody>
-                                                                </table>
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <tr>
-
-                                                            <td class="pb-25" style="padding:20px 0 76px;">
-
-                                                                <table class="w-100p" align="center" width="425" style="margin:0 auto; max-width:425px;" cellpadding="0" cellspacing="0">
-
-                                                                    <tbody>
-                                                                        <tr>
-
-                                                                            <td class="active-t" align="center" style="background:#c63430; mso-padding-alt:19px 15px 21px; font:700 19px/23px Lato, Arial, Helvetica, sans-serif; border-radius:2px; letter-spacing:2px; text-transform:uppercase;">
-
-                                                                                <a style="color:#fff; text-decoration:none; display:block; padding:19px 15px 21px;" href="<?= Yii::$app->request->baseUrl?>"
-                                                                                    target="_blank">EXPLORE OUR COURSES</a>
-
-                                                                            </td>
-
-                                                                        </tr>
-
-                                                                    </tbody>
-                                                                </table>
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <tr>
-
-                                                            <td class="wi-100p pb-25" align="center" style="padding:0 0 75px;">
-
-                                                                <img src="https://gallery.mailchimp.com/e18548847fbb96bf384241ca5/images/4499bc86-4f1d-41c3-b88f-c470f3026484.png" width="503"
-                                                                    style="width:503px; vertical-align:top;" alt="">
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <!-- block 2 -->
-
-                                                        <tr>
-
-                                                            <td style="padding:0 0 44px;">
-
-                                                                <table class="w-100p" width="350" align="center" style="margin:0 auto;" cellpadding="0" cellspacing="0">
-
-                                                                    <tbody>
-                                                                        <tr>
-
-                                                                            <td align="center" style="padding:0 0px 19px 0px; font:27px/32px Lato, Arial, Helvetica, sans-serif; color:#fff;">
-                                                                                <a style="color:#fff; text-decoration:none;" href="<?= Yii::$app->request->baseUrl?>" target="_blank">
-                                                                                    Discover Our Classes</a>
-
-                                                                            </td>
-
-                                                                        </tr>
-
-                                                                        <tr>
-
-                                                                            <td class="l-grey" align="center" style="font:18px/26px Lato, Arial, Helvetica, sans-serif; color:#8e8e8e;">
-
-                                                                                Learn from the very best
-
-                                                                            </td>
-
-                                                                        </tr>
-
-                                                                    </tbody>
-                                                                </table>
-
-                                                            </td>
-
-                                                        </tr>
-
-                                                        <tr>
-
-                                                            <td class="pb-10" align="center" style="padding:30px 0 30px;">
-
-                                                                <img src="https://gallery.mailchimp.com/e18548847fbb96bf384241ca5/images/02c99c37-8dfe-469e-9652-1ba50cb63a30.png" width="503"
-                                                                    style="width:503px; vertical-align:top;" alt="">
-
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td valign="top" align="center" style="font:11px Lato, Helvetica, san-serif; color:#8e8e8e;text-transform: none;letter-spacing: 0px;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;mso-table-lspace: 0;mso-table-rspace: 0; padding: 0px 30px 30px 30px;">
-                                                            <div class="footerContent">
-                                                                        
-                                                                        <br>
-                                                                        <a href="<?= Yii::$app->request->baseUrl; ?>" style="color:#8e8e8e; text-decoration: none;"
-                                                                            target="_blank">DCA</a>
-                                                                        <br> Copyright © 2018 Delyork Creative Academy - All rights reserved.</div>
-
-                                                            </td>
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-
-                                            </td>
-
-                                            <td class="hm" width="20"></td>
-
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-
-                                <!--[if gte mso 9]>
-
-                                    </v:textbox>
-
-                                </v:rect>
-
-                            <![endif]-->
-
+<!--
+	The email background color (#222222) is defined in three places:
+	1. body tag: for most email clients
+	2. center tag: for Gmail and Inbox mobile apps and web versions of Gmail, GSuite, Inbox, Yahoo, AOL, Libero, Comcast, freenet, Mail.ru, Orange.fr
+	3. mso conditional: For Windows 10 Mail
+-->
+<body width="100%" style="margin: 0px; background-color: rgb(34, 34, 34); padding: 0px !important;">    <center style="width: 100%; background-color: #222222;">
+    <!--[if mso | IE]>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #222222;">
+    <tr>
+    <td>
+    <![endif]-->
+
+        <!-- Visually Hidden Preheader Text : BEGIN -->
+        <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
+            (Optional) This text will appear in the inbox preview, but not the email body. It can be used to supplement the email subject line or even summarize the email's contents. Extended text preheaders (~490 characters) seems like a better UX for anyone using a screenreader or voice-command apps like Siri to dictate the contents of an email. If this text is not included, email clients will automatically populate it using the text (including image alt text) at the start of the email's body.
+        </div>
+        <!-- Visually Hidden Preheader Text : END -->
+
+        <!-- Create white space after the desired preview text so email clients don’t pull other distracting text into the inbox preview. Extend as necessary. -->
+        <!-- Preview Text Spacing Hack : BEGIN -->
+        <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
+	        &zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;
+        </div>
+        <!-- Preview Text Spacing Hack : END -->
+
+        <!-- Email Body : BEGIN -->
+        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto;" class="email-container">
+	        <!-- Email Header : BEGIN -->
+            <tbody><tr>
+                <td style="padding: 20px 0; text-align: center">
+                    <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/DCA-Logo-36.png" width="200" height="50" alt="alt_text" border="0" style="height: auto; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+                </td>
+            </tr>
+	        <!-- Email Header : END -->
+
+            <!-- Hero Image, Flush : BEGIN -->
+            <tr>
+                <td style="background-color: #ffffff;">
+                    <img src="http://placehold.it/1200x600" width="600" height="" alt="alt_text" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
+                </td>
+            </tr>
+            <!-- Hero Image, Flush : END -->
+
+            <!-- 1 Column Text + Button : BEGIN -->
+            <tr>
+                <td style="background-color: #ffffff;">
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                        <tbody><tr>
+                            <td style="padding: 20px; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+                                <h1 style="margin: 0 0 10px; font-size: 25px; line-height: 30px; color: #333333; font-weight: normal; text-align:center ;text-transform: uppercase;">password reset</h1>
+                                <p style="margin: 0 0 10px;">Hi <?= Html::encode($user->username)?></p>
+                                <p>Follow the link below to reset your password:</p>
+                                <p><?= Html::a('Reset Password', $resetLink,['style' => 'background:#c63430; border: 1px solid red; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 10px 0px; color: #ffffff; display: block; border-radius: 4px; width:200px']) ?></p>
                             </td>
-
                         </tr>
 
-                    </tbody>
-                </table>
+                    </tbody></table>
+                </td>
+            </tr>
+            <!-- 1 Column Text + Button : END -->
 
-            </td>
+            <!-- Background Image with Text : BEGIN -->
+            <tr>
+                <!-- Bulletproof Background Images c/o https://backgrounds.cm -->
+                <td valign="middle" style="text-align: center; background-image: url('http://placehold.it/600x230/222222/666666'); background-color: #222222; background-position: center center !important; background-size: cover !important;">
+	                <!--[if gte mso 9]>
+	                <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false" style="width:600px;height:175px; background-position: center center !important;">
+	                <v:fill type="tile" src="http://placehold.it/600x230/222222/666666" color="#222222" />
+	                <v:textbox inset="0,0,0,0">
+	                <![endif]-->
+	                
+	                <!--[if gte mso 9]>
+	                </v:textbox>
+	                </v:rect>
+	                <![endif]-->
+	            </td>
+	        </tr>
+	        <!-- Background Image with Text : END -->
 
-        </tr>
+	        <!-- 2 Even Columns : BEGIN -->
+	        
+	        <!-- 2 Even Columns : END -->
 
-    </tbody>
-</table>
+	        <!-- 3 Even Columns : BEGIN -->
+	        <tr>
+	            <td valign="top" style="padding: 10px; background-color: #ffffff;">
+	                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+	                    <tbody><tr>
+	                        <!-- Column : BEGIN -->
+	                        <td width="33.33%" class="stack-column-center">
+	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+	                                <tbody><tr>
+	                                    <td style="padding: 10px; text-align: center">
+	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;" class="center-on-narrow">
+                                            <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+                                            <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background: red; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
+	                                    </td>
+	                                </tr>
+	                            </tbody></table>
+	                        </td>
+	                        <!-- Column : END -->
+	                        <!-- Column : BEGIN -->
+	                        <td width="33.33%" class="stack-column-center">
+	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+	                                <tbody><tr>
+	                                    <td style="padding: 10px; text-align: center">
+	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;" class="center-on-narrow">
+                                            <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+                                            <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background:red; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 10px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
+	                                    </td>
+	                                </tr>
+	                            </tbody></table>
+	                        </td>
+	                        <!-- Column : END -->
+	                        <!-- Column : BEGIN -->
+	                        <td width="33.33%" class="stack-column-center">
+	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+	                                <tbody><tr>
+	                                    <td style="padding: 10px; text-align: center">
+	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                    </td>
+	                                </tr>
+	                                <tr>
+	                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;" class="center-on-narrow">
+                                            <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+                                            <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background:red; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 10px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
+	                                    </td>
+	                                </tr>
+	                            </tbody></table>
+	                        </td>
+	                    
+	                    </tr>
+	                </tbody></table>
+	            </td>
+	        </tr>
 
-</body>
 
+	        <tr>
+	            <td aria-hidden="true" height="40" style="font-size: 0px; line-height: 0px;">
+	                &nbsp;
+	            </td>
+	        </tr>
+
+
+	    </tbody></table>
+	    <!-- Email Body : END -->
+
+	    <!-- Email Footer : BEGIN -->
+        <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" style="margin: 0 auto;" class="email-container">
+	        <tbody><tr>
+	            <td style="padding: 20px; font-family: sans-serif; font-size: 12px; line-height: 15px; text-align: center; color: #888888;">
+	                
+	                <br><br>
+	                Delyork International<br><span class="unstyle-auto-detected-links">123 Fake Street, SpringField, OR, 97477 US<br>(123) 456-7890</span>
+	                <br><br>
+	                <unsubscribe style="color: #888888; text-decoration: underline;">unsubscribe</unsubscribe>
+	            </td>
+	        </tr>
+	    </tbody></table>
+
+    </center>
+
+</body></html>

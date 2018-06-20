@@ -177,7 +177,7 @@ div#row__form {
 
           <div class="col-md-12 col-xl-12" style="padding-top:40px;">
             <h6 class="mb-3 wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;"> Have you registered ?
-            <a class="btn btn-primary wow fadeInLeft waves-effect waves-light" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;" href="http://www.delyorkcreative.academy/portal/frontend/web/site/index">Login</a></h6>
+            <a class="btn btn-primary wow fadeInLeft waves-effect waves-light" data-wow-delay="0.3s" style="visibility: visible; animation-name: fadeInLeft; animation-delay: 0.3s;" href="<?=Yii::$app->request->baseUrl?>/site/index">Login</a></h6>
           </div>
 
 
