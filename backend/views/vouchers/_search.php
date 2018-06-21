@@ -8,22 +8,24 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="voucher-search">
+<div class="voucher-search mt-5 mb-5">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'class' => 'form-inline'
+        ]
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'voucher_category',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder' => 'Voucher Category']) ?>
 
-    <?= $form->field($model, 'voucher_category') ?>
+    <?= $form->field($model, 'code',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Code']) ?>
 
-    <?= $form->field($model, 'code') ?>
+    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Description']) ?>
 
-    <?= $form->field($model, 'description') ?>
-
-    <?= $form->field($model, 'prefix') ?>
+    <?= $form->field($model, 'prefix',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Prefix']) ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
@@ -32,8 +34,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'discount') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-primary btn-lg']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-warning btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

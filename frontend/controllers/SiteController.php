@@ -85,11 +85,16 @@ class SiteController extends Controller
             $session->set('id',$student->id);
             $session->set('photo',$student->photo);
 
-            if (count($student) > 0) 
+            if (count($student) > 0)
             {
-                if($student->payment_status=='paid')
-                {                    
-                    return $this->redirect(['students/dashboard']);
+                $session = Yii::$app->session;
+                $session->set('id', $student->id);
+                $session->set('student', $student); 
+
+                if($student->payment_status=='paid'){
+
+                  return $this->redirect(['students/dashboard']);
+
                 }
                 else 
                 {
@@ -124,15 +129,22 @@ class SiteController extends Controller
     public function actionTesting()
     {
         //Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
-        
+
         // Yii::$app->runAction('messaging/registration', [
         //     'email_address' => "spencer@mail.com",
         //     'firstname' => 'John',
         //     'lastname'   => 'Samuel'
         //     ]);
 
-        
-        
+        Yii::$app->runAction('messaging/welcome', [
+            'email_address' => "towematin@mailinator.com",
+            'firstname' => 'John',
+            'lastname'   => 'Samuel',
+            'id'   => 33
+            ]);
+
+
+
         //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
 
     }

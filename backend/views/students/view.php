@@ -11,6 +11,7 @@ use common\models\State;
 $this->title = $model->first_name;
 $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="student-view">
   <!-- modal medium -->
@@ -112,6 +113,8 @@ $this->params['breadcrumbs'][] = $this->title;
                       </div>
                       <h2 class="font-semibold mgbt-xs-5 f-text-white"><?=$model->first_name . ' '. $model->last_name?> </h2>
                       <?php $state= State::find()->where(['id'=>$model->state_id])->one(); ?>
+
+                      
 
                       <h4 class="f-text-white"><?=$state->name.','. $model->country ?></h4>
                       <p style="padding:10px;"><?=$model->about ?></p>

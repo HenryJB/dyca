@@ -44,16 +44,18 @@ class MessagingController extends \yii\web\Controller
         return true;
     }
 
-    public function actionWelcome($email_address, $firstname, $lastname)
+    public function actionWelcome($email_address, $firstname, $lastname,$id)
     {
         $email = new Email();
 
         $template = EmailTemplate::findOne(6);
 
-        if (count($template) > 0) {
+        if (count($template) < 0) {
             Yii::$app->session->setFlash('error', 'Failed to send registration mail');
             return false;
         }
+
+        $hash = Yii::$app->getSecurity()->hashData($id,'delyork_creative_academy');
 
         $message = Yii::$app->mailer->compose(
             '@frontend/mail/welcome.php',
@@ -61,6 +63,7 @@ class MessagingController extends \yii\web\Controller
                 'content' => $template->body,
                 'title' => $template->subject,
                 'name' => $firstname . ' ' . $lastname,
+                'hash' => $hash
             ]
         );
 
@@ -74,7 +77,7 @@ class MessagingController extends \yii\web\Controller
 
             if(!$boolean)
             {
-                Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+                Yii::$app->session->setFlash('error', 'Failed to send mail');
             }
             
         } catch (Exception $e) 
@@ -113,7 +116,7 @@ class MessagingController extends \yii\web\Controller
 
         $template = EmailTemplate::findOne(1);
 
-        if (count($template) > 0) {
+        if (count($template) < 0) {
             Yii::$app->session->setFlash('error', 'Failed to send registration mail');
             return false;
         }
@@ -136,16 +139,18 @@ class MessagingController extends \yii\web\Controller
         {            
             $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
 
-            $boolean = $this->saveEmailDb($email, $email_address, $template->id);
-
-            if(!$boolean)
+            if($this->saveEmailDb($email, $email_address, $template->id))
             {
-                Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+                Yii::$app->session->setFlash('success', 'Payment successful please check your mail for your login details');
+            }
+            else
+            {
+                Yii::$app->session->setFlash('success', 'We encountered issues while sending a mail to you Contact the Administrator  inquiry@delyorkgroup.com');
             }
            
         } catch (Exception $e) 
         {
-            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+            Yii::$app->session->setFlash('error', 'We encountered issues while sending a mail to you Contact the Administrator inquiry@delyorkgroup.com');
         }
     }
 

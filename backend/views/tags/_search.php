@@ -8,22 +8,23 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tag-search">
+<div class="tag-search mt-5 mb-5">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'class' => 'form-inline'
+        ]
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'name',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'description') ?>
+    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-primary btn-lg']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-warning btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

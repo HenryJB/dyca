@@ -27,3 +27,23 @@ ul .breadcrumb li :nth-child(n+2):before {
     background-color: #fff;
     border-color: transparent !important;
 }
+
+
+.form-group.field-entrysearchpayment-reference_no > label.control-label,
+.form-group.field-entrysearchpayment-amount > label.control-label,
+.form-group.field-entrysearchpayment-description > label.control-label,
+.form-group.field-entrysearchpayment-type > label.control-label,
+ {
+    font-weight:normal;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.remove_default_class_n_padding{
+    font-weight:normal;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size:12px;
+}
+
+

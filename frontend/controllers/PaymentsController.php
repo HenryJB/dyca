@@ -21,39 +21,40 @@ class PaymentsController extends \yii\web\Controller
   }
 
 
-    public function actionIndex()
+    public function actionIndex($payload)
     {
-        $session = Yii::$app->session;
-        $user_id = (int)$session->get('id');
-
-        if($user_id!==null){
-
-          $payment = Payment::find()->where(['student_id'=>$user_id])->one();
-
-          if(count($payment)>0){
-              return $this->redirect(['students/dashboard']);
-          }
-          return $this->render('index');
-
-        }else {
-          $id = Yii::$app->getRequest()->getQueryParam('id');
-          printf($id);
-          exit;
+        $id = Yii::$app->getSecurity()->validateData($payload, 'delyork_creative_academy');
+        
+        if(!is_numeric((int)$id))
+        {
+            return $this->redirect(['site/index']);
         }
 
+        if($id!==null)
+        {
+            $payment = Payment::find()->where(['student_id'=>$id])->one();
 
+            if(count($payment)>0)
+            {
+                $student_model = Student::findOne($id);
+
+                Yii::$app->session->setFlash('success', 'Payment Successful Please Check Your Mail For Your Login Details');
+                
+                Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
+                
+                return $this->redirect(['site/index']);
+            }
+
+            return $this->render(['payments/index']);
+        }
+        else
+        {
+            Yii::$app->session->setFlash('error', 'Payment Failed Please Try Again');
+            return $this->redirect(['site/index']);
+        }
+        
     }
 
-    public function actionRegistrationFees()
-    {
-
-    }
-
-
-    public function actionTuitionFees()
-    {
-
-    }
 
     public function actionPayVoucher()
     {
@@ -75,7 +76,7 @@ class PaymentsController extends \yii\web\Controller
                         // a check should come here to end the execution of the code here so as to stop the implementation 
                         if (count($voucher_assigned) <= 0) {
                             Yii::$app->session->setFlash('error', 'Voucher has been used or assigned Contact Support');
-                            return $this->redirect(['site/view']);
+                            return $this->redirect(['site/index']);
                         }
 
                         $student_id = $voucher_assigned->student_id;
