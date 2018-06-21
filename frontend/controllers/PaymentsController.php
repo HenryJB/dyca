@@ -1,11 +1,12 @@
 <?php
 
 namespace frontend\controllers;
-use Yii;
-use common\models\VouchersAssignment;
-use common\models\Voucher;
+
 use common\models\Payment;
 use common\models\Student;
+use common\models\Voucher;
+use common\models\VouchersAssignment;
+use Yii;
 
 class PaymentsController extends \yii\web\Controller
 {
@@ -20,13 +21,10 @@ class PaymentsController extends \yii\web\Controller
   }
 
 
-
-
-
     public function actionIndex()
     {
         $session = Yii::$app->session;
-        $user_id = $session->get('id');
+        $user_id = (int)$session->get('id');
 
         if($user_id!==null){
 
@@ -57,109 +55,116 @@ class PaymentsController extends \yii\web\Controller
 
     }
 
-
-
     public function actionPayVoucher()
     {
+        if (Yii::$app->request->post() && !empty(Yii::$app->request->post('voucher'))) {
+            $session = Yii::$app->session;
+            $voucherCode = Yii::$app->request->post('voucher');
+            $student_id = null;
 
-      if(Yii::$app->request->post()){
-        $session = Yii::$app->session;
-        $voucherCode = Yii::$app->request->post('voucher');
-        $student_id =null;
+            if ($voucherCode !== '') {
+                $voucher = Voucher::find()->where(['code' => $voucherCode])->one();
 
-        if($voucherCode!==''){
-          $voucher = Voucher::find()->where(['code'=> $voucherCode])->one();
+                try{
 
-          if(count($voucher)>0){
+                        
+                    if (count($voucher) > 0) {
 
-            $voucher_assigned = VouchersAssignment::find()->where(['voucher_id'=> $voucher->id])->one();
+                        $voucher_assigned = VouchersAssignment::find()->where(['voucher_id' => $voucher->id])->one();
 
-            if(count($voucher_assigned)>0){
-              $student_id = $voucher_assigned->student_id;
-            }
+                        // a check should come here to end the execution of the code here so as to stop the implementation 
+                        if (count($voucher_assigned) <= 0) {
+                            Yii::$app->session->setFlash('error', 'Voucher has been used or assigned Contact Support');
+                            return $this->redirect(['site/view']);
+                        }
 
+                        $student_id = $voucher_assigned->student_id;
 
-            $today          = date_create(date('Y-m-d'));
-            $expiry_date    = date_create($voucher->expiry_date);
+                        //check if the voucher belongs to the student//
 
-            $dateObject = date_diff($today,$expiry_date);
+                        //proceed with execution here
+                        $today = date_create(date('Y-m-d'));
+                        $expiry_date = date_create($voucher->expiry_date);
 
+                        $dateObject = date_diff($today, $expiry_date);
 
-            if($voucher->status=='used'){
+                        if ($voucher->status == 'used') {
+                            $session->setFlash('error', 'The voucher has already been used.');
+                            return $this->redirect(['students/view']);
 
-              $session->setFlash('voucher-status', 'The voucher has already been used.');
-              return $this->redirect(['students/view']);
+                        } elseif ($voucher->status == 'not used' && (int) $dateObject->format("%a") < 0) {
+                            $session->setFlash('error', 'The voucher has expired.');
+                            return $this->redirect(['students/view']);
+                        } else {
+                            $db = Yii::$app->db;
+                            
+                            try {
+                                $db->createCommand()->update('vouchers', ['status' => 'used'], 'id=' . $voucher->id)->execute();
 
-            }elseif ($voucher->status=='not used' && (int)$dateObject->format("%a") < 0) {
+                                //find the student
+                                //update or change the student record
 
-              $session->setFlash('voucher-status', 'The voucher has expired.');
-              return $this->redirect(['students/view']);
-            }else {
-                $db = Yii::$app->db;
-                try {
-                    $db->createCommand()->update('vouchers', ['status' => 'used'], 'id='.$voucher->id)->execute();
+                                $student_model = Student::findOne($student_id);
+                                $student_model->payment_status = 'paid';
+                                $student_model->update();
 
-                    //find the student
-                    //update or change the student record
+                                //1. Populate the payment table
+                                $transaction_ref = $this->generateUniqueTransactionCode();
+                                $payment = new Payment();
+                                $payment->student_id = $voucher_assigned->student_id;
+                                $payment->reference_no = $transaction_ref;
+                                $payment->method = "voucher";
+                                $payment->status = 'paid';
+                                $payment->description = 'Payment for Registration';
+                                $payment->type = 'Registration fee';
+                                $payment->amount = 5000; //$voucher->amount;
+                                $payment->voucher_id = $voucher->id;
+                                $payment->date = date('Y-m-d H:i:s');
 
-                    $student_model = Student::findOne($student_id);
-                    $student_model->payment_status = 'paid';
-                    $student_model->update();
+                                if (!$payment->save()) {
+                                    //redirect to the other 
+                                    print_r($payment->getErrors());
+                                    exit;
+                                }
 
+                                //2. send emails with username and password
+                                //Yii::$app->runAction('messaging/invoice',['email'=>$model->email_address]);
+                                //  Yii::$app->runAction('messaging/login_details',['email'=>$model->email_address]);
 
-                    //1. Populate the payment table
-                      $transaction_ref = $this->generateUniqueTransactionCode();
-                      $payment = new Payment();
-                      $payment->student_id = $voucher_assigned->student_id;
-                      $payment->reference_no =$transaction_ref ;
-                      $payment->method = "voucher";
-                      $payment->status = 'paid';
-                      $payment->description ='Payment for Registration';
-                      $payment->type= 'Registration fee';
-                      $payment->amount=5000; //$voucher->amount;
-                      $payment->voucher_id = $voucher->id;
-                      $payment->date = date('Y-m-d H:i:s');
+                                //3. redirect to login
 
-                      if(!$payment->save()){
-                        print_r($payment->getErrors());
-                        exit;
-                      }
+                                Yii::$app->session->setFlash('success', 'Payment Successful');
 
-                    //2. send emails with username and password
-                      //Yii::$app->runAction('messaging/invoice',['email'=>$model->email_address]);
-                    //  Yii::$app->runAction('messaging/login_details',['email'=>$model->email_address]);
+                                Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
 
-                    //3. redirect to login
+                                return $this->redirect('pay-success');
 
-                      Yii::$app->session->setFlash('success', 'Payment Successful');
+                                //  return 'Student confirm member';
 
-                      Yii::$app->runAction('messaging/registration',['email_address'=>$student_model->email_address, 'firstname'=>$student_model->first_name, 'lastname'=>$student_model->last_name]);
+                            } catch (\Exception $e) {
+                                return 'An error has occured while processing transactions' . '' . $e;
+                            }
+                            // end of catch
 
-                      return $this->redirect('pay-success');
+                        }
 
-                  //  return 'Student confirm member';
+                    } else {
 
-                } catch (\Exception $e) {
-                    return 'An error has occured while processing transactions'.''.$e;
+                        $session->setFlash('voucher-status', 'Please enter a valid voucher.');
+                        return $this->redirect(['students/view']);
+                    } 
+
+                }catch(\Exception $e){
+                    Yii::$app->session->setFlash('error', 'An error occured while trying to get voucher'.$e);
+                    return $this->redirect(['site/index']);
                 }
-              // end of catch
 
             }
 
-
-        }else {
-
-          $session->setFlash('voucher-status', 'Please enter a valid voucher.');
-          return $this->redirect(['students/view']);
-        }// end of if
-
-        }
-
-      }
-      else{
-          return $this->redirect('index');
-      }
-
+        } 
+        
+        Yii::$app->session->setFlash('error', 'Please input a valid voucher');
+        return $this->redirect('index');
 
     }
 
@@ -168,17 +173,19 @@ class PaymentsController extends \yii\web\Controller
         return $this->render('pay-success');
     }
 
-    private function generateUniqueTransactionCode(){
+    private function generateUniqueTransactionCode()
+    {
 
-        $unique_refernce = time(). rand(10 * 42, 100 * 918);
+        $unique_refernce = time() . rand(10 * 42, 100 * 918);
 
         $prefix = 'DCA';
 
-        return $transaction_reference = $prefix.$unique_refernce;
+        return $transaction_reference = $prefix . $unique_refernce;
 
     }
 
-    public function payment_process() {
+    public function payment_process()
+    {
         // data collected from the response
         $apprAmt = Yii::$app->request->post('apprAmt');
         $payRef = Yii::$app->request->post('payRef');
@@ -218,7 +225,7 @@ class PaymentsController extends \yii\web\Controller
             print "Error: " . curl_error($curl_handle);
         } else {
             // show ressult in json
-            $page['response_data'] = json_decode($data, TRUE);
+            $page['response_data'] = json_decode($data, true);
             curl_close($curl_handle);
             $code_response = $page['response_data']['ResponseCode'];
 
@@ -244,7 +251,7 @@ class PaymentsController extends \yii\web\Controller
                     'recipient_email' => $user_orders['recipient_email'],
                     'payment_method' => $user_orders['payment_method'],
                     'payment_status' => 'paid',
-                    'created' => $user_orders['created']
+                    'created' => $user_orders['created'],
                 );
 
                 $this->session->set_userdata('user_orders', $user_orders);
@@ -254,7 +261,7 @@ class PaymentsController extends \yii\web\Controller
                 $transaction_info = array(
                     'transaction_response' => "Your transaction was approved successfully by Interswitch",
                     'transaction_reason' => "",
-                    'payment_reference' => $page['response_data']['PaymentReference']
+                    'payment_reference' => $page['response_data']['PaymentReference'],
                 );
                 $this->session->set_userdata('transaction_info', $transaction_info);
 
@@ -264,7 +271,7 @@ class PaymentsController extends \yii\web\Controller
                     'amount' => $submittedamt,
                     'response' => $page['response_data']['ResponseDescription'],
                     'status' => $status,
-                    'date' => date('Y-m-d')
+                    'date' => date('Y-m-d'),
                 );
                 $this->Payment->insertTransactionRecord($array);
 
@@ -277,7 +284,6 @@ class PaymentsController extends \yii\web\Controller
                 $amount_due_aggregator = $this->session->userdata('amount_due_aggregator');
                 $total_order_amount = $this->session->userdata('amount');
                 $total_order_amount = $total_order_amount / 100;
-
 
                 //($this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance) ? $this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance : 0,
                 $this->insert_wallet($page['response_data']['PaymentReference'], $user_orders['user_id'], $this->session->userdata('session_tnx_ref'), 0, $total_order_amount, ($this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance) ? $this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance : 0, $user_orders['user_id'], 3, $payment_method, 'paid'
@@ -294,17 +300,16 @@ class PaymentsController extends \yii\web\Controller
                 $transaction_info = array(
                     'transaction_response' => "Your transaction was not successfully approved by GT Pay",
                     'transaction_reason' => $page['response_data']['ResponseDescription'],
-                    'payment_reference' => $page['response_data']['PaymentReference']
+                    'payment_reference' => $page['response_data']['PaymentReference'],
                 );
                 $this->session->set_userdata('transaction_info', $transaction_info);
-
 
                 $array = array(
                     'reference' => $submittedref,
                     'amount' => $submittedamt,
                     'response' => $page['response_data']['ResponseDescription'],
                     'status' => $status,
-                    'date' => date('Y-m-d')
+                    'date' => date('Y-m-d'),
                 );
                 $this->Payment->insertTransactionRecord($array);
 

@@ -1,5 +1,6 @@
 <?php
   use yii\helpers\Html;
+  use yii\helpers\Url;
   use yii\bootstrap\ActiveForm;
 
 
@@ -46,7 +47,7 @@
 
         .page-content--bge5 {
             padding-top:60px;
-            background: url('../img/login-bg.jpg');
+            background: url("<?= Url::to('@web/img/login-bg.jpg')?>");;
             height: 100vh;
             line-height: 15px;
         }

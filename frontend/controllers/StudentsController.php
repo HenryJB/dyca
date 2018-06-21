@@ -80,6 +80,8 @@ class StudentsController extends Controller
         $session = Yii::$app->session;
 
         $setting = Setting::find()->one();
+        $model = new Student();
+        $course_registration = new CourseRegistration(); 
 
         if($setting->reg_status == 'close'){
             Yii::$app->session->setFlash('error', 'Registration Closed');
@@ -179,6 +181,8 @@ class StudentsController extends Controller
 
         return $this->actionLogin();
     }
+
+    
 
       /**
      * Displays a single Student model.
@@ -410,17 +414,19 @@ class StudentsController extends Controller
      */
     public function actionRequestPasswordReset()
     {
-        $model = new Student();
+        var_dump(Yii::$app->request->post('email'));
 
         if (Yii::$app->request->post('email') && filter_var(Yii::$app->request->post('email'), FILTER_VALIDATE_EMAIL)) {
 
-            if ($model->sendEmail(Yii::$app->request->post('email'))) {
+            $boolean = Yii::$app->runAction('messaging/password-reset', ['email' => Yii::$app->request->post('email') ]);
 
-                Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
+            if ($boolean) {
+                
+                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
 
                 return true;
             } else {
-                Yii::$app->session->setFlash('password_reset_error', 'Sorry, we are unable to reset password for the provided email address.');
+                Yii::$app->session->setFlash('erro', 'Sorry, we are unable to reset your password for the provided email address.');
                 return false;
             }
         }

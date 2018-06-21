@@ -41,12 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="email1" class="col-sm-3 text-right control-label col-form-label">Email Address</label>
-                        <div class="col-sm-9">
-                            <?= $form->field($model, 'email_address',['errorOptions'=>['class'=>'alert-danger']])->textInput(['type' => 'email'])->label(false) ?>
-                        </div>
-                    </div>
+                    
                     <div class="form-group row">
                         <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Contact No</label>
                         <div class="col-sm-9">
@@ -89,6 +84,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="card">
 
                 <?= Html::beginForm(['students/request-password-reset'], 'post',['id' => 'request-reset-form']) ?>
+
                     <div class="card-body">
                         <h4 class="card-title">Change Password</h4>
                         <div class="form-group row">

@@ -156,15 +156,15 @@ class MessagingController extends \yii\web\Controller
 
     //untagging
 
-    public function actionTagging($body,$voucher,$id,$email_template)
+    public function actionTagging($body,$voucher,$id)
     {
         //This method depends on email_template_id of 3 for tagging
 
         $email = new Email();
 
-        $student = Student::findOne($id);
+        $student = Student::findOne((int)$id);
 
-        $template = EmailTemplate::findOne($email_template);
+        $template = EmailTemplate::findOne(3);
 
         try {
 

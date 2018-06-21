@@ -44,12 +44,16 @@ class MessagingController extends \yii\web\Controller
         return true;
     }
 
-    //TODO : ADD VALUE PROPOSITION CODE FOR USER INTERFACE
-    //TODO: ADD LINK FOR PAYING PAYING REGISTRATION
-    public function actionWelcome($email_address, $firstname, $lastname){
+    public function actionWelcome($email_address, $firstname, $lastname)
+    {
         $email = new Email();
 
         $template = EmailTemplate::findOne(6);
+
+        if (count($template) > 0) {
+            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+            return false;
+        }
 
         $message = Yii::$app->mailer->compose(
             '@frontend/mail/welcome.php',
@@ -60,19 +64,24 @@ class MessagingController extends \yii\web\Controller
             ]
         );
 
-        $email_response = $this->saveEmailDb($email, $email_address, $template->id);
+        try 
+        {
+            $this->setMessageParameter(
+                $message, $email_address, Yii::$app->params['supportEmail'], $template->subject
+            );
 
-        try {
-            if ($email_response) {
-                $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
+            $boolean = $this->saveEmailDb($email, $email_address, $template->id);
 
-                Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
-            } else {
+            if(!$boolean)
+            {
                 Yii::$app->session->setFlash('error', 'Failed to send registration mail');
             }
-        } catch (Exception $e) {
+            
+        } catch (Exception $e) 
+        {
             Yii::$app->session->setFlash('error', 'Failed to send registration mail');
         }
+
     }
 
     public function invoiceByVoucher($first_name, $last_name, $amount, $email_address, $subject)
@@ -89,10 +98,11 @@ class MessagingController extends \yii\web\Controller
         $message->setTo($email_address);
         $message->setFrom(Yii::$app->params['supportEmail']);
         $message->setSubject($subject);
+        
         try {
             $message->send();
         } catch (Exception $e) {
-            Yii::$app->getSession()->setFlash('student_payment_error', 'Student Payment Failed');
+            Yii::$app->getSession()->setFlash('error', 'Student Payment Failed');
         }
 
     }
@@ -102,6 +112,11 @@ class MessagingController extends \yii\web\Controller
         $email = new Email();
 
         $template = EmailTemplate::findOne(1);
+
+        if (count($template) > 0) {
+            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+            return false;
+        }
 
         $message = Yii::$app->mailer->compose(
             '@frontend/mail/registration.php',
@@ -117,15 +132,19 @@ class MessagingController extends \yii\web\Controller
 
         $email_response = $this->saveEmailDb($email, $email_address, $template->id);
 
-        try {
-            if ($email_response) {
-                $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
+        try 
+        {            
+            $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
 
-                Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
-            } else {
+            $boolean = $this->saveEmailDb($email, $email_address, $template->id);
+
+            if(!$boolean)
+            {
                 Yii::$app->session->setFlash('error', 'Failed to send registration mail');
             }
-        } catch (Exception $e) {
+           
+        } catch (Exception $e) 
+        {
             Yii::$app->session->setFlash('error', 'Failed to send registration mail');
         }
     }
@@ -143,31 +162,35 @@ class MessagingController extends \yii\web\Controller
 
         $template = EmailTemplate::findOne(4);
 
-        try {
+        if (count($student) > 0 && count($course) > 0 && count($template) > 0) {
+            try {
 
-            $message = Yii::$app->mailer->compose(
-                '@frontend/mail/course_applied.php',
-                [
-                    'content' => $template->body,
-                    'title' => $template->subject,
-                    'name' => $student->first_name . ' ' . $student->last_name,
-                    'course' => $course->name,
-                    'logo' => Url::to('@frontend/web/img/dcalogo.png'),
-                ]
-            );
+                $message = Yii::$app->mailer->compose(
+                    '@frontend/mail/course_applied.php',
+                    [
+                        'content' => $template->body,
+                        'title' => $template->subject,
+                        'name' => $student->first_name . ' ' . $student->last_name,
+                        'course' => $course->name,
+                        'logo' => Url::to('@frontend/web/img/dcalogo.png'),
+                    ]
+                );
 
-            $email_response = $this->saveEmailDb($email, $student->email_address, $template->id);
+                $email_response = $this->saveEmailDb($email, $student->email_address, $template->id);
 
-            if ($email_response) {
-                $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'], $template->subject);
+                if ($email_response) {
+                    $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'], $template->subject);
 
-                Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
-            } else {
+                    Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
+                } else {
+                    Yii::$app->session->setFlash('error', 'Whoops please try again');
+                }
+            } catch (Exception $e) {
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
-            }
-        } catch (Exception $e) {
-            Yii::$app->session->setFlash('error', 'Whoops please try again');
 
+            }
+        } else {
+            Yii::$app->getSession()->setFlash('error', 'Failed to send mail');
         }
     }
 
@@ -179,32 +202,38 @@ class MessagingController extends \yii\web\Controller
 
         $template = EmailTemplate::findOne(3);
 
-        try {
+        if (count($template) > 0 && count($student) > 0) {
+            try {
 
-            $message = Yii::$app->mailer->compose(
-                '@frontend/mail/tag.php',
-                [
-                    'content' => $body,
-                    'title' => 'DCA TRANSACTION',
-                    'name' => $student->first_name . ' ' . $student->last_name,
-                    'voucher' => $voucher,
-                ]
-            );
+                $message = Yii::$app->mailer->compose(
+                    '@frontend/mail/tag.php',
+                    [
+                        'content' => $body,
+                        'title' => 'DCA TRANSACTION',
+                        'name' => $student->first_name . ' ' . $student->last_name,
+                        'voucher' => $voucher,
+                    ]
+                );
 
-            $email_response = $this->saveEmailDb($email, $student->email_address, $template->id);
+                $email_response = $this->saveEmailDb($email, $student->email_address, $template->id);
 
-            if ($email_response) {
-                $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'], 'DCA TRANSACTION');
-                Yii::$app->session->setFlash('sucess', 'An email has been sent to your mail box');
-            } else {
+                if ($email_response) {
+                    $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'], 'DCA TRANSACTION');
+                    Yii::$app->session->setFlash('sucess', 'An email has been sent to your mail box');
+                } else {
+                    Yii::$app->session->setFlash('error', 'Whoops please try again');
+                }
+            } catch (Exception $e) {
+
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
+
             }
-        } catch (Exception $e) {
-
+        } else {
             Yii::$app->session->setFlash('error', 'Whoops please try again');
-
         }
+
     }
+
 
     public function saveEmailDb($email, $student_email_address, $template_id)
     {

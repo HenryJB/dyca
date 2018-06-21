@@ -1,25 +1,16 @@
 <?php
 namespace frontend\controllers;
 
-use common\models\Country;
-use common\models\Course;
-use frontend\models\LoginForm;
 use common\models\Session;
 use common\models\Student;
-
-use common\models\DcaUser;
-
 use common\models\User;
-use common\models\Payment;
-use common\models\Voucher;
+use frontend\models\LoginForm;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\helpers\ArrayHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 
@@ -39,7 +30,7 @@ class SiteController extends Controller
                 'only' => ['logout', 'signup'],
                 'rules' => [
                     [
-                        'actions' => ['signup','register','testing'],
+                        'actions' => ['signup', 'register'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -75,7 +66,6 @@ class SiteController extends Controller
         ];
     }
 
-
     /**
      * Logs in a user.
      *
@@ -89,13 +79,10 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
-            $student = Student::find()->where(['email_address'=>$model->username])->one();
+            $student = Student::find()->where(['email_address' => $model->username])->one();
 
-            if(count($student)>0){
-                $student_session = Yii::$app->session;
-                $student_session->set('id', $student->id);
-                $student_session->set('photo', $student->photo);
-                $student_session->set('email_address', $student->email_address);
+            if (count($student) > 0) 
+            {
 
                 if($student->payment_status=='paid'){
 
@@ -108,39 +95,46 @@ class SiteController extends Controller
 
             }
 
-            return $this->redirect('index');
-        }
+                }
 
-        return $this->renderPartial('index', [
-            'model' => $model,
-        ]);
-    }
+                return $this->renderPartial('index', [
+                    'model' => $model,
+                ]);
 
+            }
+        
 
-   public function actionUpdateProfile()
-   {
+    public function actionUpdateProfile()
+    {
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
         $student = $this->findModel($id);
-        $student->scenario= 'update-profile';
+        $student->scenario = 'update-profile';
 
         if ($student->load(Yii::$app->request->post()) && $student->save()) {
-           return $this->redirect(['student-projects/create']);
+            return $this->redirect(['student-projects/create']);
         }
 
-       return $this->render('update-profile', [
-           'model' => $student,
-       ]);
-   }
-
+        return $this->render('update-profile', [
+            'model' => $student,
+        ]);
+    }
 
     public function actionTesting()
     {
-        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 12]);
+        //Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
+        
+        // Yii::$app->runAction('messaging/registration', [
+        //     'email_address' => "spencer@mail.com",
+        //     'firstname' => 'John',
+        //     'lastname'   => 'Samuel'
+        //     ]);
+
+        
+        
+        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
 
     }
-
-
 
     /**
      * Logs out the current user.
@@ -155,10 +149,8 @@ class SiteController extends Controller
 
         Yii::$app->user->logout();
 
-          return $this->redirect('index');
+        return $this->redirect(['index']);
     }
-
-
 
     /**
      * Requests password reset.
@@ -171,7 +163,6 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmailSite()) {
                 Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
-
 
                 return $this->redirect('request-password-reset');
             } else {
