@@ -4,13 +4,18 @@
     use yii\helpers\Url; 
     use common\models\Course;
 
-    $disabled = count($courses_applied) >= 1 ? '' : disabled;
+    $count  = count($courses_applied);
+    $disabled = '';
+
+   if($count >= 1){
+        $disabled = 'disabled';
+   }
 ?>
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
 
-        <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1" <?=$disabled?>>
+        <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1" <?= $disabled ?>>
             <i class="fa fa-plus"></i>
             Apply to another course
         </button>

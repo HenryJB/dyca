@@ -111,22 +111,14 @@ class StudentsController extends Controller
                 try{
                     $course_registration->save();
                     Yii::$app->session->setFlash('success', 'Registration Was Successful Please Check Your Email For Further Instructions');
-<<<<<<< HEAD
-                    //send welcome mail to the student
-=======
 
                     //send a welcome notification
->>>>>>> 9242eb268f0f6d0c69b43ff32287626765657566
                     Yii::$app->runAction('messaging/welcome', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name]);
                     return $this->redirect('view');
 
                 }catch(Exception $e){
                     Yii::$app->session->setFlash('error', 'Could not apply to course please try again');
                 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 9242eb268f0f6d0c69b43ff32287626765657566
                 return $this->redirect(['site/index']);
 
             }else {
@@ -426,17 +418,15 @@ class StudentsController extends Controller
 
         if (Yii::$app->request->post('email') && filter_var(Yii::$app->request->post('email'), FILTER_VALIDATE_EMAIL)) {
 
-            
-
-            $boolean = Yii::$app->runAction('messaging/registration', ['email' => Yii::$app->request->post('email') ]);
+            $boolean = Yii::$app->runAction('messaging/password-reset', ['email' => Yii::$app->request->post('email') ]);
 
             if ($boolean) {
                 
-                Yii::$app->session->setFlash('password_reset_success', 'Check your email for further instructions.');
+                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
 
                 return true;
             } else {
-                Yii::$app->session->setFlash('password_reset_error', 'Sorry, we are unable to reset your password for the provided email address.');
+                Yii::$app->session->setFlash('erro', 'Sorry, we are unable to reset your password for the provided email address.');
                 return false;
             }
         }

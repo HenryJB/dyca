@@ -266,7 +266,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
             <!-- Hero Image, Flush : BEGIN -->
             <tr>
                 <td style="background-color: #ffffff;">
-                    <img src="http://placehold.it/1200x600" width="600" height="" alt="alt_text" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
+                    <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/makeup-and-effects-header-02.png" width="600" height="" alt="alt_text" border="0" style="width: 100%; max-width: 600px; height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555; margin: auto;" class="g-img">
                 </td>
             </tr>
             <!-- Hero Image, Flush : END -->
@@ -321,7 +321,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tbody><tr>
 	                                    <td style="padding: 10px; text-align: center">
-	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                        <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/Home-page-18.png" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
 	                                    </td>
 	                                </tr>
 	                                <tr>
@@ -338,7 +338,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tbody><tr>
 	                                    <td style="padding: 10px; text-align: center">
-	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                        <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/Home-page-13.png" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
 	                                    </td>
 	                                </tr>
 	                                <tr>
@@ -355,7 +355,7 @@ $resetLink = Yii::$app->urlManager->createAbsoluteUrl(['students/reset-password'
 	                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
 	                                <tbody><tr>
 	                                    <td style="padding: 10px; text-align: center">
-	                                        <img src="http://placehold.it/170" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
+	                                        <img src="https://www.delyorkcreative.academy/wp-content/uploads/2018/05/Home-page-15.png" width="170" height="170" alt="alt_text" border="0" class="fluid" style="height: auto; background: #dddddd; font-family: sans-serif; font-size: 15px; line-height: 15px; color: #555555;">
 	                                    </td>
 	                                </tr>
 	                                <tr>

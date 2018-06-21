@@ -95,7 +95,7 @@ class Student extends \yii\db\ActiveRecord
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_PROFILE_UPDATE] = [
-            'first_name', 'last_name', 'email_address', 'contact_address', 'phone_number','date_of_birth','about'
+            'first_name', 'last_name', 'contact_address', 'phone_number','date_of_birth','about'
         ];
 
         $scenarios[self::SCENARIO_UPDATE_PROFILE_PICTURE] = ['photo'];
