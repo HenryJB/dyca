@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           </p>
 
                           <form action="<?= Yii::$app->request->baseUrl?>/payments/pay-voucher" method="post" class="form-horizontal">
+                            <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>" value="<?=Yii::$app->request->csrfToken?>"/>
                             <div class="row">
                             <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>  "value="<?=Yii::$app->request->csrfToken?>"/>
                               <div class="col-sm-12 col-md-12 col-lg-12">
@@ -65,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <?php echo Yii::$app->session->getFlash('voucher-status'); ?>
                                   </div>
                                   <span class="input-group-btn">
-                                    <input type="submit" class="btn btn-danger" value="Submit" />
+                                    <input type="submit" class="btn btn-danger" value="Submit"/>
                                   </span>
                                 </div><!-- /input-group -->
                               </div><!-- /.col-lg-6 -->

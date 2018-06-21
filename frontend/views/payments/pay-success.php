@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                       <div class="clearfix"></div>
 
                       <p>
-                        <?=Html::a('Return to Login page', ['site/login'],['class'=>' btn btn-primary btn-block']);?>
+                        <?=Html::a('Return to Login page', ['site/index'],['class'=>' btn btn-primary btn-block']);?>
                       </p>
                       </div>
 

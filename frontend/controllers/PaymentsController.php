@@ -10,31 +10,49 @@ use Yii;
 
 class PaymentsController extends \yii\web\Controller
 {
-    public function beforeAction($action)
-    {
-        if (in_array($action->id, ['pay-voucher'])) {
-            $this->enableCsrfValidation = false;
-        }
+  public function beforeAction($action)
+  {
 
-        return parent::beforeAction($action);
-    }
+      if (in_array($action->id, ['pay-voucher'])) {
+          $this->enableCsrfValidation = false;
+      }
+
+      return parent::beforeAction($action);
+  }
+
 
     public function actionIndex()
     {
         $session = Yii::$app->session;
         $user_id = (int)$session->get('id');
 
-        $model = Student::findOne($user_id);
+        if($user_id!==null){
 
-        $payment = Payment::find()->where(['student_id' => $user_id])->one();
+          $payment = Payment::find()->where(['student_id'=>$user_id])->one();
 
-        if (count($payment) > 0) {
-            //send mail to registration email
-            Yii::$app->runAction('messaging/registration', ['email_address' => $model->email_address, 'firstname' => $model->first_name, 'lastname' => $model->last_name]);
-            return $this->redirect(['site/index']);
+          if(count($payment)>0){
+              return $this->redirect(['students/dashboard']);
+          }
+          return $this->render('index');
+
+        }else {
+          $id = Yii::$app->getRequest()->getQueryParam('id');
+          printf($id);
+          exit;
         }
 
-        return $this->render('index');
+
+    }
+
+    public function actionRegistrationFees()
+    {
+
+    }
+
+
+    public function actionTuitionFees()
+    {
+
     }
 
     public function actionPayVoucher()
@@ -134,7 +152,7 @@ class PaymentsController extends \yii\web\Controller
 
                         $session->setFlash('voucher-status', 'Please enter a valid voucher.');
                         return $this->redirect(['students/view']);
-                    } // end of if
+                    } 
 
                 }catch(\Exception $e){
                     Yii::$app->session->setFlash('error', 'An error occured while trying to get voucher'.$e);

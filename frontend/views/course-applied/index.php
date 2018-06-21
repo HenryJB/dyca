@@ -3,15 +3,17 @@
     use yii\widgets\ActiveForm;
     use yii\helpers\Url; 
     use common\models\Course;
+
+    $disabled = count($courses_applied) >= 1 ? '' : disabled;
 ?>
 
 <div class="row">
     <div class="col-md-8 offset-md-2">
 
-         <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1">
-             <i class="fa fa-plus"></i>
-                                    Apply to another course
-                                </button>
+        <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1" <?=$disabled?>>
+            <i class="fa fa-plus"></i>
+            Apply to another course
+        </button>
 
         <div class="comment-widgets scrollable ps-container ps-theme-default" data-ps-id="b65c4487-f538-6a4a-baab-ff500e736f16">
 
@@ -38,9 +40,7 @@
                                 <span class="text-muted float-right">
 
                                 </span>                            
-
-                                <a href="<?= Url::to(['course-applied/delete','id' => $course_applied->id])?>" class="btn btn-danger btn-sm rounded" onclick="return confirm('Are you sure?')">
-                                Delete</a>
+                                <!-- delete link comes here -->
                             </div>
                         </div>
 
