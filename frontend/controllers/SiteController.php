@@ -74,35 +74,35 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-
         $model = new LoginForm();
-
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-
+        
+        if ($model->load(Yii::$app->request->post()) && $model->login())
+        {
             $student = Student::find()->where(['email_address' => $model->username])->one();
+
+            $session = Yii::$app->session;
+
+            $session->set('id',$student->id);
+            $session->set('photo',$student->photo);
 
             if (count($student) > 0) 
             {
-
-                if($student->payment_status=='paid'){
-
-                  return $this->redirect(['students/dashboard']);
-                }else {
-
-                  return $this->redirect(['payments/index']);
+                if($student->payment_status=='paid')
+                {                    
+                    return $this->redirect(['students/dashboard']);
                 }
-
-
+                else 
+                {
+                    return $this->redirect(['payments/index']);
+                }
             }
 
-                }
+        }
 
-                return $this->renderPartial('index', [
-                    'model' => $model,
-                ]);
-
-            }
-        
+        return $this->renderPartial('index', [
+            'model' => $model,
+        ]);
+    }        
 
     public function actionUpdateProfile()
     {
@@ -111,7 +111,8 @@ class SiteController extends Controller
         $student = $this->findModel($id);
         $student->scenario = 'update-profile';
 
-        if ($student->load(Yii::$app->request->post()) && $student->save()) {
+        if ($student->load(Yii::$app->request->post()) && $student->save())
+        {
             return $this->redirect(['student-projects/create']);
         }
 
@@ -132,7 +133,7 @@ class SiteController extends Controller
 
         
         
-        Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
+        //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
 
     }
 

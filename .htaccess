@@ -7,3 +7,5 @@ Options FollowSymlinks
 RewriteEngine on
 RewriteRule ^(.+)?$ backend/web/$1 [L,PT]
 RewriteRule ^(.+)?$ frontend/web/$1
+
+

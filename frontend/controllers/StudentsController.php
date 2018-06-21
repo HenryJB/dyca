@@ -321,6 +321,13 @@ class StudentsController extends Controller
         $this->layout = 'profile-layout';
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
+        
+        if($id == null)
+        {
+            Yii::$app->session->setFlash('error', 'Please Try Again');
+            return $this->redirect(['site/logout']);
+        }
+
         $student = $this->findModel($id);
 
         $emails = Email::find()->where(['receiver_email' => $student->email_address])->all();
