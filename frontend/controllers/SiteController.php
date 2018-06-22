@@ -136,12 +136,12 @@ class SiteController extends Controller
         //     'lastname'   => 'Samuel'
         //     ]);
 
-        Yii::$app->runAction('messaging/welcome', [
-            'email_address' => "towematin@mailinator.com",
-            'firstname' => 'John',
-            'lastname'   => 'Samuel',
-            'id'   => 33
-            ]);
+        // Yii::$app->runAction('messaging/welcome', [
+        //     'email_address' => "towematin@mailinator.com",
+        //     'firstname' => 'John',
+        //     'lastname'   => 'Samuel',
+        //     'id'   => 33
+        //     ]);
 
 
 
