@@ -2,140 +2,33 @@
 <!-- Start Page Content -->
 <!-- ============================================================== -->
 <?php use yii\helpers\Url; ?>
-<div class="row">
-		<!-- Column -->
-		<div class="col-md-6 col-lg-3">
-				<div class="card card-hover">
-				<a class="sidebar-link waves-effect waves-dark sidebar-link text-white" href="<?=Yii::$app->request->baseUrl.'/students/dashboard'?>" ><div class="box bg-cyan text-center">
-								<h1 class="font-light text-white"><i class="mdi mdi-view-dashboard"></i></h1>
-								<h6 class="text-white">
-									Dashboard
-								</h6>								
-						</div>
-									</a>
-						
-				</div>
-		</div>
-		<!-- Column -->
-		<div class="col-md-6 col-lg-3">
-				<div class="card card-hover">
-				<a class="sidebar-link waves-effect waves-dark sidebar-link text-white" href="<?=Yii::$app->request->baseUrl.'/course-applied/index'?>" >
-						<div class="box bg-success text-center">
-								<h1 class="font-light text-white"><i class="mdi mdi-chart-areaspline"></i></h1>
-								<h6 class="text-white">Applied Course</h6>
-						</div>
-					</a>
-				</div>
-		</div>
-		 <!-- Column -->
-		<div class="col-md-6 col-lg-3">
-				<div class="card card-hover">
-				<a class="sidebar-link waves-effect waves-dark sidebar-link text-white" href="<?=Yii::$app->request->baseUrl.'/project/index'?>" >
-						<div class="box bg-warning text-center">
-								<h1 class="font-light text-white"><i class="mdi mdi-collage"></i></h1>
-								<h6 class="text-white">Projects</h6>
-						</div>
-					</a>
-				</div>
-		</div>
-		<!-- Column -->
-		<div class="col-md-6 col-lg-3">
-				<div class="card card-hover">
-				<a class="sidebar-link waves-effect waves-dark sidebar-link text-white" href="<?=Yii::$app->request->baseUrl.'/payment/index'?>" >
-						<div class="box bg-danger text-center">
-								<h1 class="font-light text-white"><i class="mdi mdi-border-outside"></i></h1>
-								<h6 class="text-white">Payments</h6>
-						</div>
-</a>
-				</div>
-		</div>
-</div>
-<div class="row">
-		<div class="col-md-6">
-		<div class="card">
-						<div class="card-body">
-								<h4 class="card-title m-b-0">News Updates</h4>
-						</div>
-						<ul class="list-style-none">
-								<li class="d-flex no-block card-body">
-										<i class="fa fa-check-circle w-30px m-t-5"></i>
-										<div>
-												<a href="#" class="m-b-0 font-medium p-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a>
-												<span class="text-muted">dolor sit amet, consectetur adipiscing</span>
-										</div>
-										<div class="ml-auto">
-												<div class="tetx-right">
-														<h5 class="text-muted m-b-0">20</h5>
-														<span class="text-muted font-16">Jan</span>
-												</div>
-										</div>
-								</li>
-								<li class="d-flex no-block card-body border-top">
-										<i class="fa fa-gift w-30px m-t-5"></i>
-										<div>
-												<a href="#" class="m-b-0 font-medium p-0">Congratulation Maruti, Happy Birthday</a>
-												<span class="text-muted">many many happy returns of the day</span>
-										</div>
-										<div class="ml-auto">
-												<div class="tetx-right">
-														<h5 class="text-muted m-b-0">11</h5>
-														<span class="text-muted font-16">Jan</span>
-												</div>
-										</div>
-								</li>
-								<li class="d-flex no-block card-body border-top">
-										<i class="fa fa-plus w-30px m-t-5"></i>
-										<div>
-												<a href="#" class="m-b-0 font-medium p-0">Maruti is a Responsive Admin theme</a>
-												<span class="text-muted">But already everything was solved. It will ...</span>
-										</div>
-										<div class="ml-auto">
-												<div class="tetx-right">
-														<h5 class="text-muted m-b-0">19</h5>
-														<span class="text-muted font-16">Jan</span>
-												</div>
-										</div>
-								</li>
-								<li class="d-flex no-block card-body border-top">
-										<i class="fa fa-leaf w-30px m-t-5"></i>
-										<div>
-												<a href="#" class="m-b-0 font-medium p-0">Envato approved Maruti Admin template</a>
-												<span class="text-muted">i am very happy to approved by TF</span>
-										</div>
-										<div class="ml-auto">
-												<div class="tetx-right">
-														<h5 class="text-muted m-b-0">20</h5>
-														<span class="text-muted font-16">Jan</span>
-												</div>
-										</div>
-								</li>
-								<li class="d-flex no-block card-body border-top">
-										<i class="fa fa-question-circle w-30px m-t-5"></i>
-										<div>
-												<a href="#" class="m-b-0 font-medium p-0"> I am alwayse here if you have any question</a>
-												<span class="text-muted">we glad that you choose our template</span>
-										</div>
-										<div class="ml-auto">
-												<div class="tetx-right">
-														<h5 class="text-muted m-b-0">15</h5>
-														<span class="text-muted font-16">Jan</span>
-												</div>
-										</div>
-								</li>
-						</ul>
-				</div>
+<?php use yii\helpers\Html; ?>
 
-
-		</div>
-		<div class="col-md-6">
-				<!-- card -->
-			<div class="card">
+<div class="row">
+		<div class="col-md-8 offset-2">
+			<div class="card" style="background-color:transparent !important;">
 				<div class="card-body">
-					<img src="<?= Url::to('@web/uploads/adverts/project-500.jpg'); ?>" alt="" class="img-fluid float-right">								
+					<div class="profile-picture-box">
+						<?=Html::img('@web/img/avatar.png',['class'=>'profile-picture'])?>
+
+					</div>
+					<div class="profile-title">
+						<div class="title-light">Welcome</div>
+						<?php $session = Yii::$app->session; ?>
+						<div class="title-bold"><?=$session->get('student')->first_name .' ' . $session->get('student')->last_name?></div>
+					</div>
+
+					<div class="buttons">
+						<a href="#" class="btn  btn-block btn-danger btn-rounded">Update your profile</a>
+							<a href="#" class="btn btn-block btn-danger  btn-rounded ">Register for a course</a>
+					</div>
 				</div>
 			</div>
 		</div>
-		
+
+		</div>
+
+
 </div>
 
 <!-- BEGIN MODAL -->

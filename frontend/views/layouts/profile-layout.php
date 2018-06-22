@@ -1,10 +1,10 @@
 <?php
 	use yii\helpers\Html;
-    use yii\helpers\Url;
-    use dosamigos\fileupload\FileUpload;
+	use yii\widgets\Breadcrumbs;
+  use yii\helpers\Url;
+  use dosamigos\fileupload\FileUpload;
+  use common\models\Student;
 
-    use common\models\Student;
-    
     $session = Yii::$app->session;
 
 ?>
@@ -23,9 +23,10 @@
         <title>DCA User</title>
         <!-- Custom CSS -->
         <?= Html::cssFIle('@web/js/profile/assets/libs/fullcalendar/dist/fullcalendar.min.css'); ?>
-            <?= Html::cssFIle('@web/js/profile/assets/extra-libs/calendar/calendar.css'); ?>
-                <?= Html::cssFIle('@web/css/profile/style.min.css'); ?>
-                <?= Html::cssFIle('@web/css/profile/custom.css'); ?>
+        <?= Html::cssFIle('@web/js/profile/assets/extra-libs/calendar/calendar.css'); ?>
+        <?= Html::cssFIle('@web/css/profile/style.min.css'); ?>
+        <?= Html::cssFIle('@web/css/profile/custom.css'); ?>
+
 
                     <!-- <link href="../../assets/libs/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" />
     <link href="../../assets/extra-libs/calendar/calendar.css" rel="stylesheet" />
@@ -227,15 +228,9 @@
                                 <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
 
-                                    <?php $session = Yii::$app->session; ?>
+                                    <i class="mdi mdi-menu font-24"></i>
 
-                                     <?php if(!empty($session->get('photo'))): ?>
-                                     <img src="<?= Url::to('@web/uploads/students/'.$session->get('photo')); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
-                                    <?php else:?>
-                                    <img src="<?= Url::to('@web/img/dcalogo.png'); ?>" alt="user" class="rounded-circle img-fluid" id="img-brand" width="31" height="20">
-                                     <?php endif; ?>
 
-                                   
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                     <a class="dropdown-item" href="<?= Yii::$app->request->baseUrl.'/students/profile'?>">
@@ -284,33 +279,41 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/course-applied/index'?>"
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/students/profile'?>"
                                     aria-expanded="false">
-                                    <i class="mdi mdi-chart-bar"></i>
-                                    <span class="hide-menu">Courses Applied</span>
+                                    <i class="mdi mdi-account"></i>
+                                    <span class="hide-menu">Profile Manager</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/project/index'?>" aria-expanded="false">
-                                    <i class="mdi mdi-chart-bubble"></i>
-                                    <span class="hide-menu">Projects</span>
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/course-applied/index'?>" aria-expanded="false">
+                                    <i class="mdi mdi-note-outline"></i>
+                                    <span class="hide-menu">Course Manager</span>
                                 </a>
                             </li>
+
+														<li class="sidebar-item">
+                                <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/grants-scholarship/index'?>" aria-expanded="false">
+                                    <i class="mdi mdi-collage"></i>
+                                    <span class="hide-menu">Grants & Applications </span>
+                                </a>
+                            </li>
+
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/email/index'?>" aria-expanded="false">
-                                    <i class="mdi mdi-border-inside"></i>
+                                    <i class="mdi mdi-email"></i>
                                     <span class="hide-menu">Messages</span>
                                 </a>
                             </li>
-                            
+
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow waves-effect waves-dark" href="#" aria-expanded="false">
-                                    <i class="mdi mdi-chart-bubble"></i>
-                                    <span class="hide-menu">Payments </span>
+                                    <i class="mdi mdi-settings"></i>
+                                    <span class="hide-menu">Settings </span>
                                 </a>
-                                <ul aria-expanded="false" class="collapse  first-level">
+                                <!-- <ul aria-expanded="false" class="collapse  first-level">
                                     <li class="sidebar-item">
-                                        <a href="<?=Yii::$app->request->baseUrl.'/invoice/index'?>" class="sidebar-link">
+                                        <a href="<?//Yii::$app->request->baseUrl.'/invoice/index'?>" class="sidebar-link">
                                             <i class="mdi mdi-note-outline"></i>
                                             <span class="hide-menu"> Invoices </span>
                                         </a>
@@ -321,9 +324,9 @@
                                             <span class="hide-menu"> History </span>
                                         </a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </li>
-                           
+
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl?>/site/logout" aria-expanded="false">
                                     <i class="mdi mdi-relative-scale"></i>
@@ -356,12 +359,11 @@
                             </h4>
                             <div class="ml-auto text-right">
                                 <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <li class="breadcrumb-item">
-                                            <a href="#">Home</a>
-                                        </li>
-                                        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                                    </ol>
+
+																					<?= Breadcrumbs::widget([
+																							'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+																					]) ?>
+
                                 </nav>
                             </div>
                         </div>
@@ -402,7 +404,7 @@
                                         </div>
                                         <?= Html::endForm() ?>
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>

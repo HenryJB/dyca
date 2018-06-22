@@ -69,6 +69,12 @@ class StudentsController extends Controller
         return parent::beforeAction($action);
     }
 
+
+    public function actionIndex()
+    {
+        return  $this->actionProfile();
+    }
+
     /**
      * Creates a new Student model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -81,7 +87,7 @@ class StudentsController extends Controller
 
         $setting = Setting::find()->one();
         $model = new Student();
-        $course_registration = new CourseRegistration(); 
+        $course_registration = new CourseRegistration();
 
         if($setting->reg_status == 'close'){
             Yii::$app->session->setFlash('error', 'Registration Closed');
@@ -133,6 +139,8 @@ class StudentsController extends Controller
         ]);
     }
 
+
+
     public function actionRelatedStates($id)
     {
         $states = State::find()->where(['country_id' => $id])->all();
@@ -182,7 +190,7 @@ class StudentsController extends Controller
         return $this->actionLogin();
     }
 
-    
+
 
       /**
      * Displays a single Student model.
@@ -198,7 +206,7 @@ class StudentsController extends Controller
         $session= Yii::$app->session;
         $id = $session->get('id');
 
-        
+
         if($id!==null){
           return $this->render('view', [
               'model' => $this->findModel($id),
@@ -398,6 +406,20 @@ class StudentsController extends Controller
 
         $model = $this->findModel($student_session->get('id'));
 
+        return $this->render('profile', [
+            'model' => $model,
+            'courses_applied' => CourseRegistration::find()->where(['student_id'=> $student_session->get('id')])->all(),
+            'projects' =>StudentProject::find()->where(['student_id' => $student_session->get('id')])->all()
+        ]);
+    }
+    public function actionUpdate()
+    {
+        $this->layout = 'profile-layout';
+
+        $student_session = Yii::$app->session;
+
+        $model = $this->findModel($student_session->get('id'));
+
         $model->scenario = Student::SCENARIO_PROFILE_UPDATE;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -409,10 +431,11 @@ class StudentsController extends Controller
             Yii::$app->session->setFlash('error', 'Profile Update Failed');
         }
 
-        return $this->render('profile', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }
+
 
     /**
      * Requests password reset.
@@ -428,7 +451,7 @@ class StudentsController extends Controller
             $boolean = Yii::$app->runAction('messaging/password-reset', ['email' => Yii::$app->request->post('email') ]);
 
             if ($boolean) {
-                
+
                 Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
 
                 return true;

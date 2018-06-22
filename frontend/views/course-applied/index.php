@@ -1,8 +1,13 @@
-<?php   
+<?php
     use yii\helpers\Html;
     use yii\widgets\ActiveForm;
-    use yii\helpers\Url; 
+    use yii\helpers\Url;
     use common\models\Course;
+
+
+    $this->title = 'Course applied';
+    $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
 
     $count  = count($courses_applied);
     $disabled = '';
@@ -13,44 +18,52 @@
 ?>
 
 <div class="row">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-9 offset-md-1">
 
-        <button type="button" class="btn btn-success btn-sm mb-3 rounded" data-toggle="modal" data-target="#Modal1" <?= $disabled ?>>
-            <i class="fa fa-plus"></i>
-            Apply to another course
-        </button>
 
-        <div class="comment-widgets scrollable ps-container ps-theme-default" data-ps-id="b65c4487-f538-6a4a-baab-ff500e736f16">
+
+        <div class="row">
 
             <?php if (count($courses_applied) > 0): ?>
 
             <?php foreach ($courses_applied as $course_applied): ?>
             <?php $course= $course_applied->getCourse()->andWhere('id='.$course_applied->course_id)->one();?>
-            <div class="card">
+            <div class="card no-bg-color">
                 <div class="card-body">
-                    <h4 class="card-title m-b-0"><?= $course->name?></h4>
 
-                    <div class="d-flex flex-row comment-row m-t-0">
-                        
-                        <div class="p-2">
-                            <img src="<?= Url::to('@web/uploads/courses/'.$course->photo); ?>" class="img-fluid" width="400px" height="400px">
-                        </div>
-                        
-                        <div class="comment-text w-100">
-                     
-                            <span class="m-b-15 d-block">
-                                <?= $course->description?>
-                                    . </span>
-                            <div class="comment-footer">
-                                <span class="text-muted float-right">
+                  <div class="row">
+                    <div class="col-md-6">
 
-                                </span>                            
-                                <!-- delete link comes here -->
-                            </div>
+                        <img src="<?= Url::to('@web/uploads/courses/'.$course->photo); ?>" class="img-fluid img-rounded">
+                        <h3 class="title-bold font-24 bottom-centered "><?=$course->name?></h3>
+                        <div style="margin-top:20px">
+                          <a href="<?=Yii::$app->request->baseUrl?>/payments/tuition-fee?id=<?=$course->id?>" class="btn btn-danger btn-block rounded">Pay</a>
                         </div>
+                    </div>
+                    <div class="col-md-4" style="padding-top:36px">
+                      <div class="row">
+                        <div class=" col-md-12"><h3 class="title-light font-14">START DATE</h3></div>
+                        <div class="col-md-12 line-compressed"><?= $course->start_date ?></div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-12 "><h3 class="title-light font-14">DURATION</h3></div>
+                        <div class="col-md-12 line-compressed"><?= $course->duration ?></div>
+                      </div>
+
+                      <div class="row">
+                        <div class=" col-md-12"><h3 class="title-light font-14">COST</h3></div>
+                        <div class="col-md-12 line-compressed">$<?= number_format($course->fee,2); ?></div>
+                      </div>
+
+                      <div class="row">
+                        <div class=" col-md-12"><h3 class="title-light font-14">STATUS</h3></div>
+                        <div class="col-md-12 line-compressed"><?= 'PENDING' ?></div>
+                      </div>
 
                     </div>
 
+                  </div>
                 </div>
             </div>
 
@@ -60,10 +73,76 @@
                     <p class="">
                         No Courses
                     </p>
-                    
+
                 </div>
 
                 <?php endif; ?>
+
+
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h3 class="title-light">LIVE COURSES</h3>
+                <hr style="background-color:#ffffff !important">
+              </div>
+
+              <div class="row">
+
+                  <?php if (count($live_courses) > 0): ?>
+
+                  <?php foreach ($live_courses as $live_course): ?>
+
+                  <div class="card no-bg-color">
+                      <div class="card-body">
+
+                        <div class="row">
+                          <div class="col-md-6">
+
+                              <img src="<?= Url::to('@web/uploads/courses/'.$live_course->photo); ?>" class="img-fluid img-rounded">
+                              <h3 class="title-bold font-24 bottom-centered "><?=$live_course->name?></h3>
+                              <div style="margin-top:20px">
+                                <a href="<?=Yii::$app->request->baseUrl?>/payments/tuition-fee?id=<?=$live_course->id?>" class="btn btn-danger btn-block rounded">Apply</a>
+                              </div>
+                          </div>
+                          <div class="col-md-4" style="padding-top:36px">
+                            <div class="row">
+                              <div class=" col-md-12"><h3 class="title-light font-14">START DATE</h3></div>
+                              <div class="col-md-12 line-compressed"><?= $live_course->start_date ?></div>
+                            </div>
+
+                            <div class="row">
+                              <div class="col-md-12 "><h3 class="title-light font-14">DURATION</h3></div>
+                              <div class="col-md-12 line-compressed"><?= $live_course->duration ?></div>
+                            </div>
+
+                            <div class="row">
+                              <div class=" col-md-12"><h3 class="title-light font-14">COST</h3></div>
+                              <div class="col-md-12 line-compressed">$<?= number_format($live_course->fee,2); ?></div>
+                            </div>
+
+                            
+
+                          </div>
+
+                        </div>
+                      </div>
+                  </div>
+
+                      <?php endforeach; ?>
+                      <?php else:?>
+                       <div class="alert alert-info padding-box mt-2 mb-2">
+                          <p class="">
+                              No Courses
+                          </p>
+
+                      </div>
+
+                      <?php endif; ?>
+
+
+                  </div>
+
+
 
 
             </div>

@@ -166,13 +166,13 @@ DashboardAsset::register($this);
           <nav class="navbar-sidebar">
               <ul class="list-unstyled navbar__list">
                 <li>
-                    <?=Html::a('<i class="fas fa-tachometer-alt"></i>Dashboard', ['site/index'])?>
+                    <?=Html::a('<i class="fas fa-tachometer-alt"></i>Dashboard', ['site/index'],['class' => 'hover_link'])?>
 
 
                 </li>
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-users"></i>Students</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -185,7 +185,7 @@ DashboardAsset::register($this);
                       </ul>
                   </li>
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-users"></i>Instructors</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -198,7 +198,7 @@ DashboardAsset::register($this);
                       </ul>
                   </li>
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-credit-card"></i>Payments</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -210,7 +210,7 @@ DashboardAsset::register($this);
                   </li>
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-list"></i>Reports</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -224,7 +224,7 @@ DashboardAsset::register($this);
                   </li>
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-list"></i>Courses</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -238,7 +238,7 @@ DashboardAsset::register($this);
                   </li>
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-envelope"></i>Messaging</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -252,7 +252,7 @@ DashboardAsset::register($this);
                   </li>
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-tags"></i>Tags</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
@@ -270,7 +270,7 @@ DashboardAsset::register($this);
 
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
+                      <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-envelope"></i>Vouchers</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
@@ -287,7 +287,7 @@ DashboardAsset::register($this);
                   </li>
 
                   <li>
-                      <?=Html::a('<i class="fas fa-cog"></i>Settings', ['settings/index'])?>
+                      <?=Html::a('<i class="fas fa-cog"></i>Settings', ['settings/index'],['class' => 'hover_link'])?>
 
 
                   </li>
