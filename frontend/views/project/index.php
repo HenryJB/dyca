@@ -17,7 +17,7 @@
       <?php if (count($projects) > 0): ?>
 
       <?php foreach ($projects as $project): ?>
-      <div class="card">
+      <div class="card no-bg-color">
         <div class="card-body">
           <h4 class="card-title m-b-0">
             <?= $project->title?>
@@ -42,7 +42,7 @@
 
             <?php if($project->type == 'audio') :?>
 
-                
+
             <div class="p-2">
               <audio controls
                     <source src="<?=Url::to('@web/uploads/student-projects/audios/'.$project->attachment)?>" type="audio/mpeg">
@@ -106,13 +106,13 @@
 
                         <a href="<?= Url::to(['project/delete','id' => $project->id])?>" class="btn btn-danger btn-sm rounded" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>
                           Delete</a>
-    
+
                       </div>
 
                     </div>
                   <?php endif;?>
 
-           
+
 
               </div>
             </div>

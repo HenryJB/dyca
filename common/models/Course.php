@@ -3,10 +3,6 @@
 namespace common\models;
 
 use Yii;
-use common\models\Student;
-use yii\imagine\Image as ImageBox;
-use Imagine\Image\Box;
-use yii\helpers\Url;
 
 /**
  * This is the model class for table "courses".
@@ -15,14 +11,14 @@ use yii\helpers\Url;
  * @property int $course_category
  * @property string $name
  * @property string $description
- * @property int $instructor_id
+ * @property string $start_date
  * @property string $duration
  * @property double $fee
  * @property string $prerequisite
- * @property int $sylabus_id
+ * @property string $status
  * @property string $photo
  *
- * @property CoursesCategory $courseCategory
+ * @property CourseRegistrations[] $courseRegistrations
  */
 class Course extends \yii\db\ActiveRecord
 {
@@ -40,15 +36,15 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_category', 'name', 'instructor_id', 'duration', 'prerequisite', 'photo'], 'required'],
-            [['course_category', 'instructor_id', 'sylabus_id'], 'integer'],
-            [['description', 'prerequisite'], 'string'],
+            [['name', 'start_date', 'duration', 'photo'], 'required'],
+            [['course_category'], 'integer'],
+            [['description', 'prerequisite', 'status'], 'string'],
+            [['start_date'], 'safe'],
             [['fee'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['duration'], 'string', 'max' => 100],
-            [['photo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif','maxSize' => 2048000, 'tooBig' => 'Limit is 2MB'],
+            [['photo'], 'string', 'max' => 200],
             [['name'], 'unique'],
-            [['course_category'], 'exist', 'skipOnError' => true, 'targetClass' => CoursesCategory::className(), 'targetAttribute' => ['course_category' => 'id']],
         ];
     }
 
@@ -60,13 +56,13 @@ class Course extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'course_category' => 'Course Category',
-            'name' => 'Title',
+            'name' => 'Name',
             'description' => 'Description',
-            'instructor_id' => 'Instructor',
+            'start_date' => 'Start Date',
             'duration' => 'Duration',
             'fee' => 'Fee',
             'prerequisite' => 'Prerequisite',
-            'sylabus_id' => 'Sylabus',
+            'status' => 'Status',
             'photo' => 'Photo',
         ];
     }
@@ -74,15 +70,11 @@ class Course extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCourseCategory()
+    public function getCourseRegistrations()
     {
-        return $this->hasOne(CoursesCategory::className(), ['id' => 'course_category']);
+        return $this->hasMany(CourseRegistrations::className(), ['course_id' => 'id']);
     }
 
-    public function getCourseRegistration()
-    {
-        return $this->hasMany(CourseRegistration::className(), ['course_id' => 'id']);
-    }
 
     public function upload()
     {

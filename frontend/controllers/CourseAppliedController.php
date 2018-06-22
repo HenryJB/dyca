@@ -16,12 +16,12 @@ class CourseAppliedController extends \yii\web\Controller
     {
         $session = Yii::$app->session;
 
-        $model = new CourseRegistration();        
+        $model = new CourseRegistration();
 
         if($model->load(Yii::$app->request->post()))
-        { 
+        {
             $model->student_id = $session->get('id');
-             
+
             $check =$model->find()->where(['course_id' => $model->course_id])
                           ->andWhere('student_id='.$session->get('id'))->one();
 
@@ -33,21 +33,22 @@ class CourseAppliedController extends \yii\web\Controller
             if($model->validate() && $model->save()){
 
                 Yii::$app->session->setFlash('success', 'You have successfully applied for this course');
-                
+
                 Yii::$app->runAction('messaging/course-applied', ['course_id' => $model->course_id]);
 
                 return $this->redirect('index');
             }
 
             Yii::$app->session->setFlash('error', 'Failed to apply for course');
-            
+
             return $this->redirect('index');
 
         }
-    
+
         return $this->render('index', [
-            'courses_applied' => CourseRegistration::find()->where(['student_id'=> $session->get('id')])->all(), 
-            'courses' => ArrayHelper::map(Course::find()->all(), 'id', 'name'), 
+            'courses_applied' => CourseRegistration::find()->where(['student_id'=> $session->get('id')])->all(),
+            'courses' => ArrayHelper::map(Course::find()->all(), 'id', 'name'),
+            'live_courses' => Course::find()->where('id != :id and status= :st', ['id'=>$session->get('student')->first_choice])->all(), 
             'sessions' => ArrayHelper::map(Session::find()->all(), 'id', 'name'),
             'model' => $model
         ]);

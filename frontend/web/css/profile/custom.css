@@ -1,3 +1,46 @@
+
+@font-face {
+    font-family: 'bebas_neuebold';
+    src: url('../../fonts/bebas/bebasneue_bold-webfont.woff2') format('woff2'),
+         url('../../fonts/bebas/bebasneue_bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'futura_bk_btbook';
+    src: url('../../fonts/futura/futura_book_font-webfont.woff2') format('woff2'),
+         url('../../fonts/futura/futura_book_font-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'bebas_neue_regular';
+    src: url('../../fonts/bebas/bebasneue_regular-webfont.woff2') format('woff2'),
+         url('../../fonts/bebas/bebasneue_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'bebas_neue_light';
+  src: url('../../fonts/bebas/BebasNeueLight.eot?#iefix') format('embedded-opentype'),  url('BebasNeueLight.otf')  format('opentype'),
+	     url('../../fonts/bebas/BebasNeueLight.woff') format('woff'), url('BebasNeueLight.ttf')  format('truetype'), url('BebasNeueLight.svg#BebasNeueLight') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'futura_bt-bold_condensed';
+  src: url('../../fonts/FuturaBT-BoldCondensed.eot?#iefix') format('embedded-opentype'),  url('FuturaBT-BoldCondensed.woff') format('woff'), url('FuturaBT-BoldCondensed.ttf')  format('truetype'), url('FuturaBT-BoldCondensed.svg#FuturaBT-BoldCondensed') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 #main-wrapper .left-sidebar[data-sidebarbg=skin5], #main-wrapper .left-sidebar[data-sidebarbg=skin5] ul {
     background: #141619!important;
 }
@@ -10,9 +53,112 @@
 .page-wrapper {
     background-color: #21252b !important;
 }
+.profile-picture-box{
+  width: 150px;
+  margin: auto;
+}
+.profile-picture{
 
-body {
-   
-    background-color: #21252b;
+  width:150px !important;
+  height:150px !important;
+  border-radius: 50%;
+  margin: auto;
+  border: 1px solid #000;
+}
+.profile-title{
+  width: 50%;
+  padding:10px;
+  color: #ffffff;
+  margin: auto;
+  text-align: center;
+  font-size: 30px;
+
+
 }
 
+
+
+.profile{
+  width: 100%;
+  color: #ffffff;
+  margin: auto;
+  font-size: 30px;
+
+
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #a40000;
+
+}
+
+.about, .about> div.row,
+.contact, .contact >div.row,
+.skills, .skills>div.row,
+.course-enrolled ,.course-enrolled>div.row, .portfolio, .portfolio >div.row{
+  padding-top: 20px;
+  color: #ffffff;
+}
+
+.pad-rounded{
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+}
+.title-bold{
+    font-family: 'bebas_neuebold';
+    text-transform: uppercase;
+}
+.no-bg-color{
+  background-color: transparent;
+
+}
+
+.title-light{
+    font-family: 'bebas_neue_light';
+}
+
+.title_fut_bold{
+  font-family: 'futura_bt-bold_condensed';
+    text-transform: uppercase;
+}
+
+.breadcrumb li + li:before{
+  content: ' / ';
+  color: #a40000;
+  padding: 1px;
+}
+
+.breadcrumb li:last-child:after{
+  content: ' ';
+}
+
+.bottom-centered {
+    position: absolute;
+    top: 70%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+}
+
+.line-compressed{
+  margin-top: -10px;
+  padding-bottom: 10px;
+}
+
+.img-fluid {
+
+    border-radius: 10px;
+}
+
+.page-breadcrumb .page-title {
+    text-transform: uppercase;
+    padding-left: 100px;
+}
+
+
+body {
+    color:#ffffff;
+    background-color: #21252b;
+    font-family: 'futura_bk_btbook';
+}
