@@ -39,7 +39,7 @@ class StudentProject extends \yii\db\ActiveRecord
         return [
             [['title', 'description', 'type'], 'required'],
             [['student_id'], 'integer'],
-            [['description', 'type'], 'string'],
+            [['description', 'type'], 'string','max' => 255],
             [['date'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['url'], 'string', 'max' => 50],

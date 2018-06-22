@@ -46,4 +46,25 @@ ul .breadcrumb li :nth-child(n+2):before {
     font-size:12px;
 }
 
+.section__content--p30 {
+    background-color: #000000;
+}
+
+.menu-sidebar {
+    background: #000000;
+}
+
+.section__content--cp30,
+.page-container,
+footer.footer {
+    background-color: #21252b;
+    color: white;
+}
+
+.menu-sidebar {
+    overflow-y: none;
+}
+
+
+
 

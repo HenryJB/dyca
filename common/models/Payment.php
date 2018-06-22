@@ -37,7 +37,7 @@ class Payment extends \yii\db\ActiveRecord
             [['student_id', 'reference_no', 'amount', 'description', 'type', 'method', 'status', 'voucher_id', 'date'], 'required'],
             [['student_id', 'voucher_id'], 'integer'],
             [['amount'], 'number'],
-            [['description'], 'string'],
+            [['description'], 'string','max' => 255],
             [['date'], 'safe'],
             [['reference_no', 'method'], 'string', 'max' => 50],
             [['type'], 'string', 'max' => 255],

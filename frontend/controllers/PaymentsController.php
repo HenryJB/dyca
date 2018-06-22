@@ -45,7 +45,7 @@ class PaymentsController extends \yii\web\Controller
                 return $this->redirect(['site/index']);
             }
 
-            return $this->render(['payments/index']);
+            return $this->render('index');
         }
         else
         {

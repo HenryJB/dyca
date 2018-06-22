@@ -33,7 +33,7 @@ class Tag extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'description', 'notify_status'], 'required'],
-            [['description', 'message'], 'string'],
+            [['description', 'message'], 'string','max' => 255],
             [['notify_status', 'voucher_category'], 'integer'],
             [['name'], 'string', 'max' => 100],
         ];

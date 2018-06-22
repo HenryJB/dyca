@@ -113,7 +113,7 @@ class StudentsController extends Controller
                     Yii::$app->session->setFlash('success', 'Registration Was Successful Please Check Your Email For Further Instructions');
 
                     //send a welcome notification
-                    Yii::$app->runAction('messaging/welcome', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name, 'student' => $model->id]);
+                    Yii::$app->runAction('messaging/welcome', ['email_address' => $model->email_address,'firstname' => $model->first_name, 'lastname' => $model->last_name, 'id' => $model->id]);
                     return $this->redirect('view');
 
                 }catch(Exception $e){

@@ -284,12 +284,12 @@
                                 <p style="margin: 0 0 10px;">Hi <?= $name ?></p>
                                 <p style="margin: 0 0 10px;"><?= $content ?></p>
                                 <p style="margin: 0 0 10px;">
-                                    <span style="border-bottom:3px solid #a40000;">USERNAME : <?= $username ?></span>
+                                    <span style="background-color:#a40000; color:white;">USERNAME : <?= $username ?></span>
                                 </p>
                                 <p style="margin: 0 0 10px; border-bottom:3px solid #a40000;">
-                                    <span style="border-bottom:3px solid #a40000;"></span>PASSWORD : <?= $password ?>
+                                    <span style="background-color:#a40000; color:white;"></span>PASSWORD : <?= $password ?>
                                 </p>
-                                <p style="margin: 0 0 10px; border-bottom:3px solid #a40000;">
+                                <p style="margin: 0 0 10px; background-color:#a40000; color:white;">
                                     <span>NB :Please be advised that for your own security your password needs to be changed</span></p>
                             </td>
                         </tr>

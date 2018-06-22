@@ -13,7 +13,29 @@ $this->params['breadcrumbs'][] = ['label' => 'Students', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+
+<?php if (Yii::$app->session->hasFlash('error')): ?> 
+
+<div class="alert alert-danger alert-dismissable">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        
+    <?= Yii::$app->session->getFlash('error') ?>
+</div>
+
+<?php endif; ?>
+
+<?php if (Yii::$app->session->hasFlash('success')): ?> 
+
+  <div class="alert alert-success alert-dismissable">
+      <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+          
+      <?= Yii::$app->session->getFlash('success') ?>
+  </div>
+
+<?php endif; ?>
+
 <div class="student-view">
+
   <!-- modal medium -->
   <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">

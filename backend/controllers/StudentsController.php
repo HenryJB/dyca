@@ -174,9 +174,10 @@ class StudentsController extends Controller
   
             if(!$tagging->save()){
                 //TODO set flash session here
-                //TODO do a redirect here
-              print_r($tagging->getErrors());
-              exit;
+                //TODO do a redirect here            
+             //print_r($tagging->getErrors());
+              //exit;
+              Yii::$app->session->setFlash('success', 'Tag added to student');
             }
         }
          
@@ -198,20 +199,26 @@ class StudentsController extends Controller
 
                   if(!$vouchers_assignment->save()){
                       //$msg = $vouchers_assignment->getErrors();
-                      print_r($vouchers_assignment->getErrors());
+                      //print_r($vouchers_assignment->getErrors());
+                      Yii::$app->session->setFlash('error', 'Voucher has been assigned');
                   }else{
 
-                   $update_voucher = Voucher::find()->where(['id'=>$selected_vouchers[0]->id])->one();
-                   $update_voucher->status= 'assigned';
-                   $update_voucher->update();
+                    $update_voucher = Voucher::find()->where(['id'=>$selected_vouchers[0]->id])->one();
+                    $update_voucher->status= 'assigned';
+                    $update_voucher->update();
+
+                    Yii::$app->session->setFlash('success', 'Voucher Status changed');
 
                   }
 
 
             }
-              if($tag->message != NULL && $tag->notify_status==1){
+              if($tag->message != NULL && $tag->notify_status==1 && count($selected_vouchers) > 0){ 
                 
                   Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id, 'email_template' => 3]);
+              }
+              else{
+                Yii::$app->session->setFlash('error', 'Voucher has been assigned');
               }
 
 

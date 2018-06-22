@@ -143,11 +143,8 @@ class SiteController extends Controller
         //     'id'   => 33
         //     ]);
 
-
-
         //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
-
-    }
+        }
 
     /**
      * Logs out the current user.
