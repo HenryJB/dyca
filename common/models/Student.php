@@ -136,8 +136,8 @@ class Student extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'approval_status' => 'Approval Status',
             'country' => 'Country',
-            'state_id' => 'State ID',
-            'local_government_id' => 'Local Government ID',
+            'state_id' => 'State',
+            'local_government_id' => 'Local Government  ',
             'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
@@ -178,6 +178,11 @@ class Student extends \yii\db\ActiveRecord
         $extensionsStack = array('png, jpg, jpeg, gif');
 
         $file = UploadedFile::getInstanceByName('photo');
+
+        if($file == NULL){
+            return false;
+        }
+  
 
         $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
 

@@ -48,11 +48,13 @@ class TagsController extends Controller
     public function actionIndex()
     {
         $searchModel = new TagSearch();
+        $model = Tag::find()->all();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'models' => $model
         ]);
     }
 

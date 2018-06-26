@@ -253,7 +253,7 @@ DashboardAsset::register($this);
 
                   <li class="has-sub">
                       <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-tags"></i>Tags</a>
+                          <i class="fas fa-tags"></i>Tag Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
                                 <?=Html::a('New Tag', ['tags/create'])?>
@@ -467,9 +467,19 @@ DashboardAsset::register($this);
 
       <!-- MAIN CONTENT-->
       <div class="main-content">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 ml-auto">
+                    <?= Breadcrumbs::widget([
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        'options' => [
+                            'id' => 'student__breadcrumb',
+                            'class' => 'breadcrumb'
+                        ]
+                    ]) ?>
+                </div>
+            </div>
+        </div>
         <div class="section__content section__content--cp30">
             <?= $content ?>
         </div>
@@ -486,8 +496,6 @@ DashboardAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 

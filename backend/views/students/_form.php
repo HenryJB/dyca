@@ -60,8 +60,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sponsorship_status')->textInput() ?>
 
-    <?= $form->field($model, 'is_existing')->textInput() ?>
-
     <?= $form->field($model, 'terms_condition')->textInput() ?>
 
     <?= $form->field($model, 'date_registered')->textInput() ?>

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ListView;
+use circulon\widgets\ColumnListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\TagSearch */
@@ -16,23 +18,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <p>
-        <?= Html::a('Create Tag', ['create'], ['class' => 'btn btn-success mb-3 mt-3']) ?>
+        <?= Html::a('Create Tag', ['create'], ['class' => 'btn btn-success mb-3 mt-3 text-white']) ?>
     </p>
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        // 'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-        'name',
-        'description',
-        'message',
-        'voucher_category',
-        'notify_status',
-        ['class' => 'yii\grid\ActionColumn']
-      ],
+    <div class="row">
+        <div class="col-sm-12">
+        <?php if(count($models)>0) :?>
+            <?php foreach($models as $model): ?>
+                <p><?= $model->name?></p>
+            <?php endforeach;?>
+        <?php endif ;?>
+        </div>
+    </div>
 
-    ]) ?>
+     
 </div>

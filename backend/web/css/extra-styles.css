@@ -1,9 +1,101 @@
+@font-face {
+    font-family: 'futura_bk_btbook';
+    src: url('../fonts/futura/futura_book_font-webfont.woff2') format('woff2'),
+         url('../fonts/futura/futura_book_font-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'bebas_neue_regular';
+    src: url('../fonts/bebas/bebasneue_regular-webfont.woff2') format('woff2'),
+         url('../fonts/bebas/bebasneue_regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #21252b;
+    font-family: futura_bk_btbook, sans-serif;
+    font-size: 15px;        
+}
+
 .card-header {
     padding: .75rem 1.25rem;
     margin-bottom: 0;
     background-color: #a50c0c !important;
     border-bottom: 1px solid rgba(0,0,0,.125);
 }
+
+/* change background color of filter form on student index */
+.student-search {
+    background-color: transparent !important;
+    padding: 2px;
+}
+/* hide scroll bar on dashboard */
+.menu-sidebar {
+    overflow-y: hidden;
+}
+
+/* change breadcrumb color */
+ul#student__breadcrumb {
+    background-color: #21252b;
+    color:white;
+}
+
+/* create delyork */
+.btn-danger{
+    color: #fff;
+    background-color: #A40000;
+    border-color: #A40000;
+}
+
+/* utility classes for display */
+.mt-25{
+    margin-top:25px;
+}
+
+.mt-130{
+    margin-top:130px;
+}
+
+/* bebas font to profile box */
+.bebas_neue{
+    font-family: bebas_neue_regular, sans-serif;
+}
+
+/* student list view display*/
+.card-deck .card {
+    background-color: transparent;
+    border: none;
+}
+
+/* change background color of student view on admin */
+.card-body.card__body {
+    background-color: #21252b;
+}
+
+/* adjust margin of filter on student form */
+.student-search {
+    margin-left: 10%;
+    margin-bottom: 20px;
+}
+
+/* adjus */
+#studentsearch-first_name{
+    height:25px !important;
+  }
+  
+  /* adjust summary on student->index */
+  .summary{
+    padding-bottom: 30px;
+    margin-left: 40%;
+  }
+  
+  /* adjust pagination on students->index */
+  ul.pagination {
+      margin-left: 40%;
+  }
 
 .breadcrumb li a{
   margin-right: 10px;

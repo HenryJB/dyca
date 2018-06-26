@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
           'dataProvider' => $dataProvider,
           'columns' => 3,
           'itemOptions' => [
-            'class' => 'col-lg-4 col-xs-12',
+            'class' => 'col-md-4 offset-md-2 col-sm-4 offset-sm-2 col-lg-4 offset-lg-2 col-xl-3 offset-xl-2 col-xs-6 offset-xs-3',
           ],
           'itemView'     => '_student',
 
