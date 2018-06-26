@@ -12,6 +12,7 @@ use common\models\Student;
  */
 class StudentSearch extends Student
 {
+
     /**
      * {@inheritdoc}
      */
@@ -20,6 +21,7 @@ class StudentSearch extends Student
         return [
             [['id', 'state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'is_existing', 'terms_condition'], 'integer'],
             [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'occupation', 'photo', 'facebook_id', 'twitter_handle', 'instagram_handle', 'year', 'payment_status', 'approval_status', 'country', 'date_of_birth', 'reason', 'propose_project', 'information_source', 'date_registered', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'safe'],
+           
         ];
     }
 
@@ -41,13 +43,15 @@ class StudentSearch extends Student
      */
     public function search($params)
     {
+            
         $query = Student::find();
+  
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+            'query' => $query
         ]);
+
 
         $this->load($params);
 
@@ -91,7 +95,8 @@ class StudentSearch extends Student
             ->andFilterWhere(['like', 'emergency_fullname', $this->emergency_fullname])
             ->andFilterWhere(['like', 'emergency_relationship', $this->emergency_relationship])
             ->andFilterWhere(['like', 'emergency_phone_number', $this->emergency_phone_number])
-            ->andFilterWhere(['like', 'emergency_secondary_phone_number', $this->emergency_secondary_phone_number]);
+            ->andFilterWhere(['like', 'emergency_secondary_phone_number', $this->emergency_secondary_phone_number])
+            ->andFilterWhere(['like', 'name', $this->tagname]);
 
         return $dataProvider;
     }

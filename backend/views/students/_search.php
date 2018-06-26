@@ -13,20 +13,8 @@ use yii\helpers\ArrayHelper;
 ?>
 <style>
 
-#studentsearch-first_name{
 
-  height:30px !important;
-}
 
-.student-search{
-  margin-bottom: 20px;
-  background-color: #d5dced;
-  padding: 2px;
-}
-
-.summary{
-  padding-bottom: 30px;
-}
 </style>
 <div class="student-search">
 
@@ -36,12 +24,9 @@ use yii\helpers\ArrayHelper;
         'options'=>['class'=>'form-inline']
     ]); ?>
 
-<div class="col-md-3">
-  <?= $form->field($model, 'first_name')->textInput(['placeholder'=>'First name']) ?>
-</div>
+<?= $form->field($model, 'first_name')->textInput(['placeholder'=>'First name'])->label(false) ?>
 
-<div class="col-md-2">
-  <?= $form->field($model, 'country')->dropDownList(
+<?= $form->field($model, 'country')->dropDownList(
             ArrayHelper::map(Country::find()
                     ->groupBy('name')
                     ->all(),
@@ -55,13 +40,10 @@ use yii\helpers\ArrayHelper;
                      $( "select#studentsearch-state_id" ).html(data);
                    });
 
-             ']);
+             '])->label(false);
   ?>
 
-</div>
-
-<div class="col-md-2">
-  <?= $form->field($model, 'state_id')->dropDownList(
+   <?= $form->field($model, 'state_id')->dropDownList(
             ArrayHelper::map(State::find()
 
                     ->groupBy('name')
@@ -76,20 +58,20 @@ use yii\helpers\ArrayHelper;
                      $( "select#studentsearch-local_government_id" ).html(data);
                    });
 
-             ']);
+             '])->label(false);
   ?>
-
-</div>
-
-<div class="col-md-2">
+  
   <?= $form->field($model, 'local_government_id')->dropDownList(
     ArrayHelper::map(LocalGovernment::find()
             ->all(),
             'id',
             'name'
           ),
-    ['prompt' => 'Select LGA']);?>
-</div>
+    ['prompt' => 'Select LGA'])->label(false);?>
+
+     <?= Html::dropDownList('name','',$tags,['prompt' => 'Select Tag', 'class' => 'form-control']) ?>
+
+
 
 
 
@@ -151,7 +133,7 @@ use yii\helpers\ArrayHelper;
     <?php // echo $form->field($model, 'emergency_secondary_phone_number') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-danger']) ?>
 
     </div>
 

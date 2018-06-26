@@ -61,4 +61,14 @@ class Tag extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Tagging::className(), ['tag_id' => 'id']);
     }
+
+    public function getStudents() 
+    {
+        return $this->hasMany(Student::className(), ['id' => 'student_id'])->viaTable('tagging', ['tag_id' => 'id']);
+    }
+
+    public function getTagCategory()
+    {
+        return $this->hasOne(TagCategory::className(), ['id' => 'tag_category_id']);
+    }
 }
