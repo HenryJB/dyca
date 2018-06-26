@@ -59,6 +59,7 @@ echo "Done!"
 info "Initailize databases for MySQL"
 mysql -uroot <<< "CREATE DATABASE yii2advanced"
 mysql -uroot <<< "CREATE DATABASE yii2advanced_test"
+mysql -uroot <<< "CREATE DATABASE dca"
 echo "Done!"
 
 info "Install composer"
