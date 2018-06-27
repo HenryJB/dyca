@@ -12,7 +12,6 @@ use common\models\Student;
  */
 class StudentSearch extends Student
 {
-    public $tag_id;
     /**
      * {@inheritdoc}
      */
@@ -21,7 +20,6 @@ class StudentSearch extends Student
         return [
             [['id', 'state_id', 'first_choice', 'second_choice', 'sponsor_aid', 'sponsorship_status', 'terms_condition'], 'integer'],
             [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'occupation', 'photo', 'facebook_id', 'twitter_handle', 'instagram_handle', 'year', 'payment_status', 'approval_status', 'country', 'date_of_birth', 'about', 'propose_project', 'information_source', 'date_registered', 'emergency_fullname', 'emergency_relationship', 'emergency_phone_number', 'emergency_secondary_phone_number'], 'safe'],
-            [['tag_id'], 'safe'],
         ];
     }
 
@@ -43,15 +41,7 @@ class StudentSearch extends Student
      */
     public function search($params)
     {
-        if(!empty($params['name'])){
-            $query = Student::find()->innerJoinWith('tags', true);
-
-            var_dump($query);
-            exit;
-        }
-        else{
-            $query = Student::find();
-        }
+        $query = Student::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

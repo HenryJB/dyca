@@ -28,7 +28,6 @@ use yii\helpers\ArrayHelper;
 
 <?= $form->field($model, 'country')->dropDownList(
             ArrayHelper::map(Country::find()
-                    ->groupBy('name')
                     ->all(),
                     'id',
                     'name'
@@ -45,8 +44,6 @@ use yii\helpers\ArrayHelper;
 
    <?= $form->field($model, 'state_id')->dropDownList(
             ArrayHelper::map(State::find()
-
-                    ->groupBy('name')
                     ->all(),
                     'id',
                     'name'

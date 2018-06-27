@@ -19,6 +19,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\data\Pagination;
 /**
  * StudentsController implements the CRUD actions for Student model.
  */
@@ -292,24 +293,39 @@ class StudentsController extends Controller
     {
         $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
 
-        if(Yii::$app->request->post('tag_id')){
-            (int)$tag_id    = Yii::$app->request->post('tag_id');
-            $models         = Tagging::find()->where(['tag_id' => $tag_id])->all();
-           
-            $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
-            return $this->render('filterbytags', [
-                'tags' => $tags,
-                'models' => $models,
-            ]);
-        }else
-        {
-            $models  = !empty($tag_id) ? Tagging::find()->where(['tag_id' => $tag_id])->all() : Tagging::find()->all();
-           
-            $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
+        $tag_id = Yii::$app->request->post('tag_id');
+
+        $query = !empty($tag_id) ? Tagging::find()->where(['tag_id' => $tag_id]) : Tagging::find();
+
+        $count = $query->count();
+
+        $pagination = new Pagination(['totalCount' => $count,'pageSize'=>3]);
+
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
+
+        if(!empty($query)){                
+
+            $models = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
 
             return $this->render('filterbytags', [
                 'tags' => $tags,
                 'models' => $models,
+                'pagination' => $pagination
+            ]);
+        }else
+        {
+
+            $models = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        
+            return $this->render('filterbytags', [
+                'tags' => $tags,
+                'models' => $models,
+                'pagination' => $pagination
+                
             ]);
         }
         //get a list of students that have tags
