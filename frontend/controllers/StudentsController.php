@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use common\models\Course;
 use common\models\CoursesCategory;
 
+use common\models\StudentSkill;
 use common\models\User;
 use common\models\Email;
 use common\models\LocalGovernment;
@@ -12,6 +13,7 @@ use common\models\CourseRegistration;
 use common\models\State;
 use common\models\Student;
 use common\models\Setting;
+use common\models\Skill;
 
 use common\models\Session;
 use common\models\StudentProject;
@@ -62,7 +64,7 @@ class StudentsController extends Controller
 
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['related-states', 'related-local-government', 'login', 'change-picture','request-password-reset'])) {
+        if (in_array($action->id, ['related-states',  'related-local-government',  'login', 'change-picture','request-password-reset'])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -110,9 +112,9 @@ class StudentsController extends Controller
 
             if ($model->save() && $user->save()) {
                 $course_registration->student_id    =   $model->id;
-                $course_registration->course_id     =   $model->first_choice;
-                $course_registration->session_id    =   $model->session_id;
-                $course_registration->date          =   date('Y-m-d');
+                $course_registration->course_in_session_id    =   $model->session_id;
+                $course_registration->payment_status          =   'pending';
+                $course_registration->date =date('Y-m-d h:i:s');
                 $session->set('id', $model->id);
                 try{
                     $course_registration->save();
@@ -212,7 +214,7 @@ class StudentsController extends Controller
               'model' => $this->findModel($id),
           ]);
         }else {
-          return $this->redirect(['students/login']);
+          return $this->redirect(['site/index']);
         }
 
     }
@@ -242,39 +244,55 @@ class StudentsController extends Controller
     {
         $session = Yii::$app->session;
 
-        $student = $this->findModel($session->get('id'));
+        if($session->get('id')!==null){
 
-        $student->scenario = Student::SCENARIO_PROFILE_UPDATE;
+            $student = $this->findModel($session->get('id'));
 
-        $student->photo = $student->changeProfilePicture();
+            $student->scenario = Student::SCENARIO_PROFILE_UPDATE;
 
-        $session->remove('photo');
+            $student->photo = $student->changeProfilePicture();
+
+            $session->remove('photo');
 
 
 
-        if(!empty($student->errors) || empty($student->photo))
-        {
-            Yii::$app->session->setFlash('error', $student->errors);
-            return $this->redirect('profile');
-        }
-
-        try{
-
-            if($student->save())
+            if(!empty($student->errors) || empty($student->photo))
             {
-                $session->set('photo', $student->photo);
-
-                Yii::$app->session->setFlash('success', 'Image Upload Successful');
+                Yii::$app->session->setFlash('error', $student->errors);
                 return $this->redirect('profile');
-            }else{
+            }
+
+            try{
+
+                if($student->save())
+                {
+                    $session->set('photo', $student->photo);
+
+                    Yii::$app->session->setFlash('success', 'Image Upload Successful');
+
+                    // $session->set('id', NULL);
+                    // $session->set('student', NULL);
+
+//                $session->set('id', $student->id);
+//                $session->set('student', $student);
+
+                    return $this->redirect('profile');
+                }else{
+                    Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
+                    return $this->redirect('profile');
+                }
+            }catch(Exception $e)
+            {
                 Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
                 return $this->redirect('profile');
             }
-        }catch(Exception $e)
-        {
-            Yii::$app->session->setFlash('error', 'Image Could not be uploaded');
-            return $this->redirect('profile');
+
+        }else{
+
+            return $this->redirect(['site/index']);
         }
+
+
 
     }
 
@@ -329,17 +347,25 @@ class StudentsController extends Controller
         $this->layout = 'profile-layout';
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
-        $student = $this->findModel($id);
 
-        $emails = Email::find()->where(['receiver_email' => $student->email_address])->all();
-        $courses_applied = Course::find()->where(['id' => $student->first_choice])->all();
 
-        //if (count($courses_applied) > 0) {
-        return $this->render('dashboard',
-            ['model' => $student,
-                'emails' => $emails,
-            ]);
-        //  }
+        if($id!==null){
+            $student = $this->findModel($id);
+
+            $emails = Email::find()->where(['receiver_email' => $student->email_address])->all();
+            $courses_applied = Course::find()->where(['id' => $student->first_choice])->all();
+
+            //if (count($courses_applied) > 0) {
+            return $this->render('dashboard',
+                ['model' => $student,
+                    'emails' => $emails,
+                ]);
+
+        }else{
+            return $this->redirect(['site/index']);
+        }
+
+
     }
 
     public function actionGrants()
@@ -347,9 +373,13 @@ class StudentsController extends Controller
         $this->layout = 'profile-layout';
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
-        $student = $this->findModel($id);
-        $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
-        return $this->render('grants', ['projects' => $projects]);
+        if($id!==null){
+            $student = $this->findModel($id);
+            $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
+            return $this->render('grants', ['projects' => $projects]);
+        }else{
+            return $this->redirect(['site/index']);
+        }
     }
 
     public function actionScholarship()
@@ -357,9 +387,14 @@ class StudentsController extends Controller
         $this->layout = 'profile-layout';
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
-        $student = $this->findModel($id);
-        $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
-        return $this->render('scholarship', ['projects' => $projects]);
+        if($id!==null){
+            $student = $this->findModel($id);
+            $projects = StudentProject::find()->where(['student_id' => $student->id])->all();
+            return $this->render('scholarship', ['projects' => $projects]);
+
+        }else{
+        return $this->redirect(['site/index']);
+        }
     }
 
     /**
@@ -397,13 +432,21 @@ class StudentsController extends Controller
 
         $student_session = Yii::$app->session;
 
-        $model = $this->findModel($student_session->get('id'));
+        if($student_session->get('id')!==null){
+            $model = $this->findModel($student_session->get('id'));
 
-        return $this->render('profile', [
-            'model' => $model,
-            'courses_applied' => CourseRegistration::find()->where(['student_id'=> $student_session->get('id')])->all(),
-            'projects' =>StudentProject::find()->where(['student_id' => $student_session->get('id')])->all()
-        ]);
+            return $this->render('profile', [
+                'model' => $model,
+                'courses_applied' => CourseRegistration::find()->where(['student_id'=> $student_session->get('id')])->all(),
+                'projects' => StudentProject::find()->where(['student_id' => $student_session->get('id')])->all(),
+                'skillsets'=> StudentSkill::find()->where(['student_id'=> $student_session->get('id')])->all(),
+                'skills' =>   Skill::find()->all()
+            ]);
+
+
+        }else{
+            return $this->redirect(['site/index']);
+        }
     }
     public function actionUpdate()
     {
@@ -411,22 +454,30 @@ class StudentsController extends Controller
 
         $student_session = Yii::$app->session;
 
-        $model = $this->findModel($student_session->get('id'));
+        if($student_session->get('id')!==null){
 
-        $model->scenario = Student::SCENARIO_PROFILE_UPDATE;
+            $model = $this->findModel($student_session->get('id'));
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Profile Update Succesfully');
-                return $this->redirect('profile');
+            $model->scenario = Student::SCENARIO_PROFILE_UPDATE;
+
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                if ($model->save()) {
+                    Yii::$app->session->setFlash('success', 'Profile Update Successfully');
+                    return $this->redirect('profile');
+                }
+
+                Yii::$app->session->setFlash('error', 'Profile Update Failed');
             }
 
-            Yii::$app->session->setFlash('error', 'Profile Update Failed');
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+
+        }else{
+            return $this->redirect(['site/index']);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+
     }
 
 
@@ -449,7 +500,7 @@ class StudentsController extends Controller
 
                 return true;
             } else {
-                Yii::$app->session->setFlash('erro', 'Sorry, we are unable to reset your password for the provided email address.');
+                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset your password for the provided email address.');
                 return false;
             }
         }
@@ -503,6 +554,42 @@ class StudentsController extends Controller
         file_put_contents(Url::to('@academy/web/uploads/students/' . $output_file_with_extentnion), base64_decode($data));
 
         return $output_file_with_extentnion;
+    }
+
+    public function actionAddSkills(){
+
+        $session = Yii::$app->session;
+
+        $student_id = $session->get('id');
+
+        if($student_id!==null){
+            $model = new StudentSkill();
+
+            if(Yii::$app->request->post()){
+
+                $skills = Yii::$app->request->post('skillset');
+                foreach( $skills as $skill){
+
+                    $skill_model = StudentSkill::find()->where(['skill_id'=>$skill, 'student_id'=>$student_id])->one();
+
+                    if($skill_model!==null){
+                        Yii::$app->session->setFlash('success', 'Skill already  added.');
+                        continue;
+                    }else{
+                        $model = new StudentSkill();
+                        $model->student_id = $student_id;
+                        $model->skill_id = $skill;
+                        $model->save();
+                    }
+
+                }
+
+                Yii::$app->session->setFlash('success', 'Skill added.');
+
+                return $this->redirect('profile');
+            }
+
+        }
     }
 
 }

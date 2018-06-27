@@ -19,7 +19,16 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
-            'loginUrl' => 'frontend/site/index'
+            'loginUrl' => ['site/index'],
+        ],
+
+        'Paystack' => [
+            'class' => 'smladeoye\paystack\Paystack',
+            'environment' => 'test',
+            'testPublicKey'=>'pk_test_808b61ef8c23f16fe0595ea3757467901084fca9',
+            'testSecretKey'=>'sk_test_e2042cde760792deb47b42ef76a010d4712b66d0',
+            'livePublicKey'=>'',
+            'liveSecretKey'=>'',
         ],
         
         

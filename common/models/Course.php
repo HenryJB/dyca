@@ -18,7 +18,7 @@ use Yii;
  * @property string $status
  * @property string $photo
  *
- * @property CourseRegistrations[] $courseRegistrations
+ * @property CourseRegistration[] $courseRegistrations
  */
 class Course extends \yii\db\ActiveRecord
 {
@@ -72,7 +72,7 @@ class Course extends \yii\db\ActiveRecord
      */
     public function getCourseRegistrations()
     {
-        return $this->hasMany(CourseRegistrations::className(), ['course_id' => 'id']);
+        return $this->hasMany(CourseRegistration::className(), ['course_id' => 'id']);
     }
 
 

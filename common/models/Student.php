@@ -179,31 +179,39 @@ class Student extends \yii\db\ActiveRecord
 
         $file = UploadedFile::getInstanceByName('photo');
 
-        $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
+        if($file!=NULL || $file!==''){
+           // var_dump($file); exit();
 
-        //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
+            $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
 
-        if ($this->validate() && !empty($img_name)) {
+            //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
 
-          if(in_array($file->extension, $extensionsStack)){
+            if ($this->validate() && !empty($img_name)) {
 
-            $file->saveAs(
-                Url::to('@frontend/web/uploads/students/').$img_name
-            );
-                return $img_name;
+                if(in_array($file->extension, $extensionsStack)){
 
-          }else {
+                    $file->saveAs(
+                        Url::to('@frontend/web/uploads/students/').$img_name
+                    );
+                    return $img_name;
 
-            $file->saveAs(
-                Url::to('@frontend/web/uploads/students/').$img_name
-            );
+                }else {
 
-            return $img_name;
-          }
+                    $file->saveAs(
+                        Url::to('@frontend/web/uploads/students/').$img_name
+                    );
 
-        } else {
+                    return $img_name;
+                }
+
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
+
+
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 use common\models\CourseRegistration;
+use common\models\CoursesInSession;
 use common\models\Session;
 use common\models\Course;
 use yii\helpers\ArrayHelper;
@@ -44,14 +45,51 @@ class CourseAppliedController extends \yii\web\Controller
             return $this->redirect('index');
 
         }
+          $courses_registered = CourseRegistration::find()->where(['student_id'=>$session->get('id')])->all();
+          $courses_obj = ArrayHelper::map($courses_registered, 'id', 'course_in_session_id');
+         // var_dump($courses_obj);
+        //exit();
+         // $ids = ArrayHelper::getColumn($courses_obj, 'course_in_session_id') ;
 
         return $this->render('index', [
-            'courses_applied' => CourseRegistration::find()->where(['student_id'=> $session->get('id')])->all(),
+            'courses_applied' => CourseRegistration::find()->where('student_id = :id', ['id'=>$session->get('id')])->all(),
             'courses' => ArrayHelper::map(Course::find()->all(), 'id', 'name'),
-            'live_courses' => Course::find()->where('id != :id and status= :st', ['id'=>$session->get('student')->first_choice])->all(), 
+            'courses_in_session' => CoursesInSession::find()->where(['NOT IN', 'id', $courses_obj])->all(),
             'sessions' => ArrayHelper::map(Session::find()->all(), 'id', 'name'),
             'model' => $model
         ]);
+    }
+
+
+    public function actionApply()
+        {    $model= new CourseRegistration();
+             $id =Yii::$app->getRequest()->getQueryParam('id');
+             $course_session = Yii::$app->getRequest()->getQueryParam('course_session');
+
+
+             $session = Yii::$app->session;
+
+            $model->student_id =$session->get('id');
+            $model->course_in_session_id =$course_session;
+            $model->payment_status ='pending';
+            $model->date = date('Y-m-d h:i:s');
+            $course = CourseRegistration:: find()->where(['student_id'=>$session->get('id'), 'course_in_session_id'=>$course_session])->all();
+
+            if($course===null){
+                if($model->save()){
+
+                    Yii::$app->session->setFlash('success', 'You have successfully applied for this course');
+                    return $this->redirect('index');
+
+                }else{
+                    print_r($model->getErrors());
+                }
+
+            }else{
+                Yii::$app->session->setFlash('error', 'You have already applied for this course');
+                return $this->redirect('index');
+            }
+
     }
 
     public function actionDelete($id)

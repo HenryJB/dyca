@@ -34,13 +34,12 @@ class Payment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_id', 'reference_no', 'amount', 'description', 'type', 'method', 'status', 'voucher_id', 'date'], 'required'],
+            [['student_id', 'reference_no', 'amount', 'description', 'method', 'status', 'date'], 'required'],
             [['student_id', 'voucher_id'], 'integer'],
             [['amount'], 'number'],
             [['description'], 'string'],
             [['date'], 'safe'],
             [['reference_no', 'method'], 'string', 'max' => 50],
-            [['type'], 'string', 'max' => 255],
             [['status'], 'string', 'max' => 10],
         ];
     }
@@ -56,7 +55,6 @@ class Payment extends \yii\db\ActiveRecord
             'reference_no' => 'Reference No',
             'amount' => 'Amount',
             'description' => 'Description',
-            'type' => 'Type',
             'method' => 'Method',
             'status' => 'Status',
             'voucher_id' => 'Voucher ID',
