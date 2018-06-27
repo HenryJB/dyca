@@ -291,8 +291,7 @@
                                     <span class="hide-menu">Course Manager</span>
                                 </a>
                             </li>
-
-														<li class="sidebar-item">
+                            <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link" href="<?=Yii::$app->request->baseUrl.'/grants-scholarship/index'?>" aria-expanded="false">
                                     <i class="mdi mdi-collage"></i>
                                     <span class="hide-menu">Grants & Applications </span>
@@ -359,10 +358,8 @@
                             </h4>
                             <div class="ml-auto text-right">
                                 <nav aria-label="breadcrumb">
-
-																					<?= Breadcrumbs::widget([
-																							'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-																					]) ?>
+                                    <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                    ]) ?>
 
                                 </nav>
                             </div>
@@ -393,7 +390,7 @@
                                                 <label for="fname" class="col-sm-3 text-right control-label col-form-label">Picture</label>
                                                 <div class="col-sm-9">
 
-                                                <?= Html::input('file', 'photo', '', ['class' => 'form-control','id' => 'profile-picture-input']) ?>
+                                                <?= Html::input('file', 'photo', '', ['class' => 'form-control','id' => 'profile-picture-input', 'required'=>true]) ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -408,6 +405,39 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="skillset" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title"  style="color: #000;"  id="exampleModalLabel">Add Skills</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <?= Html::beginForm(['students/add-skills'], 'post') ?>
+                                    <input id="form-token" type="hidden" name="<?=Yii::$app->request->csrfParam?>"
+                                           value="<?=Yii::$app->request->csrfToken?>"/>
+                                    <div class="card-body">
+
+                                        <div id="skill-set-box" class="row">
+
+
+                                        </div>
+                                    </div>
+                                    <div class="border-top">
+                                        <div class="card-body">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                    <?= Html::endForm() ?>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
                     <?= $this->render('@frontend/views/utility/alerts'); ?>
                         <?= $content; ?>
                 </div>
@@ -436,33 +466,70 @@
         <!-- All Jquery -->
         <!-- ============================================================== -->
         <?= Html::jsFIle('@web/js/profile/assets/libs/jquery/dist/jquery.min.js'); ?>
-            <?= Html::jsFIle('@web/js/profile/dist/js/jquery.ui.touch-punch-improved.js'); ?>
+        <?= Html::jsFIle('@web/js/profile/dist/js/jquery.ui.touch-punch-improved.js'); ?>
                 <?= Html::jsFIle('@web/js/profile/dist/js/jquery-ui.min.js'); ?>
 
-                    <!-- Bootstrap tether Core JavaScript -->
-                    <?= Html::jsFIle('@web/js/profile/assets/libs/popper.js/dist/umd/popper.min.js'); ?>
-                        <?= Html::jsFIle('@web/js/profile/assets/libs/bootstrap/dist/js/bootstrap.min.js'); ?>
+        <!-- Bootstrap tether Core JavaScript -->
+        <?= Html::jsFIle('@web/js/profile/assets/libs/popper.js/dist/umd/popper.min.js'); ?>
+        <?= Html::jsFIle('@web/js/profile/assets/libs/bootstrap/dist/js/bootstrap.min.js'); ?>
 
-                            <!-- slimscrollbar scrollbar JavaScript -->
-                            <?= Html::jsFIle('@web/js/profile/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js'); ?>
-                                <?= Html::jsFIle('@web/js/profile/assets/extra-libs/sparkline/sparkline.js'); ?>
+        <!-- slimscrollbar scrollbar JavaScript -->
+        <?= Html::jsFIle('@web/js/profile/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js'); ?>
+        <?= Html::jsFIle('@web/js/profile/assets/extra-libs/sparkline/sparkline.js'); ?>
 
-                                    <!--Wave Effects -->
+        <!--Wave Effects -->
 
-                                    <?= Html::jsFIle('@web/js/profile/dist/js/waves.js'); ?>
-                                        <!--Menu sidebar -->
+        <?= Html::jsFIle('@web/js/profile/dist/js/waves.js'); ?>
+        <!--Menu sidebar -->
 
-                                        <?= Html::jsFIle('@web/js/profile/dist/js/sidebarmenu.js'); ?>
-                                            <!--Custom JavaScript -->
+        <?= Html::jsFIle('@web/js/profile/dist/js/sidebarmenu.js'); ?>
+        <!--Custom JavaScript -->
 
-                                            <?= Html::jsFIle('@web/js/profile/dist/js/custom.min.js'); ?>
-                                                <!-- this page js -->
+        <?= Html::jsFIle('@web/js/profile/dist/js/custom.min.js'); ?>
+        <!-- this page js -->
 
 
 
-                                                <?= Html::jsFIle('@web/js/profile/assets/libs/moment/min/moment.min.js'); ?>
-                                                    <?= Html::jsFIle('@web/js/profile/assets/libs/fullcalendar/dist/fullcalendar.min.js'); ?>
-                                                        <?= Html::jsFIle('@web/js/profile/dist/js/pages/calendar/cal-init.js'); ?>
+        <?= Html::jsFIle('@web/js/profile/assets/libs/moment/min/moment.min.js'); ?>
+        <?= Html::jsFIle('@web/js/profile/assets/libs/fullcalendar/dist/fullcalendar.min.js'); ?>
+        <?= Html::jsFIle('@web/js/profile/dist/js/pages/calendar/cal-init.js'); ?>
+
+        <script type="text/javascript">
+            $('#skill-link').click(function(e){
+                e.preventDefault();
+                //alert('clicked');
+                $("#skillset").modal("show");
+                $("#skillset").appendTo("body");
+
+                $.ajax({
+                    url: '<?= Yii::$app->request->baseUrl?>/skills/get-skills',
+                    method: 'POST',
+                    success: function(data){
+                        $('#skillset').show();
+                           // alert(data);
+                        $('#skill-set-box').html(data);
+                    },
+                    error: {}
+                });
+                return false;
+            });
+
+
+//            $('#skillset').click(function(e){
+//                e.preventDefault();
+//
+//                $.ajax({
+//                    url: $(this).attr('href'),
+//                    method: 'POST',
+//                    success: function(data){
+//                        $('#skillset').show();
+//                        $('#skillset').html(data);
+//                    },
+//                    error: {}
+//                });
+//                return false;
+//            });
+        </script>
 
     </body>
 

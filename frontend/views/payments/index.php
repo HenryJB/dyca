@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                           </p>
 
                           <p class="text-center">
-                            <button style="height:50px;" class="btn  btn-block btn-warning btn-outline-rounded">PAY NOW</button>
+                            <a href="<?= Yii::$app->request->baseUrl?>/payments/registration-fees" style="height:50px;" class="btn  btn-block btn-warning btn-outline-rounded">PAY NOW</a>
 
                           </p>
 

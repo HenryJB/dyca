@@ -185,36 +185,39 @@ class Student extends \yii\db\ActiveRecord
 
         $file = UploadedFile::getInstanceByName('photo');
 
-        if($file == NULL){
+        if($file!=NULL || $file!==''){
+           // var_dump($file); exit();
+
+            $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
+
+            //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
+
+            if ($this->validate() && !empty($img_name)) {
+
+                if(in_array($file->extension, $extensionsStack)){
+
+                    $file->saveAs(
+                        Url::to('@frontend/web/uploads/students/').$img_name
+                    );
+                    return $img_name;
+
+                }else {
+
+                    $file->saveAs(
+                        Url::to('@frontend/web/uploads/students/').$img_name
+                    );
+
+                    return $img_name;
+                }
+
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
-  
 
-        $img_name = $file->baseName.Yii::$app->getSecurity()->generateRandomString(5).'.'.$file->extension;
 
-        //TODO CHECK IF THE FILE EXITS BEFORE UPLOADING IT
-
-        if ($this->validate() && !empty($img_name)) {
-
-          if(in_array($file->extension, $extensionsStack)){
-
-            $file->saveAs(
-                Url::to('@frontend/web/uploads/students/').$img_name
-            );
-                return $img_name;
-
-          }else {
-
-            $file->saveAs(
-                Url::to('@frontend/web/uploads/students/').$img_name
-            );
-
-            return $img_name;
-          }
-
-        } else {
-            return false;
-        }
     }
 
 }

@@ -74,77 +74,65 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+
         $model = new LoginForm();
-        
-        if ($model->load(Yii::$app->request->post()) && $model->login())
-        {
+
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
             $student = Student::find()->where(['email_address' => $model->username])->one();
 
-            $session = Yii::$app->session;
-
-            $session->set('id',$student->id);
-            $session->set('photo',$student->photo);
-
-            if (count($student) > 0)
+            if ($student!==null)
             {
                 $session = Yii::$app->session;
                 $session->set('id', $student->id);
-                $session->set('student', $student); 
-
+                $session->set('first_course_id', $student->first_choice);
+                
                 if($student->payment_status=='paid'){
 
                   return $this->redirect(['students/dashboard']);
 
+                }else {
+
+                  return $this->redirect(['payments/index']);
                 }
-                else 
-                {
-                    return $this->redirect(['payments/index']);
-                }
+
+
             }
 
-        }
+                }
 
-        return $this->renderPartial('index', [
-            'model' => $model,
-        ]);
-    }        
+                return $this->renderPartial('index', [
+                    'model' => $model,
+                ]);
+
+            }
+
 
     public function actionUpdateProfile()
     {
         $student_session = Yii::$app->session;
         $id = $student_session->get('id');
-        $student = $this->findModel($id);
-        $student->scenario = 'update-profile';
 
-        if ($student->load(Yii::$app->request->post()) && $student->save())
-        {
-            return $this->redirect(['student-projects/create']);
+        if($id!==null){
+            $student = $this->findModel($id);
+            $student->scenario = 'update-profile';
+
+            if ($student->load(Yii::$app->request->post()) && $student->save()) {
+                return $this->redirect(['student-projects/create']);
+            }
+
+            return $this->render('update-profile', [
+                'model' => $student,
+            ]);
+
+        }else{
+
+            return $this->redirect(['index']);
         }
 
-        return $this->render('update-profile', [
-            'model' => $student,
-        ]);
     }
 
-    public function actionTesting()
-    {
-        //Yii::$app->runAction('messaging/password-reset', ['email' => "spencer@mail.com"]);
 
-        // Yii::$app->runAction('messaging/registration', [
-        //     'email_address' => "spencer@mail.com",
-        //     'firstname' => 'John',
-        //     'lastname'   => 'Samuel'
-        //     ]);
-
-        // Yii::$app->runAction('messaging/welcome', [
-        //     'email_address' => "towematin@mailinator.com",
-        //     'firstname' => 'John',
-        //     'lastname'   => 'Samuel',
-        //     'id'   => 33
-        //     ]);
-
-        //Yii::$app->runAction('messaging/tagging', ['body' => 'This is a new voucher','voucher' => "DCA2018967234", 'id' => 26]);
-        }
 
     /**
      * Logs out the current user.

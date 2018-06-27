@@ -52,6 +52,8 @@
             if (isValid)
                 nextStepSteps.removeAttr('disabled').trigger('click');
         });
-    
+
         $('div.setup-panel-2 div a.btn-amber').trigger('click');
+
+
     });

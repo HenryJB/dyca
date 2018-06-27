@@ -21,40 +21,107 @@ class PaymentsController extends \yii\web\Controller
   }
 
 
-    public function actionIndex($payload)
+    public function actionIndex()
     {
-        $id = Yii::$app->getSecurity()->validateData($payload, 'delyork_creative_academy');
-        
-        if(!is_numeric((int)$id))
-        {
-            return $this->redirect(['site/index']);
+        $session = Yii::$app->session;
+        $user_id = (int)$session->get('id');
+
+        if($user_id!==null){
+
+          $payment = Payment::find()->where(['student_id'=>$user_id])->one();
+
+          if($payment!==null){
+              return $this->redirect(['students/dashboard']);
+          }
+          return $this->render('index');
+
+        }else {
+          $id = Yii::$app->getRequest()->getQueryParam('id');
+          printf($id);
+          exit;
         }
 
-        if($id!==null)
-        {
-            $payment = Payment::find()->where(['student_id'=>$id])->one();
 
-            if(count($payment)>0)
-            {
-                $student_model = Student::findOne($id);
-
-                Yii::$app->session->setFlash('success', 'Payment Successful Please Check Your Mail For Your Login Details');
-                
-                Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
-                
-                return $this->redirect(['site/index']);
-            }
-
-            return $this->render('index');
-        }
-        else
-        {
-            Yii::$app->session->setFlash('error', 'Payment Failed Please Try Again');
-            return $this->redirect(['site/index']);
-        }
-        
     }
 
+    public function actionRegistrationFees()
+    {
+
+        $session = Yii::$app->session;
+        $user_id = (int)$session->get('id');
+
+        if($user_id!==null){
+
+            $student = Student::find()->where(['id'=>$user_id])->one();
+
+            if($student!==null){
+
+
+                $email = $student->email_address;
+                $amount = 5000 *100;
+                $currency = 'NGN';
+            }
+
+
+            // Initializing a payment transaction
+
+            $paystack = Yii::$app->Paystack;
+            $transaction = $paystack->transaction();
+            $transaction->initialize(['email'=>$email,'amount'=>$amount,'currency'=>$currency]);
+
+            // check if an error occured during the operation
+            if (!$transaction->hasError)
+            {
+                //response property for response gotten for any operation
+                $response = $transaction->getResponse();
+
+                $model = new Payment();
+                $model->student_id =  $user_id;
+                $model->amount = ($amount/100);
+                $model->description= 'DCA registration fee';
+                $model->reference_no = $response['data']['reference'];
+                $model->method =  'online';
+                $model->voucher_id = null;
+                $model->date= date('Y-m-d h:i:s');
+                $model->status = 'paid';
+
+                $student_model = Student::findOne($user_id);
+                $student_model->payment_status = 'paid';
+
+                if($model->save() &&  $student_model->update()){
+                    Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
+
+                    // redirect the user to the payment page gotten from the initialization
+                    $transaction->redirect();
+
+                }else{
+                    print_r($model->getErrors());
+                    print_r($student_model->getErrors());
+
+                }
+
+
+            }
+            else
+            {
+                // display message
+                echo $transaction->message;
+
+                // get all the errors information regarding the operation from paystack
+                $error = $transaction->getError();
+            }
+
+        }else{
+            return $this->redirect(['site/index']);
+        }
+
+    }
+
+
+    public function actionCourseFees()
+    {
+
+    }
 
     public function actionPayVoucher()
     {
@@ -76,7 +143,7 @@ class PaymentsController extends \yii\web\Controller
                         // a check should come here to end the execution of the code here so as to stop the implementation 
                         if (count($voucher_assigned) <= 0) {
                             Yii::$app->session->setFlash('error', 'Voucher has been used or assigned Contact Support');
-                            return $this->redirect(['site/index']);
+                            return $this->redirect(['site/view']);
                         }
 
                         $student_id = $voucher_assigned->student_id;
@@ -117,7 +184,6 @@ class PaymentsController extends \yii\web\Controller
                                 $payment->method = "voucher";
                                 $payment->status = 'paid';
                                 $payment->description = 'Payment for Registration';
-                                $payment->type = 'Registration fee';
                                 $payment->amount = 5000; //$voucher->amount;
                                 $payment->voucher_id = $voucher->id;
                                 $payment->date = date('Y-m-d H:i:s');
@@ -143,7 +209,7 @@ class PaymentsController extends \yii\web\Controller
                                 //  return 'Student confirm member';
 
                             } catch (\Exception $e) {
-                                return 'An error has occured while processing transactions' . '' . $e;
+                                return 'An error has occurred while processing transactions' . '' . $e;
                             }
                             // end of catch
 
@@ -187,137 +253,7 @@ class PaymentsController extends \yii\web\Controller
 
     public function payment_process()
     {
-        // data collected from the response
-        $apprAmt = Yii::$app->request->post('apprAmt');
-        $payRef = Yii::$app->request->post('payRef');
-        $submittedref = Yii::$app->request->post('txnref');
-        $refref = Yii::$app->request->post('refRef');
-        $cardNum = Yii::$app->request->post('cardNum');
 
-        // session data retrieved
-        $subpdtid = $this->session->userdata('product_id');
-        $submittedamt = $this->session->userdata('amount');
-        $customer_phone = $this->session->userdata('customer_phone');
-
-        $status = 'failed';
-        //  new hash key
-        $nhash = 'E187B1191265B18338B5DEBAF9F38FEC37B170FF582D4666DAB1F098304D5EE7F3BE15540461FE92F1D40332FDBBA34579034EE2AC78B1A1B8D9A321974025C4';
-        $hashv = $subpdtid . $submittedref . $nhash;
-        $thash = hash('sha512', $hashv);
-
-        $headers = array(
-            "GET /HTTP/1.1",
-            "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1",
-            "Accept-Language: en-us,en;q=0.5",
-            "Keep-Alive: 300",
-            "Connection: keep-alive",
-            "Hash:" . $thash); // computed hash now added to header of my request
-        // curl configuration information
-        $curl_handle = curl_init();
-        curl_setopt($curl_handle, CURLOPT_URL, 'https://stageserv.interswitchng.com/test_paydirect/api/v1/gettransaction.json?productid=' . $subpdtid . '&transactionreference=' . $submittedref . '&amount=' . $submittedamt);
-        curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl_handle, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl_handle, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl_handle, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($curl_handle, CURLOPT_POST, false);
-
-        $data = curl_exec($curl_handle);
-        if (curl_errno($curl_handle)) {
-            print "Error: " . curl_error($curl_handle);
-        } else {
-            // show ressult in json
-            $page['response_data'] = json_decode($data, true);
-            curl_close($curl_handle);
-            $code_response = $page['response_data']['ResponseCode'];
-
-            if ($code_response === "00") {
-
-                $msg_to_dca = "A student has payment registration fee. Payment code:" . $this->session->userdata('order_code'); //$orders;
-                $order_msg_to_student = 'Thank you. Your payment has been approved and payment being processed. payment code:' . $this->session->userdata('order_code');
-
-                //sms functions
-
-                $user_orders = $this->session->userdata('user_orders');
-
-                $user_orders = array(
-                    'user_id' => $user_orders['user_id'],
-                    'order_code' => $user_orders['order_code'],
-                    'order_content' => $user_orders['order_content'],
-                    'order_total' => $user_orders['order_total'],
-                    'order_status' => 1,
-                    'restaurant_id' => $user_orders['restaurant_id'],
-                    'recipient_lastname' => $user_orders['recipient_lastname'],
-                    'recipient_firstname' => $user_orders['recipient_firstname'],
-                    'recipient_phoneno' => $user_orders['recipient_phoneno'],
-                    'recipient_email' => $user_orders['recipient_email'],
-                    'payment_method' => $user_orders['payment_method'],
-                    'payment_status' => 'paid',
-                    'created' => $user_orders['created'],
-                );
-
-                $this->session->set_userdata('user_orders', $user_orders);
-
-                $this->Cart->updateuserorder($user_orders);
-
-                $transaction_info = array(
-                    'transaction_response' => "Your transaction was approved successfully by Interswitch",
-                    'transaction_reason' => "",
-                    'payment_reference' => $page['response_data']['PaymentReference'],
-                );
-                $this->session->set_userdata('transaction_info', $transaction_info);
-
-                $status = "Success";
-                $array = array(
-                    'reference' => $submittedref,
-                    'amount' => $submittedamt,
-                    'response' => $page['response_data']['ResponseDescription'],
-                    'status' => $status,
-                    'date' => date('Y-m-d'),
-                );
-                $this->Payment->insertTransactionRecord($array);
-
-                $this->session->set_flashdata('item', array('message' => $page['response_data']['ResponseDescription'], 'class' => 'success'));
-
-                $payment_method = 'online';
-                $gofood_user_id = 2;
-                $restaurant_user_id = $this->session->userdata('restaurant_user_id');
-                $amount_due_restaurant = $this->session->userdata('amount_due_restaurant');
-                $amount_due_aggregator = $this->session->userdata('amount_due_aggregator');
-                $total_order_amount = $this->session->userdata('amount');
-                $total_order_amount = $total_order_amount / 100;
-
-                //($this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance) ? $this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance : 0,
-                $this->insert_wallet($page['response_data']['PaymentReference'], $user_orders['user_id'], $this->session->userdata('session_tnx_ref'), 0, $total_order_amount, ($this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance) ? $this->Payment->getWalletBalance($user_orders['user_id'])->wallet_balance : 0, $user_orders['user_id'], 3, $payment_method, 'paid'
-                );
-
-                $this->insert_wallet($page['response_data']['PaymentReference'], $restaurant_user_id, $this->session->userdata('session_tnx_ref'), $amount_due_restaurant, 0, ($this->Payment->getWalletBalance($restaurant_user_id)->wallet_balance) ? $this->Payment->getWalletBalance($restaurant_user_id)->wallet_balance : 0, $user_orders['user_id'], 2, $payment_method, 'paid'
-                );
-
-                $this->insert_wallet($page['response_data']['PaymentReference'], $gofood_user_id, $this->session->userdata('session_tnx_ref'), $amount_due_aggregator, 0, ($this->Payment->getWalletBalance($gofood_user_id)->wallet_balance) ? $this->Payment->getWalletBalance($gofood_user_id)->wallet_balance : 0, $user_orders['user_id'], 1, $payment_method, 'paid'
-                );
-
-                redirect('payments/receipt');
-            } else {
-                $transaction_info = array(
-                    'transaction_response' => "Your transaction was not successfully approved by GT Pay",
-                    'transaction_reason' => $page['response_data']['ResponseDescription'],
-                    'payment_reference' => $page['response_data']['PaymentReference'],
-                );
-                $this->session->set_userdata('transaction_info', $transaction_info);
-
-                $array = array(
-                    'reference' => $submittedref,
-                    'amount' => $submittedamt,
-                    'response' => $page['response_data']['ResponseDescription'],
-                    'status' => $status,
-                    'date' => date('Y-m-d'),
-                );
-                $this->Payment->insertTransactionRecord($array);
-
-                $this->session->set_flashdata('item', array('message' => $page['response_data']['ResponseDescription'], 'class' => 'success'));
-                redirect('payments/invoice');
-            }
-        }
     }
 
 }
