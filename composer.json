@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
     "name": "yiisoft/yii2-app-advanced",
     "description": "Yii 2 Advanced Project Template",
@@ -49,3 +50,56 @@
         }
     ]
 }
+=======
+{
+    "name": "yiisoft/yii2-app-advanced",
+    "description": "Yii 2 Advanced Project Template",
+    "keywords": ["yii2", "framework", "advanced", "project template"],
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "~2.0.14",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "kartik-v/yii2-mpdf": "*",
+        "2amigos/yii2-date-picker-widget": "~1.0",
+        "kartik-v/yii2-widget-fileinput": "@dev",
+        "lesha724/yii2-document-viewer": "*",
+        "yiisoft/yii2-imagine": "*",
+        "circulon/yii2-columnlistview": "*",
+        "2amigos/yii2-file-upload-widget": "~1.0",
+        "true/punycode": "~2.0",
+        "smladeoye/yii2-paystack": "dev-master"
+        
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.0.0",
+        "yiisoft/yii2-gii": "~2.0.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "codeception/base": "^2.2.3",
+        "codeception/verify": "~0.3.1"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
+>>>>>>> 7a26d845a8da5a9cbe384150fe6ce9844e0c8bb0
