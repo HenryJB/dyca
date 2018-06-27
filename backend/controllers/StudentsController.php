@@ -10,7 +10,7 @@ use common\models\StudentProject;
 use common\models\CourseRegistration;
 use common\models\VouchersAssignment;
 use common\models\Voucher;
-use app\models\StudentSearch;
+use backend\models\StudentSearch;
 use yii\web\Controller;
 use common\models\LocalGovernment;
 use common\models\Country;
@@ -18,11 +18,13 @@ use common\models\State;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 /**
  * StudentsController implements the CRUD actions for Student model.
  */
 class StudentsController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -66,13 +68,14 @@ class StudentsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSearch();
+        $searchModel = new StudentSearch();       
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-
+            'tags' => $tags,
         ]);
     }
 
@@ -159,81 +162,81 @@ class StudentsController extends Controller
 
     public function actionConfirmMember()
     {
-      $dca_tag = (int)Yii::$app->request->post('dca_tag');
-      $id = Yii::$app->request->post('id');
-    ///  $db = Yii::$app->db;
-    //  $db->beginTransaction();
-      try {
+        $dca_tag = (int)Yii::$app->request->post('dca_tag');
+        $id = Yii::$app->request->post('id');
+        ///  $db = Yii::$app->db;
+        //  $db->beginTransaction();
+        try {
 
-        $tagging = Tagging::find()->where(['tag_id' => $dca_tag, 'student_id' => $id])->one();
+            $tagging = Tagging::find()->where(['tag_id' => $dca_tag, 'student_id' => $id])->one();
 
-        if(count($tagging) == 0){
-            $tagging = new Tagging();
-            $tagging->student_id = $id;
-            $tagging->tag_id = $dca_tag;
-  
-            if(!$tagging->save()){
-                //TODO set flash session here
-                //TODO do a redirect here            
-             //print_r($tagging->getErrors());
-              //exit;
-              Yii::$app->session->setFlash('success', 'Tag added to student');
+            if(count($tagging) == 0){
+                $tagging = new Tagging();
+                $tagging->student_id = $id;
+                $tagging->tag_id = $dca_tag;
+    
+                if(!$tagging->save()){
+                    //TODO set flash session here
+                    //TODO do a redirect here            
+                //print_r($tagging->getErrors());
+                //exit;
+                Yii::$app->session->setFlash('success', 'Tag added to student');
+                }
             }
+            
+
+            $model = $this->findModel($id);
+            
+            $tag = Tag::find()->where(['id'=>$dca_tag])->one();
+            
+            if(count($tag)> 0 || $tag->voucher_category!==NULL){
+                $selected_vouchers = Voucher::find()
+                ->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
+                ->all();
+
+                if(count($selected_vouchers)>0){
+
+                    $vouchers_assignment = new  VouchersAssignment();
+                    $vouchers_assignment->voucher_id= $selected_vouchers[0]->id;
+                    $vouchers_assignment->student_id=  $id;
+
+                    if(!$vouchers_assignment->save()){
+                        //$msg = $vouchers_assignment->getErrors();
+                        //print_r($vouchers_assignment->getErrors());
+                        Yii::$app->session->setFlash('error', 'Voucher has been assigned');
+                    }else{
+
+                        $update_voucher = Voucher::find()->where(['id'=>$selected_vouchers[0]->id])->one();
+                        $update_voucher->status= 'assigned';
+                        $update_voucher->update();
+
+                        Yii::$app->session->setFlash('success', 'Voucher Status changed');
+
+                    }
+
+
+                }
+                if($tag->message != NULL && $tag->notify_status==1 && count($selected_vouchers) > 0){ 
+                    
+                    Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id, 'email_template' => 3]);
+                }
+                else{
+                    Yii::$app->session->setFlash('error', 'Voucher has been assigned');
+                }
+
+
+            }
+
+            return $this->redirect(['view', 'id' => $id]);
+
+        } catch (\Exception $e) {
+            //TODO add session falsh here to this place
+            //REDIRECT BACK
+            //  $transaction->rollBack();
+            throw $e;
         }
-         
 
-          $model = $this->findModel($id);
-          
-          $tag = Tag::find()->where(['id'=>$dca_tag])->one();
-          
-          if(count($tag)> 0 || $tag->voucher_category!==NULL){
-              $selected_vouchers = Voucher::find()
-              ->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
-              ->all();
-
-              if(count($selected_vouchers)>0){
-
-                  $vouchers_assignment = new  VouchersAssignment();
-                  $vouchers_assignment->voucher_id= $selected_vouchers[0]->id;
-                  $vouchers_assignment->student_id=  $id;
-
-                  if(!$vouchers_assignment->save()){
-                      //$msg = $vouchers_assignment->getErrors();
-                      //print_r($vouchers_assignment->getErrors());
-                      Yii::$app->session->setFlash('error', 'Voucher has been assigned');
-                  }else{
-
-                    $update_voucher = Voucher::find()->where(['id'=>$selected_vouchers[0]->id])->one();
-                    $update_voucher->status= 'assigned';
-                    $update_voucher->update();
-
-                    Yii::$app->session->setFlash('success', 'Voucher Status changed');
-
-                  }
-
-
-            }
-              if($tag->message != NULL && $tag->notify_status==1 && count($selected_vouchers) > 0){ 
-                
-                  Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id, 'email_template' => 3]);
-              }
-              else{
-                Yii::$app->session->setFlash('error', 'Voucher has been assigned');
-              }
-
-
-          }
-
-          return $this->redirect(['view', 'id' => $id]);
-
-      } catch (\Exception $e) {
-          //TODO add session falsh here to this place
-          //REDIRECT BACK
-        //  $transaction->rollBack();
-          throw $e;
-      }
-
-  }
+    }
 
     public function actionSponsor($id='')
     {
@@ -280,6 +283,40 @@ class StudentsController extends Controller
         }
     }
 
+    /**
+     * actionFilterStudentByTags
+     *
+     * @return void
+     */
+    public function actionFilterStudentByTags()
+    {
+        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
+
+        if(Yii::$app->request->post('tag_id')){
+            (int)$tag_id    = Yii::$app->request->post('tag_id');
+            $models         = Tagging::find()->where(['tag_id' => $tag_id])->all();
+           
+            $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
+            return $this->render('filterbytags', [
+                'tags' => $tags,
+                'models' => $models,
+            ]);
+        }else
+        {
+            $models  = !empty($tag_id) ? Tagging::find()->where(['tag_id' => $tag_id])->all() : Tagging::find()->all();
+           
+            $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
+
+            return $this->render('filterbytags', [
+                'tags' => $tags,
+                'models' => $models,
+            ]);
+        }
+        //get a list of students that have tags
+        
+        //get a list of available tags
+        
+    }
 
     public function actionSendMail($value='')
     {

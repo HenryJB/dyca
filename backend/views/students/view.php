@@ -170,12 +170,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <div class="row">
 
-                  <div class="col-md-3 col-sm-3 mt-5">
+                  <div class="col-md-4 col-sm-4 mt-5 mb-4 pl-0">
                     <?php $photo =!empty($model->photo) || $model->photo!==NULL ?$model->photo:'default-avatar.gif' ?>
-                    <?=Html::img('@web/uploads/students/'.$photo,['class'=>'rounded-circle d-block', 'style'=>'width:100px; height:100px;'])?>
+                    <?=Html::img('@web/uploads/students/'.$photo,['class'=>'rounded-circle d-block', 'style'=>'width:300px; height:250px;'])?>
                   </div>
 
-                  <div class="col-md-9 col-sm-9 mt-5">
+                  <div class="col-md-8 col-sm-8 mt-5 align-self-center">
                     <?php $firstname =!empty($model->first_name) || $model->first_name!==NULL ?$model->first_name:'N/A' ?>
                     <?php $lastname =!empty($model->last_name) || $model->last_name!==NULL ?$model->last_name:'N/A' ?>
                     <h2 class="text-white mt-25 bebas_neue">

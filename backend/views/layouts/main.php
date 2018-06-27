@@ -55,6 +55,9 @@ DashboardAsset::register($this);
                           <li>
                                 <?=Html::a('Dashboard', ['site/index'])?>
                           </li>
+                          <li>
+                                <?=Html::a('Settings', ['settings/index'])?>
+                          </li>
 
                       </ul>
                   </li>
@@ -165,104 +168,88 @@ DashboardAsset::register($this);
       <div class="menu-sidebar__content js-scrollbar1">
           <nav class="navbar-sidebar">
               <ul class="list-unstyled navbar__list">
-                <li>
-                    <?=Html::a('<i class="fas fa-tachometer-alt"></i>Dashboard', ['site/index'],['class' => 'hover_link'])?>
-
-
-                </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-users"></i>Students</a>
+                <li class="has_sub">
+                   
+                    <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
+                                <?=Html::a(' Settings', ['settings/index'])?>                                
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-users"></i>Instructors</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Instructor', ['instructors/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List', ['instructors/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-credit-card"></i>Payments</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' Records', ['payments/index'])?>
-                          </li>
-                          
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-list"></i>Reports</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List', ['students/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-list"></i>Courses</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Course', ['courses/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List', ['courses/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-envelope"></i>Messaging</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a('emails', ['email/index'])?>
+                                <?=Html::a('Emails', ['email/index'])?>
                           </li>
                           <li>
                                 <?=Html::a('Email Templates', ['email-template/index'])?>
                           </li>
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-tags"></i>Tag Manager</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
                                 <?=Html::a('New Tag', ['tags/create'])?>
                           </li>
                           <li>
                                 <?=Html::a('Tag List', ['tags/index'])?>
                           </li>
+                      </ul>
+
+
+                </li>
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-users"></i>Student Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a('Tag assignment', ['taggings/index'])?>
+                                <?=Html::a(' New Student', ['students/create'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('List Students', ['students/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('Students By Tags', ['students/filter-student-by-tags'])?>                                
+                          </li>
+                      </ul>
+                  </li>
+                
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-credit-card"></i>Payment Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a(' Payment Records', ['payments/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a(' New Student', ['students/create'])?>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-credit-card"></i>Grant Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a('Grants', ['grants/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a(' New Grant', ['grants/create'])?>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-list"></i>Course Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a(' New Course', ['courses/create'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('List Courses', ['courses/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a(' New Instructor', ['instructors/create'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('List Instructors', ['instructors/index'])?>
                           </li>
 
                       </ul>
@@ -271,7 +258,7 @@ DashboardAsset::register($this);
 
                   <li class="has-sub">
                       <a class="js-arrow" href="#" class="hover_link">
-                          <i class="fas fa-envelope"></i>Vouchers</a>
+                          <i class="fas fa-envelope"></i>Voucher Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
                               <?=Html::a('Voucher Category', ['voucher-categories/index'])?>
@@ -286,11 +273,6 @@ DashboardAsset::register($this);
                       </ul>
                   </li>
 
-                  <li>
-                      <?=Html::a('<i class="fas fa-cog"></i>Settings', ['settings/index'],['class' => 'hover_link'])?>
-
-
-                  </li>
 
 
 

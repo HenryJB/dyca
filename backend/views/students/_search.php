@@ -69,6 +69,8 @@ use yii\helpers\ArrayHelper;
           ),
     ['prompt' => 'Select LGA'])->label(false);?>
 
+     <?= Html::dropDownList('name','',$tags,['prompt' => 'Select Tag', 'class' => 'form-control']) ?>
+
 
 
 

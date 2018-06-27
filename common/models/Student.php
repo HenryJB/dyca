@@ -52,6 +52,9 @@ class Student extends \yii\db\ActiveRecord
 {
   const SCENARIO_PROFILE_UPDATE = 'profile_update';
   const SCENARIO_UPDATE_PROFILE_PICTURE = 'update_profile_picture';
+  
+
+
     /**
      * {@inheritdoc}
      */
@@ -87,6 +90,7 @@ class Student extends \yii\db\ActiveRecord
               }"],
 
             [['learning_experience_id'], 'exist', 'skipOnError' => true, 'targetClass' => LearningExperience::className(), 'targetAttribute' => ['learning_experience_id' => 'id']],
+           
         ];
     }
 
@@ -111,8 +115,6 @@ class Student extends \yii\db\ActiveRecord
             $this->addError('date_of_birth', 'You Must Be At Least 18 Years Of Age');
         }
     }
-
-
 
     /**
      * {@inheritdoc}
@@ -171,6 +173,10 @@ class Student extends \yii\db\ActiveRecord
     public function getTaggings()
     {
         return $this->hasMany(Tagging::className(), ['student_id' => 'id']);
+    }
+
+    public function getTags() {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('tagging', ['student_id' => 'id']);
     }
 
 

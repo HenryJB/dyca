@@ -25,7 +25,8 @@
         "yiisoft/yii2-imagine": "*",
         "circulon/yii2-columnlistview": "*",
         "2amigos/yii2-file-upload-widget": "~1.0",
-        "true/punycode": "~2.0"
+        "true/punycode": "~2.0",
+        "2amigos/yii2-tinymce-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

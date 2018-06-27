@@ -50,6 +50,14 @@ ul#student__breadcrumb {
     border-color: #A40000;
 }
 
+.btn-danger-tag{
+    color: #fff;
+    background-color: #A40000;
+    border-color: #A40000;
+    border-radius:25px;
+    width: 100px;
+}
+
 /* utility classes for display */
 .mt-25{
     margin-top:25px;
@@ -77,8 +85,11 @@ ul#student__breadcrumb {
 
 /* adjust margin of filter on student form */
 .student-search {
-    margin-left: 10%;
     margin-bottom: 20px;
+}
+
+table.table.table-striped.table-bordered {
+    color: black;
 }
 
 /* adjus */

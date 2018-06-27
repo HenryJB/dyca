@@ -3,17 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Tag;
-use common\models\TagCategory;
-use backend\models\TagSearch;
+use common\models\GrantAnswer;
+use common\models\GrantAnswerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TagsController implements the CRUD actions for Tag model.
+ * GrantAnswerController implements the CRUD actions for GrantAnswer model.
  */
-class TagsController extends Controller
+class GrantAnswerController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -24,46 +23,29 @@ class TagsController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['GET'],
-                ],
-            ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete','form-delete'],
-                'rules' => [
-                    // allow authenticated users
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    // everything else is denied
+                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all Tag models.
+     * Lists all GrantAnswer models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TagSearch();
-        $model = TagCategory::find()->all();
-        
+        $searchModel = new GrantAnswerSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'models' => $model
         ]);
     }
 
-    
-
     /**
-     * Displays a single Tag model.
+     * Displays a single GrantAnswer model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -76,13 +58,13 @@ class TagsController extends Controller
     }
 
     /**
-     * Creates a new Tag model.
+     * Creates a new GrantAnswer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tag();
+        $model = new GrantAnswer();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -94,7 +76,7 @@ class TagsController extends Controller
     }
 
     /**
-     * Updates an existing Tag model.
+     * Updates an existing GrantAnswer model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -114,7 +96,7 @@ class TagsController extends Controller
     }
 
     /**
-     * Deletes an existing Tag model.
+     * Deletes an existing GrantAnswer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -126,38 +108,17 @@ class TagsController extends Controller
 
         return $this->redirect(['index']);
     }
-    
-    /**
-     * actionFormDelete
-     *
-     * @return void
-     */
-    public function actionFormDelete()
-    {
-        $form_tags = Yii::$app->request->post('tags');
-
-        if(count($form_tags) > 0){
-            for($i=0; $i<count($form_tags); $i++){                
-                $this->findModel($form_tags[$i])->delete();
-            }
-            Yii::$app->session->setFlash('success','Tags have been deleted');
-            return $this->redirect(['index']);
-        }
-
-        Yii::$app->session->setFlash('error','Tags could not be deleted');
-        return $this->redirect(['index']);
-    }
 
     /**
-     * Finds the Tag model based on its primary key value.
+     * Finds the GrantAnswer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tag the loaded model
+     * @return GrantAnswer the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tag::findOne($id)) !== null) {
+        if (($model = GrantAnswer::findOne($id)) !== null) {
             return $model;
         }
 
