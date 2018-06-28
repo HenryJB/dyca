@@ -474,7 +474,10 @@ DashboardAsset::register($this);
     </div>
 </footer>
 
+
+
 <?php $this->endBody() ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>

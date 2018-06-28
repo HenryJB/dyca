@@ -67,6 +67,24 @@ ul#student__breadcrumb {
     margin-top:130px;
 }
 
+/* Table Styles */
+.table-bordered>thead>tr>th,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>tbody>tr>td,
+.table-bordered>tfoot>tr>td {
+    border: 5px solid transparent;
+    padding: 15px;
+    background-color: #21252b;
+    color: white;
+}
+
+.table-bordered>thead>tr>th{
+    color:white;
+    border-bottom:1px solid red;
+}
+
 /* bebas font to profile box */
 .bebas_neue{
     font-family: bebas_neue_regular, sans-serif;

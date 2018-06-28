@@ -13,8 +13,33 @@ $this->title = 'Students';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
+<div class="modal fade" id="batch-tag-modal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="smallmodalLabel bg-danger">DCA Tag Modal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
 <div class="col-lg-12">
+
    <?php echo $this->render('_search', ['model' => $searchModel, 'tags' => $tags]); ?>
+
+   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#batch-tag-modal">
+    Launch demo modal
+  </button>
+   
+   
+
+    
 </div>
 
 <div class="student-index">
@@ -35,3 +60,5 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
 </div>
+
+

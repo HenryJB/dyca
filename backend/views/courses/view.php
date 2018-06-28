@@ -12,9 +12,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-white mb-3"><?= Html::encode($this->title) ?></h1>
 
-    <p>
+    <p class="mt-3 mb-3">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -28,15 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'course_category',
             'name',
             'description:ntext',
-            'instructor_id',
-            'duration',
             'fee',
             'prerequisite:ntext',
-            'sylabus_id',
             'photo',
         ],
     ]) ?>
