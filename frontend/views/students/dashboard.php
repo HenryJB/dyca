@@ -3,33 +3,37 @@
 <!-- ============================================================== -->
 <?php use yii\helpers\Url; ?>
 <?php use yii\helpers\Html; ?>
+<?php $session = Yii::$app->session; ?>
 
 <div class="row">
 		<div class="col-md-8 offset-2">
 			<div class="card" style="background-color:transparent !important;">
 				<div class="card-body">
 					<div class="profile-picture-box">
-						<?=Html::img('@web/img/avatar.png',['class'=>'profile-picture'])?>
+						<?php if($model->photo===null):?>
+							<?=Html::img('@web/img/avatar.png',['class'=>'profile-picture'])?>
+						<?php else:?>
+							<?=Html::img('@web/uploads/students/'.$model->photo, ['class'=>'profile-picture'])?>
+						<?php endif?>
 
 					</div>
 					<div class="profile-title">
 						<div class="title-light">Welcome</div>
-						<?php $session = Yii::$app->session; ?>
-						<div class="title-bold"><?=$session->get('student')->first_name .' ' . $session->get('student')->last_name?></div>
+
+						<div class="title-bold"><?=$model->first_name .' ' . $model->last_name?></div>
 					</div>
 
 					<div class="buttons">
-						<a href="#" class="btn  btn-block btn-danger btn-rounded">Update your profile</a>
-							<a href="#" class="btn btn-block btn-danger  btn-rounded ">Register for a course</a>
+						<a href="<?=Yii::$app->request->baseUrl?>/students/update" class="btn  btn-block btn-danger btn-rounded">Update your profile</a>
+							<a href="<?=Yii::$app->request->baseUrl?>/course-applied/index" class="btn btn-block btn-danger  btn-rounded ">Register for a course</a>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		</div>
-
-
 </div>
+
+
 
 <!-- BEGIN MODAL -->
 <div class="modal none-border" id="my-event">

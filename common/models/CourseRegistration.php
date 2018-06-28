@@ -1,23 +1,19 @@
 <?php
 
 namespace common\models;
-use common\models\Course;
-use common\models\Student;
-use common\models\Session;
 
 use Yii;
 
 /**
+ * This is the model class for table "course_registrations".
  *
  * @property int $id
  * @property int $student_id
- * @property int $course_id
- * @property int $session_id
+ * @property int $course_in_session_id
+ * @property string $payment_status
+ * @property string $date
  *
- * @property Courses $course
- * @property Students $student
- * @property Sessions $session
- * This is the model class for table "course_registrations".
+ * @property CoursesInSession $courseInSession
  */
 class CourseRegistration extends \yii\db\ActiveRecord
 {
@@ -35,11 +31,11 @@ class CourseRegistration extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['student_id', 'course_id', 'session_id'], 'required'],
-            [['student_id', 'course_id', 'session_id'], 'integer'],
-            [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Student::className(), 'targetAttribute' => ['student_id' => 'id']],
-            [['session_id'], 'exist', 'skipOnError' => true, 'targetClass' => Session::className(), 'targetAttribute' => ['session_id' => 'id']],
-            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
+            [['student_id', 'course_in_session_id', 'payment_status', 'date'], 'required'],
+            [['student_id', 'course_in_session_id'], 'integer'],
+            [['payment_status'], 'string'],
+            [['date'], 'safe'],
+            [['course_in_session_id'], 'exist', 'skipOnError' => true, 'targetClass' => CoursesInSession::className(), 'targetAttribute' => ['course_in_session_id' => 'id']],
         ];
     }
 
@@ -50,33 +46,18 @@ class CourseRegistration extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'student_id' => 'Student',
-            'session_id' => 'Session',
-            'course_id' => 'Course',
+            'student_id' => 'Student ID',
+            'course_in_session_id' => 'Course In Session ID',
+            'payment_status' => 'Payment Status',
+            'date' => 'Date',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStudent()
+    public function getCourseInSession()
     {
-        return $this->hasOne(Student::className(), ['id' => 'student_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSession()
-    {
-        return $this->hasOne(Session::className(), ['id' => 'session_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCourse()
-    {
-        return $this->hasOne(Course::className(), ['id' => 'course_id']);
+        return $this->hasOne(CoursesInSession::className(), ['id' => 'course_in_session_id']);
     }
 }

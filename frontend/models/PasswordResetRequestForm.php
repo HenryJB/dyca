@@ -21,7 +21,7 @@ class PasswordResetRequestForm extends Model
             ['username', 'email'],
             ['username', 'exist',
                 'targetClass' => '\common\models\User',
-                'filter' => ['status' => DcaUser::STATUS_ACTIVE],
+                'filter' => ['status' => User::STATUS_ACTIVE],
                 'message' => 'There is no user with this email address.'
             ],
         ];

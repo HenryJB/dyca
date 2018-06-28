@@ -4,7 +4,6 @@
 <div class="alert alert-success alert-dismissable">
     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
         
-        
     <?= Yii::$app->session->getFlash('voucher_code_success') ?>
 </div>
 
@@ -61,9 +60,9 @@
 
 <div class="alert alert-danger alert-dismissable">
     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    <? print_r(Yii::$app->session->getFlash('error'));?>
         
-        
-    <?= Yii::$app->session->getFlash('error') ?>
+    <? //Yii::$app->session->getFlash('error')[0] ?>
 </div>
 
 <?php endif; ?>

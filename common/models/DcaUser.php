@@ -188,4 +188,9 @@ class DcaUser extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+
+
+        
+
 }
