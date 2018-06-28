@@ -19,7 +19,7 @@ class GrantSearch extends Grant
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['title'], 'safe'],
         ];
     }
 
@@ -62,7 +62,7 @@ class GrantSearch extends Grant
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

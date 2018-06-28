@@ -69,9 +69,10 @@ class StudentsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSearch();       
+        $searchModel = new StudentSearch();
+        $tag = new Tag();       
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
+        $tags = ArrayHelper::map($tag->find()->all(), 'id', 'name');
 
         return $this->render('index', [
             'searchModel' => $searchModel,

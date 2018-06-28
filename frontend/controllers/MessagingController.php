@@ -50,8 +50,9 @@ class MessagingController extends \yii\web\Controller
 
         $template = EmailTemplate::findOne(6);
 
+        //template missing fails
         if (count($template) < 0) {
-            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+            Yii::$app->session->setFlash('error', 'Failed to send registration mail please contact the administrator : inquiry@delyorkgroup.com');
             return false;
         }
 

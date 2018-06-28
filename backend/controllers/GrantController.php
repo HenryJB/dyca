@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Grant;
+use common\models\GrantQuestion;
+use common\models\GrantUpload;
 use common\models\GrantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -65,6 +67,8 @@ class GrantController extends Controller
     public function actionCreate()
     {
         $model = new Grant();
+        $model2 = new GrantQuestion();
+        $model3 = new GrantUpload();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -72,6 +76,7 @@ class GrantController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'model2' => $model2
         ]);
     }
 

@@ -12,11 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="voucher-category-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-white mb-5"><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
 
     <p>
-        <?= Html::a('Create Voucher Category', ['create'], ['class' => 'btn btn-success mt-3']) ?>
+        <?= Html::a('Create Voucher Category', ['create'], ['class' => 'btn btn-danger btn-lg mt-3']) ?>
     </p>
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>

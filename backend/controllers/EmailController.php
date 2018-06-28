@@ -138,6 +138,7 @@ class EmailController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'templates' => ArrayHelper::map(EmailTemplate::find()->all(), 'id', 'type')
         ]);
     }
 

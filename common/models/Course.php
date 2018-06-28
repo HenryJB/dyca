@@ -36,12 +36,11 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['course_category', 'name', 'instructor_id', 'duration', 'prerequisite', 'photo'], 'required'],
-            [['course_category', 'instructor_id', 'sylabus_id'], 'integer'],
+            [['course_category', 'name', 'prerequisite', 'photo'], 'required'],
+            [['course_category'], 'integer'],
             [['description', 'prerequisite'], 'string','max' => 255],
             [['fee'], 'number'],
             [['name'], 'string', 'max' => 255],
-            [['duration'], 'string', 'max' => 100],
             [['photo'], 'string', 'max' => 200],
             [['name'], 'unique'],
         ];
@@ -57,11 +56,8 @@ class Course extends \yii\db\ActiveRecord
             'course_category' => 'Course Category',
             'name' => 'Name',
             'description' => 'Description',
-            'start_date' => 'Start Date',
-            'duration' => 'Duration',
             'fee' => 'Fee',
             'prerequisite' => 'Prerequisite',
-            'status' => 'Status',
             'photo' => 'Photo',
         ];
     }

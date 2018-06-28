@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="voucher-category-search mt-5 mb-3">
+<div class="voucher-category-search mt-5 mb-5">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],

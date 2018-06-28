@@ -11,10 +11,10 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="course-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-white mb-3"><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Course', ['create'], ['class' => 'btn btn-danger btn-lg']) ?>
     </p>
 
     <?= GridView::widget([

@@ -31,20 +31,9 @@ use common\models\CoursesCategory;
             ?>
         </div>
 
-        <div class="col-lg-6">
-              <?= $form->field($model, 'instructor_id')->textInput() ?>
-        </div>
-
-        <div class="col-lg-6">
-            <?= $form->field($model, 'duration')->textInput(['maxlength' => true]) ?>
-        </div>
 
         <div class="col-lg-6">
             <?= $form->field($model, 'fee')->textInput() ?>
-        </div>
-
-        <div class="col-lg-6">
-            <?= $form->field($model, 'sylabus_id')->textInput() ?>
         </div>
 
         <div class="col-lg-6">
@@ -56,18 +45,12 @@ use common\models\CoursesCategory;
         </div>
 
         <div class="col-lg-12">
-          <?= $form->field($model, 'photo')->widget(FileInput::classname(), [
-              'options' => ['accept' => 'image/*'],
-              
-            ]);
-         ?>
+          <?= $form->field($model, 'photo')->fileInput()?>
         </div>
 
-
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-danger btn-lg']) ?>
+        </div>
 
     <?php ActiveForm::end(); ?>
 

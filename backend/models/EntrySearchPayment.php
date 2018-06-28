@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
@@ -19,7 +19,7 @@ class EntrySearchPayment extends Payment
     {
         return [
             [['id', 'student_id', 'voucher_id'], 'integer'],
-            [['reference_no', 'description', 'type', 'method', 'status', 'date'], 'safe'],
+            [['reference_no', 'description', 'method', 'status', 'date'], 'safe'],
             [['amount'], 'number'],
         ];
     }
@@ -69,7 +69,6 @@ class EntrySearchPayment extends Payment
 
         $query->andFilterWhere(['like', 'reference_no', $this->reference_no])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'method', $this->method])
             ->andFilterWhere(['like', 'status', $this->status]);
 

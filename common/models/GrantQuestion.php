@@ -33,7 +33,7 @@ class GrantQuestion extends \yii\db\ActiveRecord
             [['grant_id', 'question'], 'required'],
             [['grant_id'], 'integer'],
             [['question'], 'string'],
-            [['grant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Grants::className(), 'targetAttribute' => ['grant_id' => 'id']],
+            [['grant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Grant::className(), 'targetAttribute' => ['grant_id' => 'id']],
         ];
     }
 

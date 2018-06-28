@@ -227,10 +227,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-credit-card"></i>Grant Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a('Grants', ['grants/index'])?>
+                                <?=Html::a('Grants', ['grant/index'])?>
                           </li>
                           <li>
-                                <?=Html::a(' New Grant', ['grants/create'])?>
+                                <?=Html::a(' New Grant', ['grant/create'])?>
                           </li>
                       </ul>
                   </li>
@@ -290,7 +290,7 @@ DashboardAsset::register($this);
                       <div class="header-button">
                           <div class="noti-wrap">
                               <div class="noti__item js-item-menu">
-                                  <i class="zmdi zmdi-comment-more"></i>
+                                  <i class="zmdi zmdi-money"></i>
                                   <span class="quantity">1</span>
                                   <div class="mess-dropdown js-dropdown">
                                       <div class="mess__title">
@@ -322,7 +322,7 @@ DashboardAsset::register($this);
                                   </div>
                               </div>
                               <div class="noti__item js-item-menu">
-                                  <i class="zmdi zmdi-email"></i>
+                                  <i class="zmdi zmdi-account"></i>
                                   <span class="quantity">1</span>
                                   <div class="email-dropdown js-dropdown">
                                       <div class="email__title">
@@ -408,16 +408,12 @@ DashboardAsset::register($this);
                                   </div>
                                   <div class="account-dropdown js-dropdown">
                                       <div class="info clearfix">
-                                          <div class="image">
-                                              <a href="#">
-                                                  <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                              </a>
-                                          </div>
                                           <div class="content">
                                               <h5 class="name">
                                                   <a href="#">john doe</a>
+                                                  <span class="email">johndoe@example.com</span>
                                               </h5>
-                                              <span class="email">johndoe@example.com</span>
+                                              
                                           </div>
                                       </div>
                                       <div class="account-dropdown__body">
@@ -429,10 +425,7 @@ DashboardAsset::register($this);
                                               <a href="#">
                                                   <i class="zmdi zmdi-settings"></i>Setting</a>
                                           </div>
-                                          <div class="account-dropdown__item">
-                                              <a href="#">
-                                                  <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                          </div>
+                                         
                                       </div>
                                       <div class="account-dropdown__footer">
                                         <?=Html::a('<i class="zmdi zmdi-power"></i>Logout', ['site/logout'])?>

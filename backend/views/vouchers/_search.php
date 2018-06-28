@@ -34,7 +34,7 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'discount') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary btn-lg']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-danger btn-lg']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-warning btn-lg']) ?>
     </div>
 

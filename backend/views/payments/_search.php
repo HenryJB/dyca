@@ -28,8 +28,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
 
-    <?php  echo $form->field($model, 'type',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
-
     <?php // echo $form->field($model, 'method') ?>
 
     <?php // echo $form->field($model, 'status') ?>

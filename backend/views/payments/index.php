@@ -12,11 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="payment-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-white"><?= Html::encode($this->title) ?></h1>
     
 
     <p class="mt-5">
-        <?= Html::a('Create Payment', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Payment', ['create'], ['class' => 'btn btn-danger btn-lg']) ?>
     </p>
 
     <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,7 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'reference_no',
             'amount',
             'description:ntext',
-            'type',
             'method',
             'status',
             'voucher_id',

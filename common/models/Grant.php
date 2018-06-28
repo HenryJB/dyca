@@ -29,8 +29,8 @@ class Grant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['name'], 'string', 'max' => 255],
+            [['title','description','terms_and_condition','thumbnail'], 'required'],
+            [['title','description'], 'string', 'max' => 255],
         ];
     }
 
@@ -41,10 +41,13 @@ class Grant extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'title' => 'Title',
+            'description' => 'Description',
+            'terms_and_condition' => 'Terms and Conditions',
+            'thumbnail' => 'Thumbnail',
         ];
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      */
