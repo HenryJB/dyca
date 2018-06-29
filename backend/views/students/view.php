@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use common\models\Tag;
 use common\models\State;
@@ -319,37 +320,48 @@ $this->params['breadcrumbs'][] = $this->title;
 
               <div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
                 
-                 <div class="row">
-                 <?php if(count($registered_courses)>0):?>
-                    <?php  foreach ($registered_courses as $reg_course ):?>
-                      <?php $course= $reg_course->getCourse()->andWhere('id='.$reg_course->course_id)->one(); ?>
-                      <?php if(count($course)>0) :?>
+              <?php if (count($registered_courses) > 0): ?>
+                              <?php foreach ($registered_courses as $course_applied): ?>
+                                  <?php $course= $course_applied->getCourseInSession()->andWhere('id='.$course_applied->course_in_session_id)->one();?>
 
-                        <div class="col-md-5 p-0">                        
-                          <div class="card bg-dark text-white">
-                            <?=Html::img('@web/uploads/courses/'.$course->photo, ['alt'=> 'Course photo', 'class'=>'card-img'])?>
-                            <div class="card-img-overlay">
-                              <h5 class="card-title">Card title</h5>
-                              <p></p>
-                              <h3 class="card-text mt-130 bebas_neue"> <?=$course->name?></h3>
-                            </div>
-                          </div>
-                        </div>
+                                    <div class="card-body">
 
-                        <div class="col-md-7">
-                          <p class='pt-1'>START DATE</p>                        
-                          <p><?= $course->start_date ?></p>  
-                          <p class='pt-1'>DURATION</p>
-                          <p><?= $course->duration ?></p>       
-                          <p class='pt-1'>COST</p>               
-                          <p><?= number_format($course->fee,2); ?></p>
-                          <p class='pt-1'>STATUS</p>
-                        </div>
+                                      <div class="row">
+                                          <div class="col-md-6">
 
-                      <?php endif;?>
-                    <?php endforeach;?>
-                  <?php endif;?>
-                 </div>
+                                              <?php $applied_course= $course->getCourse()->andWhere('id='.$course->course_id)->one();?>
+                                              <img src="<?= Url::to('@web/uploads/courses/'.$applied_course->photo); ?>" class="img-fluid img-rounded">
+                                              <h3 class="title-bold font-24 bottom-centered "><?=$applied_course->name?></h3>
+                  
+                                          </div>
+                                          <div class="col-md-4" style="padding-top:36px">
+                                              <div class="row">
+                                                  <div class=" col-md-12"><h3 class="title-light font-14">START DATE</h3></div>
+                                                  <div class="col-md-12 line-compressed"><?= $course->start_date ?></div>
+                                              </div>
+
+                                              <div class="row">
+                                                  <div class="col-md-12 "><h3 class="title-light font-14">DURATION</h3></div>
+                                                  <div class="col-md-12 line-compressed"><?= '' ?></div>
+                                              </div>
+
+                                              <div class="row">
+                                                  <div class=" col-md-12"><h3 class="title-light font-14">COST</h3></div>
+                                                  <div class="col-md-12 line-compressed">$<?= number_format($applied_course->fee,2); ?></div>
+                                              </div>
+
+                                              <div class="row">
+                                                  <div class=" col-md-12"><h3 class="title-light font-14">STATUS</h3></div>
+                                                  <div class="col-md-12 line-compressed"><?= $course_applied->payment_status ?></div>
+                                              </div>
+
+                                          </div>
+
+                                      </div>
+                                    </div>
+
+                      <?php endforeach; ?>
+                    <?php endif; ?>
             
               </div>
               <div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">

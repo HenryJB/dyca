@@ -22,11 +22,14 @@ use yii\widgets\ActiveForm;
 
 
 
-    <?= $form->field($model, 'reference_no',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
+    <?= $form->field($model, 'reference_no',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder'=>'Reference'])->label(false) ?>
 
-    <?= $form->field($model, 'amount',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
+    <?= $form->field($model, 'amount',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder'=>'Amount'])->label(false) ?>
 
-    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]]) ?>
+    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder'=>'Description'])->label(false) ?>
 
     <?php // echo $form->field($model, 'method') ?>
 
@@ -37,7 +40,7 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'date') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary btn-lg']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-danger btn-lg']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-warning btn-lg']) ?>
     </div>
 

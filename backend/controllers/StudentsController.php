@@ -115,6 +115,7 @@ class StudentsController extends Controller
         $taggings = Tagging::find()->where(['student_id'=> $id])->all();
         $tags = Tag::find()->all();
         $registered_courses = CourseRegistration::find()->where(['student_id'=> $id])->all();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'projects' => $project,

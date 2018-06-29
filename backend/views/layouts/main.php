@@ -174,7 +174,7 @@ DashboardAsset::register($this);
                           <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' Settings', ['settings/index'])?>                                
+                                <?=Html::a(' Settings', ['setting/index'])?>
                           </li>
                           <li>
                                 <?=Html::a('Emails', ['email/index'])?>
@@ -215,9 +215,6 @@ DashboardAsset::register($this);
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
                                 <?=Html::a(' Payment Records', ['payments/index'])?>
-                          </li>
-                          <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
                           </li>
                       </ul>
                   </li>
@@ -474,7 +471,10 @@ DashboardAsset::register($this);
     </div>
 </footer>
 
+
+
 <?php $this->endBody() ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>
