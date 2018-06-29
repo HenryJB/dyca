@@ -19,13 +19,13 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
     <?= $form->field($model, 'voucher_category',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
-        ->textInput(['placeholder' => 'Voucher Category']) ?>
+        ->textInput(['placeholder' => 'Voucher Category'])->label(false) ?>
 
-    <?= $form->field($model, 'code',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Code']) ?>
+    <?= $form->field($model, 'code',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Code'])->label(false) ?>
 
-    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Description']) ?>
+    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Description'])->label(false) ?>
 
-    <?= $form->field($model, 'prefix',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Prefix']) ?>
+    <?= $form->field($model, 'prefix',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])->textInput(['placeholder' => 'Prefix'])->label(false) ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
@@ -35,7 +35,6 @@ use yii\widgets\ActiveForm;
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-danger btn-lg']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-warning btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

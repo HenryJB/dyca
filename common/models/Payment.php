@@ -12,7 +12,6 @@ use Yii;
  * @property string $reference_no
  * @property double $amount
  * @property string $description
- * @property string $type
  * @property string $method
  * @property string $status
  * @property int $voucher_id
@@ -60,5 +59,9 @@ class Payment extends \yii\db\ActiveRecord
             'voucher_id' => 'Voucher ID',
             'date' => 'Date',
         ];
+    }
+
+    public function getStudents(){
+        return $this->hasOne(Student::className(), ['id' => 'student_id']);
     }
 }

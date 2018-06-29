@@ -16,21 +16,29 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p class="mb-4">
-        <?= Html::a('Create Setting', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Settings', ['create'], ['class' => 'btn btn-danger']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'company_name',
-            'address:ntext',
-            'phone_number',
-            'email_address:email',
-            //'logo',
-            //'reg_status',
+    <div class="card">
+        <div class="card-header">
+            <?= Html::encode($this->title) ?>
+        </div>
+        <div class="card-body" id="table__card">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'company_name',
+                    'address:ntext',
+                    'phone_number',
+                    'email_address:email',
+                    //'logo',
+                    //'reg_status',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+            ]); ?>
+        </div>
+    </div>
+
 </div>

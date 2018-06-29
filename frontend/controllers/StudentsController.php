@@ -48,7 +48,7 @@ class StudentsController extends Controller
 
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['update', 'profile', 'dashboard', 'change-picture', 'update-profile'],
+                'only' => ['update', 'profile', 'dashboard', 'change-picture', 'update-profile','index'],
                 'rules' => [
                     // allow authenticated users
                     [

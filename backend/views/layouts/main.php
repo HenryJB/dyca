@@ -66,9 +66,7 @@ DashboardAsset::register($this);
                       <a class="js-arrow" href="#">
                           <i class="fas fa-users"></i>Students</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
-                          </li>
+
                           <li>
                                 <?=Html::a('List', ['students/index'])?>
                           </li>
@@ -198,13 +196,7 @@ DashboardAsset::register($this);
                           <i class="fas fa-users"></i>Student Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List Students', ['students/index'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('Students By Tags', ['students/filter-student-by-tags'])?>                                
+                                <?=Html::a('Students', ['students/index'])?>
                           </li>
                       </ul>
                   </li>
@@ -214,7 +206,7 @@ DashboardAsset::register($this);
                           <i class="fas fa-credit-card"></i>Payment Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' Payment Records', ['payments/index'])?>
+                                <?=Html::a(' Payments', ['payments/index'])?>
                           </li>
                       </ul>
                   </li>
@@ -226,9 +218,6 @@ DashboardAsset::register($this);
                           <li>
                                 <?=Html::a('Grants', ['grant/index'])?>
                           </li>
-                          <li>
-                                <?=Html::a(' New Grant', ['grant/create'])?>
-                          </li>
                       </ul>
                   </li>
 
@@ -236,17 +225,12 @@ DashboardAsset::register($this);
                       <a class="js-arrow" href="#" class="hover_link">
                           <i class="fas fa-list"></i>Course Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+
                           <li>
-                                <?=Html::a(' New Course', ['courses/create'])?>
+                                <?=Html::a('Courses', ['courses/index'])?>
                           </li>
                           <li>
-                                <?=Html::a('List Courses', ['courses/index'])?>
-                          </li>
-                          <li>
-                                <?=Html::a(' New Instructor', ['instructors/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List Instructors', ['instructors/index'])?>
+                                <?=Html::a('Instructors', ['instructors/index'])?>
                           </li>
 
                       </ul>
@@ -258,13 +242,10 @@ DashboardAsset::register($this);
                           <i class="fas fa-envelope"></i>Voucher Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
-                              <?=Html::a('Voucher Category', ['voucher-categories/index'])?>
+                              <?=Html::a('Voucher Categories', ['voucher-categories/index'])?>
                         </li>
                           <li>
-                                <?=Html::a('New Voucher', ['vouchers/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('Voucher List', ['vouchers/index'])?>
+                                <?=Html::a('Vouchers', ['vouchers/index'])?>
                           </li>
 
                       </ul>
@@ -291,11 +272,11 @@ DashboardAsset::register($this);
                                   <span class="quantity">1</span>
                                   <div class="mess-dropdown js-dropdown">
                                       <div class="mess__title">
-                                          <p>You have 2 news message</p>
+                                          <p>Payment Notifications</p>
                                       </div>
                                       <div class="mess__item">
                                           <div class="image img-cir img-40">
-                                              <img src="images/icon/avatar-06.jpg" alt="Michelle Moreno" />
+                                              <i class="zmdi zmdi-money"></i>
                                           </div>
                                           <div class="content">
                                               <h6>Michelle Moreno</h6>

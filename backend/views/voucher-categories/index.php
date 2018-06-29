@@ -12,7 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="voucher-category-index">
 
-    <h1 class="text-white mb-5"><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
 
     <p>
@@ -21,17 +20,38 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-    // 'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            
-            'name',
-            'description:ntext',
+    <div class="card">
+        <div class="card-header">
+            <?= Html::encode($this->title) ?>
+        </div>
+        <div class="card-body" id="table__card">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    'name',
+                    'description:ntext',
+
+                    [
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return
+                                Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view','id'=>$data->id], ['title' => 'view','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-pencil"></span> ', ['update','id'=>$data->id], ['title' => 'edit','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['delete', 'id' => $data->id], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => 'Are you sure you want to delete this item?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
     <?php Pjax::end(); ?>
 </div>

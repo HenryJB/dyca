@@ -75,9 +75,20 @@ ul#student__breadcrumb {
 .table-bordered>tbody>tr>td,
 .table-bordered>tfoot>tr>td {
     border: 5px solid transparent;
-    padding: 15px;
+    padding: 5px;
+    padding-top:5px;
+    padding-bottom:5px;
     background-color: #21252b;
     color: white;
+}
+
+input.student_tagging {
+    height: 30px;
+    width: 20px;
+}
+
+#table__card{
+    padding:0;
 }
 
 .table-bordered>thead>tr>th{
@@ -88,6 +99,10 @@ ul#student__breadcrumb {
 /* bebas font to profile box */
 .bebas_neue{
     font-family: bebas_neue_regular, sans-serif;
+}
+
+.futura_bk{
+    font-family: futura_bk_btbook, sans-serif;
 }
 
 /* student list view display*/
@@ -117,8 +132,9 @@ table.table.table-striped.table-bordered {
   
   /* adjust summary on student->index */
   .summary{
-    padding-bottom: 30px;
+    padding: 20px;
     margin-left: 40%;
+      color:black;
   }
   
   /* adjust pagination on students->index */
@@ -148,7 +164,6 @@ ul .breadcrumb li :nth-child(n+2):before {
     background-color: #fff;
     border-color: transparent !important;
 }
-
 
 .form-group.field-entrysearchpayment-reference_no > label.control-label,
 .form-group.field-entrysearchpayment-amount > label.control-label,

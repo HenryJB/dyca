@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
+use common\models\Payment;
 
 
 /**
@@ -179,6 +180,9 @@ class Student extends \yii\db\ActiveRecord
         return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('tagging', ['student_id' => 'id']);
     }
 
+    public function getPayments(){
+        return $this->hasMany(Payment::className(), ['student_id' => 'id']);
+    }
 
     public function changeProfilePicture(){
         $extensionsStack = array('png, jpg, jpeg, gif');

@@ -8,7 +8,7 @@ use common\models\Course;
 ?>
  <div class="card-deck">
   <?php if(count($model)>0) :?>
-    <input type="checkbox" value="<?= $model->id ?>" name="students[]" class='form-control rounded'>
+    <input type="checkbox" value="<?= $model->id ?>" name="students[]" class='student_tagging'>
     <a class="link" href="<?=Yii::$app->request->baseUrl?>/students/view?id=<?=$model->id?>">
     <div class="card mb-3">
       <?php ?>

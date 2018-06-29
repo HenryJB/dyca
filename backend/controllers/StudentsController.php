@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Student;
+use common\models\Payment;
 use common\models\Tag;
 use common\models\Tagging;
 use common\models\StudentProject;
@@ -286,55 +287,6 @@ class StudentsController extends Controller
         }
     }
 
-    /**
-     * actionFilterStudentByTags
-     *
-     * @return void
-     */
-    public function actionFilterStudentByTags()
-    {
-        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
-
-        $tag_id = Yii::$app->request->post('tag_id');
-
-        $query = !empty($tag_id) ? Tagging::find()->where(['tag_id' => $tag_id]) : Tagging::find();
-
-        $count = $query->count();
-
-        $pagination = new Pagination(['totalCount' => $count,'pageSize'=>3]);
-
-        $tags = ArrayHelper::map(Tag::find()->all(), 'id', 'name');
-
-        if(!empty($query)){                
-
-            $models = $query->offset($pagination->offset)
-                ->limit($pagination->limit)
-                ->all();
-
-            return $this->render('filterbytags', [
-                'tags' => $tags,
-                'models' => $models,
-                'pagination' => $pagination
-            ]);
-        }else
-        {
-
-            $models = $query->offset($pagination->offset)
-                ->limit($pagination->limit)
-                ->all();
-        
-            return $this->render('filterbytags', [
-                'tags' => $tags,
-                'models' => $models,
-                'pagination' => $pagination
-                
-            ]);
-        }
-        //get a list of students that have tags
-        
-        //get a list of available tags
-        
-    }
 
     public function actionSendMail($value='')
     {

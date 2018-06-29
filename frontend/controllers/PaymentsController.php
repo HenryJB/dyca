@@ -117,7 +117,6 @@ class PaymentsController extends \yii\web\Controller
 
     }
 
-
     public function actionCourseFees()
     {
 
@@ -243,11 +242,11 @@ class PaymentsController extends \yii\web\Controller
     private function generateUniqueTransactionCode()
     {
 
-        $unique_refernce = time() . rand(10 * 42, 100 * 918);
+        $unique_reference = time() . rand(10 * 42, 100 * 918);
 
         $prefix = 'DCA';
 
-        return $transaction_reference = $prefix . $unique_refernce;
+        return $transaction_reference = $prefix . $unique_reference;
 
     }
 
