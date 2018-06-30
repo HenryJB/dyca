@@ -46,25 +46,30 @@ class PaymentsController extends \yii\web\Controller
 
     public function actionRegistrationFees()
     {
+        $payload = (string)Yii::$app->request->get('payload');
+        $encrypter = \Yii::$app->get('xxtea');
+        $id = $encrypter->decrypt($payload);
 
         $session = Yii::$app->session;
+
+        if(!empty($payload))
+        {
+            $session->set('id' ,(int)$id);
+        }
+
         $user_id = (int)$session->get('id');
 
-        if($user_id!==null){
-
+        if($user_id!==null ){
             $student = Student::find()->where(['id'=>$user_id])->one();
 
-            if($student!==null){
-
-
+            if($student!==null)
+            {
                 $email = $student->email_address;
                 $amount = 5000 *100;
                 $currency = 'NGN';
             }
 
-
             // Initializing a payment transaction
-
             $paystack = Yii::$app->Paystack;
             $transaction = $paystack->transaction();
             $transaction->initialize(['email'=>$email,'amount'=>$amount,'currency'=>$currency]);
@@ -85,22 +90,22 @@ class PaymentsController extends \yii\web\Controller
                 $model->date= date('Y-m-d h:i:s');
                 $model->status = 'paid';
 
-                $student_model = Student::findOne($user_id);
-                $student_model->payment_status = 'paid';
 
-                if($model->save() &&  $student_model->update()){
+                if( $model->save())
+                {
                     Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
 
                     // redirect the user to the payment page gotten from the initialization
                     $transaction->redirect();
 
-                }else{
+                }
+                else
+                    {
+                    print_r("i reached here");
                     print_r($model->getErrors());
                     print_r($student_model->getErrors());
 
                 }
-
-
             }
             else
             {
@@ -112,11 +117,11 @@ class PaymentsController extends \yii\web\Controller
             }
 
         }else{
+            $session->remove('id');
             return $this->redirect(['site/index']);
         }
 
     }
-
 
     public function actionCourseFees()
     {
@@ -135,7 +140,7 @@ class PaymentsController extends \yii\web\Controller
 
                 try{
 
-                        
+
                     if (count($voucher) > 0) {
 
                         $voucher_assigned = VouchersAssignment::find()->where(['voucher_id' => $voucher->id])->one();
@@ -237,17 +242,25 @@ class PaymentsController extends \yii\web\Controller
 
     public function actionPaySuccess()
     {
-        return $this->render('pay-success');
+        $student_model = Student::findOne((int)$user_id);
+        $student_model->payment_status = 'paid';
+        if($student_model->update()){
+            return $this->render('pay-success');
+        }
+        else {
+                Yii::$app->session->setFlash('error','Transction Successful');
+                return $this->redirect('index');
+        }
     }
 
     private function generateUniqueTransactionCode()
     {
 
-        $unique_refernce = time() . rand(10 * 42, 100 * 918);
+        $unique_reference = time() . rand(10 * 42, 100 * 918);
 
         $prefix = 'DCA';
 
-        return $transaction_reference = $prefix . $unique_refernce;
+        return $transaction_reference = $prefix . $unique_reference;
 
     }
 

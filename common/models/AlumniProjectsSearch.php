@@ -20,6 +20,7 @@ class AlumniProjectsSearch extends AlumniProject
         return [
             [['id', 'alumni_id'], 'integer'],
             [['title', 'description', 'attachment', 'date'], 'safe'],
+            [['title','description'],'string','max' => 255]
         ];
     }
 

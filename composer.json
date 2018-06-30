@@ -26,8 +26,9 @@
         "circulon/yii2-columnlistview": "*",
         "2amigos/yii2-file-upload-widget": "~1.0",
         "true/punycode": "~2.0",
-        "smladeoye/yii2-paystack": "dev-master"
-        
+        "2amigos/yii2-tinymce-widget": "*",
+        "smladeoye/yii2-paystack": "dev-master",
+        "rmrevin/yii2-xxtea": "1.2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

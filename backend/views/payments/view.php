@@ -6,15 +6,15 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\Payment */
 
-$this->title = $model->id;
+$this->title = $model->reference_no;
 $this->params['breadcrumbs'][] = ['label' => 'Payments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="payment-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1 class="text-white"><?= Html::encode($this->title) ?></h1>
 
-    <p>
+    <p class="mb-3 mt-3">
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
@@ -28,12 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'student_id',
             'reference_no',
             'amount',
             'description:ntext',
-            'type',
             'method',
             'status',
             'voucher_id',

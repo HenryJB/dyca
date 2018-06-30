@@ -28,7 +28,7 @@ class DashboardAsset extends AssetBundle
         'css/extra-styles.css',
     ];
     public $js = [
-        'vendor/jquery-3.2.1.min.js',
+        'vendor/bootstrap-4.1/jquery-3.3.1.slim.min.js',
         'vendor/bootstrap-4.1/popper.min.js',
         'vendor/bootstrap-4.1/bootstrap.min.js',
         'vendor/slick/slick.min.js',

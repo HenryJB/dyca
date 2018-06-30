@@ -32,7 +32,7 @@ class AboutDca extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'title', 'description'], 'required'],
-            [['title', 'description'], 'string'],
+            [['title', 'description'], 'string','max' => 255],
             [['name', 'subtitle', 'video', 'photo'], 'string', 'max' => 255],
         ];
     }

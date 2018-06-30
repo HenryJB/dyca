@@ -31,7 +31,7 @@ use dosamigos\tinymce\TinyMce;
     <?= $form->field($model, 'attachment')->fileInput(); ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Submit', ['class' => 'btn btn-success']); ?>
+        <?= Html::submitButton('Submit', ['class' => 'btn btn-danger btn-lg']); ?>
     </div>
 
     <?php ActiveForm::end(); ?>

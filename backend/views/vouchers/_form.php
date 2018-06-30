@@ -31,7 +31,7 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'discount')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-danger btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

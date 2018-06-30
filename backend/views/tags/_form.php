@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'notify_status')->dropDownList([ '0' => 'Dont Send', '1' => 'Send', '' => '', ], ['prompt' => '']) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-danger btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

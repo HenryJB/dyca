@@ -48,7 +48,7 @@ class StudentsController extends Controller
 
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['update', 'profile', 'dashboard', 'change-picture', 'update-profile'],
+                'only' => ['update', 'profile', 'dashboard', 'change-picture', 'update-profile','index'],
                 'rules' => [
                     // allow authenticated users
                     [
@@ -88,8 +88,6 @@ class StudentsController extends Controller
         $session = Yii::$app->session;
 
         $setting = Setting::find()->one();
-        $model = new Student();
-        $course_registration = new CourseRegistration();
 
         if($setting->reg_status == 'close'){
             Yii::$app->session->setFlash('error', 'Registration Closed');

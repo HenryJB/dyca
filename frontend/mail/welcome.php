@@ -292,7 +292,7 @@
                                 <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: auto;">
                                     <tbody><tr>
                                         <td class="button-td button-td-primary" style="border-radius: 4px; background: #222222;">                                        
-											<a class="button-a button-a-primary" href="<?= Yii::$app->request->baseUrl.'/payments/index' ?>" style="background:#a40000; border: 1px solid #a40000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Proceed To Pay</a>
+											<a class="button-a button-a-primary" href="<?= Yii::$app->request->baseUrl.'/payments/registration-fees?payload='.$hash ?>" style="background:#a40000; border: 1px solid #a40000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Proceed To Pay</a>
 										</td>
                                     </tr>
                                 </tbody></table>
@@ -342,7 +342,7 @@
 	                                </tr>
 	                                <tr>
 	                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;" class="center-on-narrow">
-                                            <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+
                                             <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background: #a40000; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
 	                                    </td>
 	                                </tr>
@@ -359,7 +359,7 @@
 	                                </tr>
 	                                <tr>
 	                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;" class="center-on-narrow">
-                                            <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+
                                             <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background:#a40000; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 10px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
 	                                    </td>
 	                                </tr>
@@ -376,7 +376,7 @@
 	                                </tr>
 	                                <tr>
 	                                    <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;" class="center-on-narrow">
-                                            <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+
                                             <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background:#a40000; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 10px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
 	                                    </td>
 	                                </tr>

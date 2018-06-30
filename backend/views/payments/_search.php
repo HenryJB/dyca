@@ -8,24 +8,28 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="payment-search">
+<div class="payment-search mt-5 mb-5">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'class' => 'form-inline',
+            'tag'=>false
+        ],
+        
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'student_id') ?>
 
-    <?= $form->field($model, 'reference_no') ?>
+    <?= $form->field($model, 'reference_no',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder'=>'Reference'])->label(false) ?>
 
-    <?= $form->field($model, 'amount') ?>
+    <?= $form->field($model, 'amount',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder'=>'Amount'])->label(false) ?>
 
-    <?= $form->field($model, 'description') ?>
-
-    <?php // echo $form->field($model, 'type') ?>
+    <?= $form->field($model, 'description',['labelOptions' => [ 'class' => 'remove_default_class_n_padding' ]])
+        ->textInput(['placeholder'=>'Description'])->label(false) ?>
 
     <?php // echo $form->field($model, 'method') ?>
 
@@ -36,8 +40,7 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'date') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-danger btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

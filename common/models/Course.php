@@ -3,7 +3,9 @@
 namespace common\models;
 
 use Yii;
-
+use yii\helpers\Url;
+use Imagine\Image\Box;
+use yii\imagine\Image as ImageBox;
 /**
  * This is the model class for table "courses".
  *
@@ -36,14 +38,12 @@ class Course extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'start_date', 'duration', 'photo'], 'required'],
+            [['name', 'photo'], 'required'],
             [['course_category'], 'integer'],
-            [['description', 'prerequisite', 'status'], 'string'],
-            [['start_date'], 'safe'],
+            [['description', 'prerequisite'], 'string'],
             [['fee'], 'number'],
             [['name'], 'string', 'max' => 255],
-            [['duration'], 'string', 'max' => 100],
-            [['photo'], 'string', 'max' => 200],
+            [['photo'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg,jpeg'],
             [['name'], 'unique'],
         ];
     }
@@ -58,8 +58,6 @@ class Course extends \yii\db\ActiveRecord
             'course_category' => 'Course Category',
             'name' => 'Name',
             'description' => 'Description',
-            'start_date' => 'Start Date',
-            'duration' => 'Duration',
             'fee' => 'Fee',
             'prerequisite' => 'Prerequisite',
             'status' => 'Status',
@@ -80,10 +78,10 @@ class Course extends \yii\db\ActiveRecord
     {
         if ($this->validate()) {
 
-            $this->photo->saveAs(Url::to('@academy/web/uploads/courses/').$this->photo->baseName.'.'.$this->photo->extension);
-            ImageBox::thumbnail(Url::to('@academy/web/uploads/courses/').$this->photo->baseName.'.'.$this->photo->extension, 640, 350)
+            $this->photo->saveAs(Url::to('@frontend/web/uploads/courses/').$this->photo->baseName.'.'.$this->photo->extension);
+            ImageBox::thumbnail(Url::to('@frontend/web/uploads/courses/').$this->photo->baseName.'.'.$this->photo->extension, 640, 350)
                 ->resize(new Box(640, 350))
-                ->save(Url::to('@academy/web/uploads/courses/thumbs/').$this->photo->baseName.'.'.$this->photo->extension,
+                ->save(Url::to('@frontend/web/uploads/courses/thumbs/').$this->photo->baseName.'.'.$this->photo->extension,
                         ['quality' => 80]);
 
             return true;

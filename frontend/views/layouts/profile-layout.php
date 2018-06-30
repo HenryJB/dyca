@@ -515,6 +515,28 @@
             });
 
 
+ $('#batch-tag-link').click(function(e){
+        e.preventDefault();
+        //alert('clicked');
+        $("#batch-tag-modal").modal("show");
+        $("#batch-tag-modal").appendTo("body");
+
+        $.ajax({
+            url: '<?= Yii::$app->request->baseUrl?>/skills/get-skills',
+            method: 'POST',
+            success: function(data){
+                $('#batch-tag-box').show();
+                    // alert(data);
+                $('#batch-tag-modal').html(data);
+            },
+            error: {}
+        });
+        return false;
+ });
+
+            
+
+
 //            $('#skillset').click(function(e){
 //                e.preventDefault();
 //

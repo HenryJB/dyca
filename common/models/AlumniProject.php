@@ -36,7 +36,7 @@ class AlumniProject extends \yii\db\ActiveRecord
         return [
             [['alumni_id', 'title', 'description', 'attachment', 'attachment_url', 'date'], 'required'],
             [['alumni_id'], 'integer'],
-            [['description', 'type'], 'string'],
+            [['description', 'type'], 'string','max' => 255],
             [['date'], 'safe'],
             [['title',  'attachment_url'], 'string', 'max' => 250],
             [['attachment'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, gif, pdf', 'maxFiles' => 1],

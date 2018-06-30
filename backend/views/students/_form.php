@@ -60,8 +60,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'sponsorship_status')->textInput() ?>
 
-    <?= $form->field($model, 'is_existing')->textInput() ?>
-
     <?= $form->field($model, 'terms_condition')->textInput() ?>
 
     <?= $form->field($model, 'date_registered')->textInput() ?>
@@ -75,7 +73,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'emergency_secondary_phone_number')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-danger btn-lg']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -12,26 +12,46 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="voucher-category-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Voucher Category', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Voucher Category', ['create'], ['class' => 'btn btn-danger btn-lg mt-3']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-            'id',
-            'name',
-            'description:ntext',
+    <div class="card">
+        <div class="card-header">
+            <?= Html::encode($this->title) ?>
+        </div>
+        <div class="card-body" id="table__card">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    'name',
+                    'description:ntext',
+
+                    [
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return
+                                Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view','id'=>$data->id], ['title' => 'view','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-pencil"></span> ', ['update','id'=>$data->id], ['title' => 'edit','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['delete', 'id' => $data->id], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => 'Are you sure you want to delete this item?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
     <?php Pjax::end(); ?>
 </div>
