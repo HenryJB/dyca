@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef506ba26f5545b5997b6a640d4ccb17",
+    "content-hash": "c7b37b01985265ac8d30621171c49761",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -1285,6 +1285,48 @@
                 "psr-3"
             ],
             "time": "2018-04-03T15:59:15+00:00"
+        },
+        {
+            "name": "rmrevin/yii2-xxtea",
+            "version": "1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmrevin/yii2-xxtea.git",
+                "reference": "fb893608c5b47aa086c51a11a75b8f751dc4ade8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmrevin/yii2-xxtea/zipball/fb893608c5b47aa086c51a11a75b8f751dc4ade8",
+                "reference": "fb893608c5b47aa086c51a11a75b8f751dc4ade8",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "rmrevin\\yii\\xxtea\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Revin Roman",
+                    "email": "xgismox@gmail.com",
+                    "homepage": "http://phptime.ru/"
+                }
+            ],
+            "description": "Extension for yii2 encryption algorithm XXTEA",
+            "keywords": [
+                "encrypt",
+                "xxtea",
+                "yii2"
+            ],
+            "time": "2014-08-05T09:27:24+00:00"
         },
         {
             "name": "setasign/fpdi",

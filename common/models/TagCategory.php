@@ -44,9 +44,4 @@ class TagCategory extends \yii\db\ActiveRecord
             'description' => 'Description',
         ];
     }
-
-    public function getTags()
-    {
-        return $this->hasMany(Tag::className(), ['tag_category_id' => 'id']);
-    }
 }
