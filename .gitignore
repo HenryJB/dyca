@@ -22,7 +22,7 @@ Thumbs.db
 
 # composer itself is not needed
 composer.phar
-#compose.json
+compose.json
 composer.lock
 
 # Mac DS_Store Files

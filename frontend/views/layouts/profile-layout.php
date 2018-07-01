@@ -438,6 +438,26 @@
                         </div>
                     </div>
 
+
+
+                    <!-- Modal for project upload -->
+                    <div class="modal fade" id="project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true ">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Project</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true ">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row" id="project-modal-box"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <?= $this->render('@frontend/views/utility/alerts'); ?>
                         <?= $content; ?>
                 </div>
@@ -515,20 +535,27 @@
             });
 
 
-//            $('#skillset').click(function(e){
-//                e.preventDefault();
 //
-//                $.ajax({
-//                    url: $(this).attr('href'),
-//                    method: 'POST',
-//                    success: function(data){
-//                        $('#skillset').show();
-//                        $('#skillset').html(data);
-//                    },
-//                    error: {}
-//                });
-//                return false;
-//            });
+
+
+            $('#project-link').click(function(e){
+                e.preventDefault();
+                //alert('clicked');
+                $("#project-modal").modal("show");
+                $("#project-modal").appendTo("body");
+
+                $.ajax({
+                    url: '<?= Yii::$app->request->baseUrl?>/project/create',
+                    method: 'POST',
+                    success: function(data){
+                        $('#project-modal').show();
+                        // alert(data);
+                        $('#project-modal-box').html(data);
+                    },
+                    error: {}
+                });
+                return false;
+            });
         </script>
 
     </body>

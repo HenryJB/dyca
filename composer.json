@@ -27,7 +27,7 @@
         "2amigos/yii2-file-upload-widget": "~1.0",
         "true/punycode": "~2.0",
         "smladeoye/yii2-paystack": "dev-master"
-        
+
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

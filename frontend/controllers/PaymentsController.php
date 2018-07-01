@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Course;
 use common\models\Payment;
 use common\models\Student;
 use common\models\Voucher;
@@ -50,9 +51,83 @@ class PaymentsController extends \yii\web\Controller
         $session = Yii::$app->session;
         $user_id = (int)$session->get('id');
 
+        if ($user_id !== null) {
+
+            $student = Student::find()->where(['id' => $user_id])->one();
+
+            if ($student !== null) {
+
+
+                $email = $student->email_address;
+                $amount = 5000 * 100;
+                $currency = 'NGN';
+
+
+
+            // Initializing a payment transaction
+
+            $paystack = Yii::$app->Paystack;
+            $transaction = $paystack->transaction();
+            $transaction->initialize(['email' => $email, 'amount' => $amount, 'currency' => $currency]);
+
+            // check if an error occured during the operation
+            if (!$transaction->hasError) {
+                //response property for response gotten for any operation
+                $response = $transaction->getResponse();
+
+                $model = new Payment();
+                $model->student_id = $user_id;
+                $model->amount = ($amount / 100);
+                $model->description = 'DCA registration fee';
+                $model->reference_no = $response['data']['reference'];
+                $model->method = 'online';
+                $model->voucher_id = null;
+                $model->date = date('Y-m-d h:i:s');
+                $model->status = 'paid';
+
+                $student_model = Student::findOne($user_id);
+                $student_model->payment_status = 'paid';
+                $student_model->update();
+
+                if ($model->save()) {
+                    Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
+
+                    // redirect the user to the payment page gotten from the initialization
+                    $transaction->redirect();
+
+                } else {
+                    print_r($model->getErrors());
+                    print_r($student_model->getErrors());
+
+                }
+
+
+            } else {
+                // display message
+                echo $transaction->message;
+
+                // get all the errors information regarding the operation from paystack
+                $error = $transaction->getError();
+            }
+
+        } else {
+            return $this->redirect(['site/index']);
+        }
+
+    }
+
+    }
+
+
+    public function actionCourseFees()
+    {
+        $session = Yii::$app->session;
+        $user_id = (int)$session->get('id');
+
         if($user_id!==null){
 
             $student = Student::find()->where(['id'=>$user_id])->one();
+            $course = Course::find()->where(['id'=>$user_id])->one();
 
             if($student!==null){
 
@@ -78,17 +153,15 @@ class PaymentsController extends \yii\web\Controller
                 $model = new Payment();
                 $model->student_id =  $user_id;
                 $model->amount = ($amount/100);
-                $model->description= 'DCA registration fee';
+                $model->description= 'DCA course fee';
                 $model->reference_no = $response['data']['reference'];
                 $model->method =  'online';
                 $model->voucher_id = null;
                 $model->date= date('Y-m-d h:i:s');
                 $model->status = 'paid';
 
-                $student_model = Student::findOne($user_id);
-                $student_model->payment_status = 'paid';
 
-                if($model->save() &&  $student_model->update()){
+                if($model->save()){
                     Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
 
                     // redirect the user to the payment page gotten from the initialization
@@ -96,7 +169,7 @@ class PaymentsController extends \yii\web\Controller
 
                 }else{
                     print_r($model->getErrors());
-                    print_r($student_model->getErrors());
+                   // print_r($student_model->getErrors());
 
                 }
 
@@ -114,12 +187,6 @@ class PaymentsController extends \yii\web\Controller
         }else{
             return $this->redirect(['site/index']);
         }
-
-    }
-
-
-    public function actionCourseFees()
-    {
 
     }
 
@@ -237,7 +304,18 @@ class PaymentsController extends \yii\web\Controller
 
     public function actionPaySuccess()
     {
-        return $this->render('pay-success');
+        $session = Yii::$app->session;
+        $user_id = (int)$session->get('id');
+
+        if($user_id!==null) {
+            $student_model = Student::findOne($user_id);
+            $student_model->payment_status = 'paid';
+            $student_model->update();
+            return $this->render('pay-success');
+        }else{
+            Yii::$app->session->setFlash('error', 'Payment is required to login');
+            return $this->redirect('index');
+        }
     }
 
     private function generateUniqueTransactionCode()
