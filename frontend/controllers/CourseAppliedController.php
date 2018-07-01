@@ -62,33 +62,68 @@ class CourseAppliedController extends \yii\web\Controller
 
 
     public function actionApply()
-        {    $model= new CourseRegistration();
-             $id =Yii::$app->getRequest()->getQueryParam('id');
-             $course_session = Yii::$app->getRequest()->getQueryParam('course_session');
+    {
+            $model= new CourseRegistration();
+            $id =Yii::$app->getRequest()->getQueryParam('id');
+            $course_session = Yii::$app->getRequest()->getQueryParam('course_session');
 
 
-             $session = Yii::$app->session;
-
+            $session = Yii::$app->session;
             $model->student_id =$session->get('id');
             $model->course_in_session_id =$course_session;
             $model->payment_status ='pending';
             $model->date = date('Y-m-d h:i:s');
-            $course = CourseRegistration:: find()->where(['student_id'=>$session->get('id'), 'course_in_session_id'=>$course_session])->all();
 
-            if($course===null){
-                if($model->save()){
+            $course_in_session = CoursesInSession:: find()->where(['id'=>$course_session])->one();
 
-                    Yii::$app->session->setFlash('success', 'You have successfully applied for this course');
-                    return $this->redirect('index');
+            if($course_in_session!==null){
+
+                $status = $course_in_session->status;
+
+                $start_date = $course_in_session->start_date;
+
+                $session_id = $course_in_session->session_id;
+
+
+                $course= CourseRegistration:: find() ->joinWith('courseInSession')
+                    ->where([
+                        'student_id'=>$session->get('id'),
+                        'courses_in_session.start_date'=>$start_date,
+                        'courses_in_session.session_id'=>$session_id,'courses_in_session.status'=> '0']
+                        )->one();
+
+                if($course===null){
+
+
+                    if($model->save()){
+
+                        Yii::$app->session->setFlash('success', 'You have successfully applied for this course');
+                        return $this->redirect('index');
+
+                    }else{
+                        print_r($model->getErrors());
+                    }
 
                 }else{
-                    print_r($model->getErrors());
+
+                    Yii::$app->session->setFlash('error', 'You can only  register  one course per session');
+                    return $this->redirect('index');
                 }
 
+
+
             }else{
-                Yii::$app->session->setFlash('error', 'You have already applied for this course');
+
+                Yii::$app->session->setFlash('error', 'You cannot register this course at the moment');
                 return $this->redirect('index');
+
             }
+
+
+            //$course =ArrayHelper::map(CourseRegistration:: find()->where(['student_id'=>$session->get('id')])->all(), 'id', 'start_date');
+
+
+
 
     }
 
