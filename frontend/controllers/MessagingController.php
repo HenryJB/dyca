@@ -47,12 +47,17 @@ class MessagingController extends \yii\web\Controller
     public function actionWelcome($email_address, $firstname, $lastname)
     {
         $email = new Email();
-
         $template = EmailTemplate::findOne(6);
+        $student = Student::find()->where(['email_address' => $email_address])->one();
 
-        if ($template!==null) {
-            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
-            return false;
+        $encrypter = \Yii::$app->get('xxtea');
+        $string = (string)$student->id;
+        $encrypted = $encrypter->encrypt($string);
+
+        if ($template == null || empty($template) )
+        {
+            Yii::$app->session->setFlash('error', 'Failed to retrieve email');
+            return;
         }
 
         $message = Yii::$app->mailer->compose(
@@ -61,27 +66,26 @@ class MessagingController extends \yii\web\Controller
                 'content' => $template->body,
                 'title' => $template->subject,
                 'name' => $firstname . ' ' . $lastname,
+                'hash' => $encrypted,
             ]
         );
 
         try 
         {
-            $this->setMessageParameter(
-                $message, $email_address, Yii::$app->params['supportEmail'], $template->subject
-            );
+            $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $template->subject);
 
             $boolean = $this->saveEmailDb($email, $email_address, $template->id);
 
-            if(!$boolean)
+            if($boolean)
             {
-                Yii::$app->session->setFlash('error', 'Failed to send registration mail');
+                Yii::$app->session->setFlash('success', 'Success : Check mail box or contact the administrator inquiry@delyorkinternatinal.com');
             }
             
-        } catch (Exception $e) 
-        {
-            Yii::$app->session->setFlash('error', 'Failed to send registration mail');
         }
-
+        catch(Exception $e)
+        {
+            Yii::$app->session->setFlash('error', 'Failed : contact administrator inquiry@delyorkinternatinal.com');
+        }
     }
 
     public function invoiceByVoucher($first_name, $last_name, $amount, $email_address, $subject)

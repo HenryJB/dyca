@@ -13,19 +13,20 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="instructor-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Instructor', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Instructor', ['create'], ['class' => 'btn btn-success mt-4 mt-4']) ?>
+
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
     </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'title',
             'first_name',
             'last_name',

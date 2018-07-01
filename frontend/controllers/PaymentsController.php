@@ -47,62 +47,69 @@ class PaymentsController extends \yii\web\Controller
 
     public function actionRegistrationFees()
     {
+        $payload = (string)Yii::$app->request->get('payload');
+        $encrypter = \Yii::$app->get('xxtea');
+        $id = $encrypter->decrypt($payload);
 
         $session = Yii::$app->session;
+
+        if(!empty($payload))
+        {
+            $session->set('id' ,(int)$id);
+        }
+
         $user_id = (int)$session->get('id');
 
-        if ($user_id !== null) {
+        if($user_id!==null ){
+            $student = Student::find()->where(['id'=>$user_id])->one();
 
-            $student = Student::find()->where(['id' => $user_id])->one();
-
-            if ($student !== null) {
-
-
+            if($student!==null)
+            {
                 $email = $student->email_address;
-                $amount = 5000 * 100;
+                $amount = 5000 *100;
                 $currency = 'NGN';
-
-
+            }
 
             // Initializing a payment transaction
-
             $paystack = Yii::$app->Paystack;
             $transaction = $paystack->transaction();
-            $transaction->initialize(['email' => $email, 'amount' => $amount, 'currency' => $currency]);
+            $transaction->initialize(['email'=>$email,'amount'=>$amount,'currency'=>$currency]);
 
             // check if an error occured during the operation
-            if (!$transaction->hasError) {
+            if (!$transaction->hasError)
+            {
                 //response property for response gotten for any operation
                 $response = $transaction->getResponse();
 
                 $model = new Payment();
-                $model->student_id = $user_id;
-                $model->amount = ($amount / 100);
-                $model->description = 'DCA registration fee';
+                $model->student_id =  $user_id;
+                $model->amount = ($amount/100);
+                $model->description= 'DCA registration fee';
                 $model->reference_no = $response['data']['reference'];
-                $model->method = 'online';
+                $model->method =  'online';
                 $model->voucher_id = null;
-                $model->date = date('Y-m-d h:i:s');
+                $model->date= date('Y-m-d h:i:s');
                 $model->status = 'paid';
 
-                $student_model = Student::findOne($user_id);
-                $student_model->payment_status = 'paid';
-                $student_model->update();
 
-                if ($model->save()) {
-                    Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
+                if( $model->save())
+                {
+                    Yii::$app->runAction('messaging/registration', ['email_address' => $student->email_address, 'firstname' => $student->first_name, 'lastname' => $student->last_name]);
 
                     // redirect the user to the payment page gotten from the initialization
                     $transaction->redirect();
 
-                } else {
+                }
+                else
+                {
+                    print_r("i reached here");
                     print_r($model->getErrors());
-                    print_r($student_model->getErrors());
+                    print_r($student->getErrors());
 
                 }
-
-
-            } else {
+            }
+            else
+            {
                 // display message
                 echo $transaction->message;
 
@@ -110,11 +117,10 @@ class PaymentsController extends \yii\web\Controller
                 $error = $transaction->getError();
             }
 
-        } else {
+        }else{
+            $session->remove('id');
             return $this->redirect(['site/index']);
         }
-
-    }
 
     }
 
@@ -162,14 +168,14 @@ class PaymentsController extends \yii\web\Controller
 
 
                 if($model->save()){
-                    Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
+                    Yii::$app->runAction('messaging/registration', ['email_address' => $student->email_address, 'firstname' => $student->first_name, 'lastname' => $student_model->last_name]);
 
                     // redirect the user to the payment page gotten from the initialization
                     $transaction->redirect();
 
                 }else{
                     print_r($model->getErrors());
-                   // print_r($student_model->getErrors());
+
 
                 }
 
@@ -209,7 +215,7 @@ class PaymentsController extends \yii\web\Controller
 
                         // a check should come here to end the execution of the code here so as to stop the implementation 
                         if (count($voucher_assigned) <= 0) {
-                            Yii::$app->session->setFlash('error', 'Voucher has been used or assigned Contact Support');
+                            Yii::$app->session->setFlash('error', 'Voucher has been used or assigned. Contact Support');
                             return $this->redirect(['site/view']);
                         }
 

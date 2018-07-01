@@ -48,7 +48,7 @@ class MessagingController extends \yii\web\Controller
             }
 
         } catch (Exception $e) {
-            Yii::$app->session->setFlash('Could not Send mail');
+            Yii::$app->session->setFlash('error','Could not Send mail');
         }
     }
 

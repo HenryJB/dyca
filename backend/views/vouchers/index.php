@@ -11,30 +11,52 @@ $this->title = 'Vouchers';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="voucher-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Voucher', ['create'], ['class' => 'btn btn-success']) ?>
+    
+    <p class="mt-3 mb-3">
+        <?= Html::a('Create Voucher', ['create'], ['class' => 'btn btn-danger btn-lg']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-            'id',
-            'voucher_category',
-            'code',
-            'description:ntext',
-            'prefix',
-            //'status',
-            //'expiry_date',
-            //'discount',
+    <div class="card">
+        <div class="card-header">
+            <?= Html::encode($this->title) ?>
+        </div>
+        <div class="card-body" id="table__card">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+
+                    'voucher_category',
+                    'code',
+                    'description:ntext',
+                    'prefix',
+                    //'status',
+                    //'expiry_date',
+                    //'discount',
+
+                    [
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return
+                                Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view','id'=>$data->id], ['title' => 'view','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-pencil"></span> ', ['update','id'=>$data->id], ['title' => 'edit','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['delete', 'id' => $data->id], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => 'Are you sure you want to delete this item?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
+
+</div>
+
 </div>

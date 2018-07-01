@@ -10,6 +10,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
+use yii\helpers\Url;
+
 DashboardAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -53,6 +55,9 @@ DashboardAsset::register($this);
                           <li>
                                 <?=Html::a('Dashboard', ['site/index'])?>
                           </li>
+                          <li>
+                                <?=Html::a('Settings', ['settings/index'])?>
+                          </li>
 
                       </ul>
                   </li>
@@ -61,9 +66,7 @@ DashboardAsset::register($this);
                       <a class="js-arrow" href="#">
                           <i class="fas fa-users"></i>Students</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
-                          </li>
+
                           <li>
                                 <?=Html::a('List', ['students/index'])?>
                           </li>
@@ -155,113 +158,79 @@ DashboardAsset::register($this);
 
   <!-- MENU SIDEBAR-->
   <aside class="menu-sidebar d-none d-lg-block">
-      <div class="logo">
-          <a href="#">
-            DCA Backend
-              <!-- <img src="images/icon/logo.png" alt="Cool Admin" /> -->
+      <div class="logo mt-5">
+          <a href="#">            
+              <img src="<?= Url::to('@web/images/dcalogo.png') ?>" alt="Cool Admin" /> 
           </a>
       </div>
       <div class="menu-sidebar__content js-scrollbar1">
           <nav class="navbar-sidebar">
               <ul class="list-unstyled navbar__list">
-                <li>
-                    <?=Html::a('<i class="fas fa-tachometer-alt"></i>Dashboard', ['site/index'])?>
-
-
-                </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-users"></i>Students</a>
+                <li class="has_sub">
+                   
+                    <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
+                                <?=Html::a(' Settings', ['setting/index'])?>
                           </li>
                           <li>
-                                <?=Html::a('List', ['students/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-users"></i>Instructors</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Instructor', ['instructors/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List', ['instructors/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-credit-card"></i>Payments</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' Records', ['payments/index'])?>
-                          </li>
-                          
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-list"></i>Reports</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Student', ['students/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List', ['students/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-list"></i>Courses</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a(' New Course', ['courses/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('List', ['courses/index'])?>
-                          </li>
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-envelope"></i>Messaging</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                          <li>
-                                <?=Html::a('emails', ['email/index'])?>
+                                <?=Html::a('Emails', ['email/index'])?>
                           </li>
                           <li>
                                 <?=Html::a('Email Templates', ['email-template/index'])?>
                           </li>
-
-                      </ul>
-                  </li>
-
-                  <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-tags"></i>Tags</a>
-                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
                                 <?=Html::a('New Tag', ['tags/create'])?>
                           </li>
                           <li>
                                 <?=Html::a('Tag List', ['tags/index'])?>
                           </li>
+                      </ul>
+
+
+                </li>
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-users"></i>Student Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                           <li>
-                                <?=Html::a('Tag assignment', ['taggings/index'])?>
+                                <?=Html::a('Students', ['students/index'])?>
+                          </li>
+                      </ul>
+                  </li>
+                
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-credit-card"></i>Payment Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a(' Payments', ['payments/index'])?>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-credit-card"></i>Grant Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+                          <li>
+                                <?=Html::a('Grants', ['grant/index'])?>
+                          </li>
+                      </ul>
+                  </li>
+
+                  <li class="has-sub">
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-list"></i>Course Manager</a>
+                      <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
+
+                          <li>
+                                <?=Html::a('Courses', ['courses/index'])?>
+                          </li>
+                          <li>
+                                <?=Html::a('Instructors', ['instructors/index'])?>
                           </li>
 
                       </ul>
@@ -269,27 +238,19 @@ DashboardAsset::register($this);
 
 
                   <li class="has-sub">
-                      <a class="js-arrow" href="#">
-                          <i class="fas fa-envelope"></i>Vouchers</a>
+                      <a class="js-arrow" href="#" class="hover_link">
+                          <i class="fas fa-envelope"></i>Voucher Manager</a>
                       <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                         <li>
-                              <?=Html::a('Voucher Category', ['voucher-categories/index'])?>
+                              <?=Html::a('Voucher Categories', ['voucher-categories/index'])?>
                         </li>
                           <li>
-                                <?=Html::a('New Voucher', ['vouchers/create'])?>
-                          </li>
-                          <li>
-                                <?=Html::a('Voucher List', ['vouchers/index'])?>
+                                <?=Html::a('Vouchers', ['vouchers/index'])?>
                           </li>
 
                       </ul>
                   </li>
 
-                  <li>
-                      <?=Html::a('<i class="fas fa-cog"></i>Settings', ['settings/index'])?>
-
-
-                  </li>
 
 
 
@@ -303,25 +264,19 @@ DashboardAsset::register($this);
       <header class="header-desktop">
           <div class="section__content section__content--p30">
               <div class="container-fluid">
-                  <div class="header-wrap">
-                      <form class="form-header" action="" method="POST">
-                          <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
-                          <button class="au-btn--submit" type="submit">
-                              <i class="zmdi zmdi-search"></i>
-                          </button>
-                      </form>
+                  <div class="header-wrap float-right mt-5">
                       <div class="header-button">
                           <div class="noti-wrap">
                               <div class="noti__item js-item-menu">
-                                  <i class="zmdi zmdi-comment-more"></i>
+                                  <i class="zmdi zmdi-money"></i>
                                   <span class="quantity">1</span>
                                   <div class="mess-dropdown js-dropdown">
                                       <div class="mess__title">
-                                          <p>You have 2 news message</p>
+                                          <p>Payment Notifications</p>
                                       </div>
                                       <div class="mess__item">
                                           <div class="image img-cir img-40">
-                                              <img src="images/icon/avatar-06.jpg" alt="Michelle Moreno" />
+                                              <i class="zmdi zmdi-money"></i>
                                           </div>
                                           <div class="content">
                                               <h6>Michelle Moreno</h6>
@@ -345,7 +300,7 @@ DashboardAsset::register($this);
                                   </div>
                               </div>
                               <div class="noti__item js-item-menu">
-                                  <i class="zmdi zmdi-email"></i>
+                                  <i class="zmdi zmdi-account"></i>
                                   <span class="quantity">1</span>
                                   <div class="email-dropdown js-dropdown">
                                       <div class="email__title">
@@ -431,16 +386,12 @@ DashboardAsset::register($this);
                                   </div>
                                   <div class="account-dropdown js-dropdown">
                                       <div class="info clearfix">
-                                          <div class="image">
-                                              <a href="#">
-                                                  <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                              </a>
-                                          </div>
                                           <div class="content">
                                               <h5 class="name">
                                                   <a href="#">john doe</a>
+                                                  <span class="email">johndoe@example.com</span>
                                               </h5>
-                                              <span class="email">johndoe@example.com</span>
+                                              
                                           </div>
                                       </div>
                                       <div class="account-dropdown__body">
@@ -452,10 +403,7 @@ DashboardAsset::register($this);
                                               <a href="#">
                                                   <i class="zmdi zmdi-settings"></i>Setting</a>
                                           </div>
-                                          <div class="account-dropdown__item">
-                                              <a href="#">
-                                                  <i class="zmdi zmdi-money-box"></i>Billing</a>
-                                          </div>
+                                         
                                       </div>
                                       <div class="account-dropdown__footer">
                                         <?=Html::a('<i class="zmdi zmdi-power"></i>Logout', ['site/logout'])?>
@@ -472,9 +420,19 @@ DashboardAsset::register($this);
 
       <!-- MAIN CONTENT-->
       <div class="main-content">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 ml-auto">
+                    <?= Breadcrumbs::widget([
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        'options' => [
+                            'id' => 'student__breadcrumb',
+                            'class' => 'breadcrumb'
+                        ]
+                    ]) ?>
+                </div>
+            </div>
+        </div>
         <div class="section__content section__content--cp30">
             <?= $content ?>
         </div>
@@ -491,12 +449,13 @@ DashboardAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
 </footer>
 
+
+
 <?php $this->endBody() ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>

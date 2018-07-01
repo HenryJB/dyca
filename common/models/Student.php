@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\web\UploadedFile;
 use yii\helpers\Url;
+use common\models\Payment;
 
 
 /**
@@ -52,6 +53,9 @@ class Student extends \yii\db\ActiveRecord
 {
   const SCENARIO_PROFILE_UPDATE = 'profile_update';
   const SCENARIO_UPDATE_PROFILE_PICTURE = 'update_profile_picture';
+  
+
+
     /**
      * {@inheritdoc}
      */
@@ -66,7 +70,7 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth',  'session_id', 'learning_experience_id', 'about',  'date_registered'], 'required'],
+            [['first_name', 'last_name', 'gender', 'email_address', 'contact_address', 'phone_number', 'country', 'date_of_birth',  'session_id', 'learning_experience_id', 'about',  'date_registered','state_id','country'], 'required'],
             [['gender', 'contact_address', 'payment_status', 'approval_status', 'about', 'information_source'], 'string'],
             [['year', 'date_of_birth', 'date_registered'], 'safe'],
             [['date_of_birth'], 'validateAge'],
@@ -87,6 +91,7 @@ class Student extends \yii\db\ActiveRecord
               }"],
 
             [['learning_experience_id'], 'exist', 'skipOnError' => true, 'targetClass' => LearningExperience::className(), 'targetAttribute' => ['learning_experience_id' => 'id']],
+           
         ];
     }
 
@@ -112,8 +117,6 @@ class Student extends \yii\db\ActiveRecord
         }
     }
 
-
-
     /**
      * {@inheritdoc}
      */
@@ -136,8 +139,8 @@ class Student extends \yii\db\ActiveRecord
             'payment_status' => 'Payment Status',
             'approval_status' => 'Approval Status',
             'country' => 'Country',
-            'state_id' => 'State ID',
-            'local_government_id' => 'Local Government ID',
+            'state_id' => 'State',
+            'local_government_id' => 'Local Government  ',
             'date_of_birth' => 'Date Of Birth',
             'first_choice' => 'First Choice',
             'second_choice' => 'Second Choice',
@@ -173,6 +176,13 @@ class Student extends \yii\db\ActiveRecord
         return $this->hasMany(Tagging::className(), ['student_id' => 'id']);
     }
 
+    public function getTags() {
+        return $this->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable('tagging', ['student_id' => 'id']);
+    }
+
+    public function getPayments(){
+        return $this->hasMany(Payment::className(), ['student_id' => 'id']);
+    }
 
     public function changeProfilePicture(){
         $extensionsStack = array('png, jpg, jpeg, gif');

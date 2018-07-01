@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Tag;
+use common\models\TagCategory;
 use backend\models\TagSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -28,7 +29,7 @@ class TagsController extends Controller
             ],
             'access' => [
                 'class' => \yii\filters\AccessControl::className(),
-                'only' => ['index', 'view', 'create', 'update', 'delete'],
+                'only' => ['index', 'view', 'create', 'update', 'delete','form-delete'],
                 'rules' => [
                     // allow authenticated users
                     [
@@ -48,13 +49,18 @@ class TagsController extends Controller
     public function actionIndex()
     {
         $searchModel = new TagSearch();
+        $model = TagCategory::find()->all();
+        
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'models' => $model
         ]);
     }
+
+    
 
     /**
      * Displays a single Tag model.
@@ -118,6 +124,27 @@ class TagsController extends Controller
     {
         $this->findModel($id)->delete();
 
+        return $this->redirect(['index']);
+    }
+    
+    /**
+     * actionFormDelete
+     *
+     * @return void
+     */
+    public function actionFormDelete()
+    {
+        $form_tags = Yii::$app->request->post('tags');
+
+        if(count($form_tags) > 0){
+            for($i=0; $i<count($form_tags); $i++){                
+                $this->findModel($form_tags[$i])->delete();
+            }
+            Yii::$app->session->setFlash('success','Tags have been deleted');
+            return $this->redirect(['index']);
+        }
+
+        Yii::$app->session->setFlash('error','Tags could not be deleted');
         return $this->redirect(['index']);
     }
 

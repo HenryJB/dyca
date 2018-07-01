@@ -106,7 +106,7 @@ class EmailController extends Controller
 
                 $message->send();
 
-                Yii::$app->session->setFlash('Email Sent');
+                Yii::$app->session->setFlash('success','Email Sent');
 
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -138,6 +138,7 @@ class EmailController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'templates' => ArrayHelper::map(EmailTemplate::find()->all(), 'id', 'type')
         ]);
     }
 

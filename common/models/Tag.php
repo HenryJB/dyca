@@ -33,7 +33,7 @@ class Tag extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'description', 'notify_status'], 'required'],
-            [['description', 'message'], 'string'],
+            [['description', 'message'], 'string','max' => 255],
             [['notify_status', 'voucher_category'], 'integer'],
             [['name'], 'string', 'max' => 100],
         ];
@@ -60,5 +60,15 @@ class Tag extends \yii\db\ActiveRecord
     public function getTaggings()
     {
         return $this->hasMany(Tagging::className(), ['tag_id' => 'id']);
+    }
+
+    public function getStudents() 
+    {
+        return $this->hasMany(Student::className(), ['id' => 'student_id'])->viaTable('tagging', ['tag_id' => 'id']);
+    }
+
+    public function getTagCategory()
+    {
+        return $this->hasOne(TagCategory::className(), ['id' => 'tag_category_id']);
     }
 }
