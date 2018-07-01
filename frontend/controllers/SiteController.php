@@ -201,8 +201,8 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionTesting()
-    {
-        Yii::$app->runAction('messaging/welcome', ['email_address' => 'wibuqi@mailinator.com','firstname' => 'Lusahaha', 'lastname' => 'Mbaku']);
-    }
+//    public function actionTesting()
+//    {
+//        Yii::$app->runAction('messaging/welcome', ['email_address' => 'wibuqi@mailinator.com','firstname' => 'Lusahaha', 'lastname' => 'Mbaku']);
+//    }
 }

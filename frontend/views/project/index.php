@@ -44,7 +44,7 @@
 
 
             <div class="p-2">
-              <audio controls
+              <audio controls>
                     <source src="<?=Url::to('@web/uploads/student-projects/audios/'.$project->attachment)?>" type="audio/mpeg">
                     Your browser does not support the audio tag.
                   </audio>

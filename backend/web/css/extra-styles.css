@@ -20,11 +20,20 @@ body {
     font-size: 15px;        
 }
 
+
+
 .card-header {
     padding: .75rem 1.25rem;
     margin-bottom: 0;
     background-color: #a50c0c !important;
     border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.project__cards{
+    -webkit-box-shadow: 16px 20px 27px 1px rgba(0,0,0,0.61);
+    -moz-box-shadow: 16px 20px 27px 1px rgba(0,0,0,0.61);
+    box-shadow: 16px 20px 27px 1px rgba(0,0,0,0.61);
+    background-color: #a40000;
 }
 
 /* change background color of filter form on student index */
@@ -35,6 +44,13 @@ body {
 /* hide scroll bar on dashboard */
 .menu-sidebar {
     overflow-y: hidden;
+}
+
+/*courses view adjust*/
+.student__course__listing{
+    position: relative;
+    margin-top: -60px;
+    margin-left: 20px;
 }
 
 /* change breadcrumb color */

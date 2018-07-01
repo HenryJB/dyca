@@ -1,12 +1,11 @@
 <?php
   use yii\helpers\Html;
   use yii\bootstrap\ActiveForm;
-
-
+  use yii\helpers\Url;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <!-- Required meta tags-->
     <meta charset="UTF-8">
@@ -24,12 +23,10 @@
     <?= Html::cssFIle('@web/vendor/font-awesome-5/css/fontawesome-all.min.css'); ?>
     <?= Html::cssFIle('@web/vendor/mdi-font/css/material-design-iconic-font.min.css'); ?>
 
-
     <!-- Bootstrap CSS-->
-
     <?= Html::cssFIle('@web/vendor/bootstrap-4.1/bootstrap.min.css'); ?>
-    <!-- Vendor CSS-->
 
+    <!-- Vendor CSS-->
     <?= Html::cssFIle('@web/vendor/animsition/animsition.min.css'); ?>
     <?= Html::cssFIle('@web/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.cs'); ?>
     <?= Html::cssFIle('@web/vendor/wow/animate.css'); ?>
@@ -39,7 +36,6 @@
     <?= Html::cssFIle('@web/vendor/perfect-scrollbar/perfect-scrollbar.css'); ?>
 
     <!-- Main CSS-->
-
     <?= Html::cssFIle('@web/css/theme.css'); ?>
 
 </head>
@@ -56,7 +52,6 @@
                             </a>
                         </div>
                         <div class="login-form">
-
 
                             <?php $form = ActiveForm::begin(['id' => 'user-form']); ?>
                                 <div class="form-group">
@@ -80,7 +75,7 @@
                                         <a href="#">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--green m-b-20', 'name' => 'login-button']) ?>
+                                <?= Html::submitButton('Login', ['class' => 'au-btn au-btn--block au-btn--red m-b-20', 'name' => 'login-button']) ?>
 
                                 <!-- <div class="social-login-content">
                                     <div class="social-button">
