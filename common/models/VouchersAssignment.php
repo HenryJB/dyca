@@ -44,4 +44,27 @@ class VouchersAssignment extends \yii\db\ActiveRecord
             'student_id' => 'Student ID',
         ];
     }
+
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVoucher()
+    {
+        return $this->hasOne(Voucher::className(), ['id' => 'voucher_id']);
+    }
+
+    public function getStudent()
+    {
+        return $this->hasOne(Student::className(), ['id' => 'student_id']);
+    }
+
+    public function getStudentName()
+    {
+        return $this->student->first_name.' '.$this->student->last_name; 
+    }
+
+    public function getVoucherCode()
+    {
+        return $this->voucher->code;
+    }
 }

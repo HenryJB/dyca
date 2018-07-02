@@ -51,14 +51,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="modal-body">
                     <p>
-                    <form action="<?php echo Yii::$app->request->baseUrl ?>/students/send-mail" method="post">
+                    <form action="<?php echo Yii::$app->request->baseUrl ?>/messaging/mail-student" method="post">
+                        <?php $email =  'noreply.delyorkinternational.com' ?>
+                        <?php $id =  0 ?>
+
+                        <?php if(!empty($model->email_address) && !empty($model->id)) : ?>
+                            <?php $email = $model->email_address?>
+                            <?php $id   = $model->id?>
+                        <?php endif;?>
+
+
+                        <input type="hidden" name="email_address" value='<?= $email  ?>'>
+                        <input type="hidden" name="id" value='<?= $id  ?>'>
                         <div class="form-group">
-                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Subject"/>
+                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Subject" />
                         </div>
                         <div class="form-group">
-                            <textarea cols="6" rows="10" class="form-control"></textarea>
+                            <textarea cols="6" rows="10" class="form-control" name="email_body" ></textarea>
                         </div>
-                        <button name="sendMail" class="btn btn-success">
+                        <button type="submit" class="btn btn-success">
                             <i class='fa fa-envelope'></i> Send Email
                         </button>
 
@@ -102,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <button type="submit" class="btn btn-primary" onclick=" confirm('Are you sure?');">Confirm</button>
                         </div>
                     </form>
                     </p>
@@ -177,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <div class="col-md-4 col-sm-4 mt-5 mb-4 pl-0">
                                     <?php $photo = !empty($model->photo) || $model->photo !== NULL ? $model->photo : 'default-avatar.gif' ?>
-                                    <?= Html::img('@web/uploads/students/' . $photo, ['class' => 'rounded-circle d-block', 'style' => 'width:300px; height:250px;']) ?>
+                                    <?= Html::img('@web/uploads/students/' . $photo, ['class' => 'rounded-circle d-block', 'style' => 'width:300px; height:300px;']) ?>
                                 </div>
 
                                 <div class="col-md-8 col-sm-8 mt-5 align-self-center">
@@ -281,18 +292,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <i class="fa fa-star"></i> SKILLS</h3>
 
                                 </div>
-                                <div class="col-sm-4">
-                                    <p class="font-weight-bold">PHONE NUMBER</p>
-                                    <p>
-                                        <?= $model->phone_number ?>
-                                    </p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <p class="font-weight-bold">PHONE NUMBER</p>
-                                    <p>
-                                        <?= $model->phone_number ?>
-                                    </p>
-                                </div>
+                                
                             </div>
 
                             <div class="row mt-4 mb-4">
@@ -311,9 +311,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                             <?php if ($student_tag!==null) : ?>
                                                 <a class="btn btn-danger "
                                                    href="<?= Yii::$app->request->baseUrl ?>/students/tag?id=<?= $student_tag->id ?>">
-                      <span class="badge badge-dark">
-                        <?= $student_tag->name ?>
-                      </span>
+                                                      <span class="badge badge-dark">
+                                                        <?= $student_tag->name ?>
+                                                      </span>
                                                 </a>
                                             <?php endif ?>
 
@@ -334,15 +334,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <div class="card-body">
 
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 mb-3">
                                                 <?php $applied_course = $course->getCourse()->andWhere('id=' . $course->course_id)->one(); ?>
                                                 <img src="<?= Url::to('@web/uploads/courses/' . $applied_course->photo); ?>" class="img-fluid img-rounded">
-                                                <h3 class="font-weight-bold futura_bk"><?= $applied_course->name ?></h3>
+                                                <h3 class="font-weight-bold student__course__listing"><?= $applied_course->name ?></h3>
                                             </div>
                                             <div class="col-md-4" style="padding-top:36px">
                                                 <div class="row">
-                                                    <div class=" col-md-12"><h3 class="futura_bk">START
-                                                            DATE</h3></div>
+                                                    <div class=" col-md-12">
+                                                        <h3>START DATE</h3></div>
                                                     <div class="col-md-12 line-compressed"><?= $course->start_date ?></div>
                                                 </div>
 
@@ -363,64 +363,70 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         </div>
                                     </div>
-
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
                         </div>
-                        <div class="tab-pane fade" id="custom-nav-contact" role="tabpanel"
-                             aria-labelledby="custom-nav-contact-tab">
+                        <div class="tab-pane fade" id="custom-nav-contact" role="tabpanel" aria-labelledby="custom-nav-contact-tab">
+                            
+                            <?php if (count($projects) > 0): ?>                                        
+                                <div class="row">                                                                            
+                                     <?php foreach ($projects as $project): ?>
+                                         <div class="col-md-4 pl-0">
+                                            <div class="card project__cards">
+                                                <div class="card-header">                                        
+                                                    <?php if(!empty($project->title)):  ?>
+                                                            <p><?= $project->title ?></p>
+                                                        <?php else:?>
+                                                            <p>Content Error</p>
+                                                    <?php endif;?>
 
-                            <?php if (count($projects) > 0): ?>
-                                <?php $c = 1; ?>
-                                <?php foreach ($projects as $project): ?>
+                                                  </div>
+                                                    <div class="card-body">
+                                                        <?php if($project->type == 'audio' && !empty($project->attachment)):?>
+                                                            <?php $link = Url::to('@web/uploads/student-projects/audios/' . $project->attachment); ?>
+                                                            
+                                                             <audio controls>
+                                                                    <source src="<?=  $link?>" type="audio/mpeg">                                                            
+                                                                    Your browser does not support the audio tag.
+                                                            </audio>
 
-                                    <div class="col-md-5">
-                                        <div class="card">
-                                            <?php switch ($project->attachment) {
-                                                case 'audio':
-                                                    ?>
+                                                        <?php elseif($project->type == 'video' && !empty($project->attachment)): ?>
+                                                            <?php $link = Url::to('@web/uploads/student-projects/videos/' . $project->attachment); ?>                                                    
+                                                             <video width="100%" height="100%" controls>
+                                                                    <source src="<?= $link ?>" type="video/mp4">                                                     
+                                                                    Your browser does not support the video tag.
+                                                            </video>
 
+                                                        <?php elseif($project->type == 'pdf' && !empty($project->attachment)):?>
+                                                            <?php $link = Url::to('@web/uploads/student-projects/documents/'.$project->attachment); ?>
+                                                            
+                                                            <img src="<?= Url::to('@web/uploads/student-projects/documents/pdf.jpg'); ?>" width="200px" height="200px">                                                     
+                                                             <a href="<?= $link ?>" class="btn btn-success btn-sm rounded" 
+                                                                onclick="return confirm('Are you sure?')" target='_blank'> View</a>
 
-                                                    <audio controls
-                                                    <source src="<?= Url::to('@frontend/web/uploads/student-projects/' . $project->attachment) ?>"
-                                                            type="audio/mpeg">
-                                                    Your browser does not support the audio tag.
-                                                    </audio>
-                                                    <?php break; ?>
-                                                <?php case 'video': ?>
-                                                    <video width="100%" height="100%" controls>
-                                                        <source src="<?= Url::to('@frontend/web/uploads/student-projects/' . $project->attachment) ?>"
-                                                                type="video/mp4">
-                                                        Your browser does not support the video tag.
-                                                    </video>
+                                                        <?php elseif($project->type == 'photo' && !empty($project->attachment)):?>                                                            
+                                                            <?php $link = Url::to('@web/uploads/student-projects/images/'.$project->attachment); ?>
+                                                            <img src="<?= $link; ?>" width="200px" height="200px">
 
-                                                    <?php break; ?>
-                                                <?php case 'pdf':
-                                                    Html::img('@frontend/web/uploads/student-projects/images' . $photo, ['class' => 'rounded-circle d-block', 'style' => 'width:100px; height:100px;']);
-                                                    # code...
-                                                    break;
-
-                                                default:
-                                                    # code...
-                                                    break;
-                                            } ?>
-                                            <div class="card-body text-white bg-danger">
-                                                <h4 class="card-title mb-3">
-                                                    <?= $project->title; ?>
-                                                </h4>
-                                                <p class="card-text">
-                                                    <?= $project->description; ?>
-                                                </p>
+                                                        <?php else:?>
+                                                                <p>Content Error</p>
+                                                        <?php endif;?>
+                                                    </div>                                                          
                                             </div>
-                                        </div>
-                                    </div>
-
-                                <?php endforeach; ?>
+                                        </div>   
+                                     <?php endforeach; ?>                                                   
+                                </div>                                                                                          
                             <?php else: ?>
-                                <p>Student has no project</p>
+                                <div class="col-md-4 pl-0">
+                                    <div class="card project__cards">
+                                        <div class="card-body">
+                                            <p class="card-title">Student has no project</p>
+                                        </div>                                        
+                                    </div>
+                                </div>
                             <?php endif; ?>
-
+                               
                         </div>
                     </div>
                     <!-- end tab content -->

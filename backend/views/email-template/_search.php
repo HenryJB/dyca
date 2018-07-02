@@ -8,24 +8,25 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="email-template-search">
+<div class="email-template-search mb-5">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
+        'options' => [
+            'class' => 'form-inline'
+        ]
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'type')->textInput(['placeholder' => 'Type'])->label(false) ?>
 
-    <?= $form->field($model, 'type') ?>
+    <?= $form->field($model, 'subject')->textInput(['placeholder' => 'Subject'])->label(false) ?>
 
-    <?= $form->field($model, 'subject') ?>
-
-    <?= $form->field($model, 'body') ?>
+    <?= $form->field($model, 'body')->textInput(['placeholder' => 'Body'])->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-danger btn-lg']) ?>
+        
     </div>
 
     <?php ActiveForm::end(); ?>

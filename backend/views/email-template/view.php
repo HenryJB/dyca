@@ -6,13 +6,13 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\EmailTemplate */
 
-$this->title = $model->id;
+$this->title = $model->type;
 $this->params['breadcrumbs'][] = ['label' => 'Email Templates', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="email-template-view">
 
-    <h1><?= Html::encode($this->title); ?></h1>
+    <h1 class="text-white mb-3 mt-3"><?= Html::encode($this->title); ?></h1>
     <h4>
         <?php
         if (Yii::$app->session->hasFlash('emailFormSubmitted')) {
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+        
             'type',
             'subject',
             'body:ntext',

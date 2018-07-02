@@ -154,6 +154,11 @@ class VouchersController extends Controller
         ]);
     }
 
+    //retrieve vouchers based on who they have been assigned
+    //revoke a voucher
+    //change course for a student
+    //course application manager
+
     /**
      * Deletes an existing Voucher model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

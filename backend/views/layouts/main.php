@@ -180,11 +180,13 @@ DashboardAsset::register($this);
                           <li>
                                 <?=Html::a('Email Templates', ['email-template/index'])?>
                           </li>
+ 
                           <li>
-                                <?=Html::a('New Tag', ['tags/create'])?>
+                                <?=Html::a('Tags', ['tags/index'])?>
                           </li>
+
                           <li>
-                                <?=Html::a('Tag List', ['tags/index'])?>
+                                <?=Html::a('Tag Categories', ['tag-category/index'])?>
                           </li>
                       </ul>
 
@@ -247,7 +249,9 @@ DashboardAsset::register($this);
                           <li>
                                 <?=Html::a('Vouchers', ['vouchers/index'])?>
                           </li>
-
+                          <li>
+                                <?=Html::a('Voucher Assignment', ['vouchers-assignment/index'])?>
+                          </li>
                       </ul>
                   </li>
 
@@ -382,14 +386,15 @@ DashboardAsset::register($this);
                               <div class="account-item clearfix js-item-menu">
 
                                   <div class="content">
-                                      <a class="js-acc-btn" href="#">john doe</a>
+                                      <a class="js-acc-btn text-white" href="#">
+                                        <?= \Yii::$app->user->identity->username; ?>
+                                      </a>
                                   </div>
                                   <div class="account-dropdown js-dropdown">
                                       <div class="info clearfix">
                                           <div class="content">
                                               <h5 class="name">
-                                                  <a href="#">john doe</a>
-                                                  <span class="email">johndoe@example.com</span>
+                                                  <a href="#"><?= \Yii::$app->user->identity->username; ?></a>                                              
                                               </h5>
                                               
                                           </div>

@@ -29,10 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
 
 
-                    'voucher_category',
+                    'categoryName',
                     'code',
                     'description:ntext',
                     'prefix',
+
                     //'status',
                     //'expiry_date',
                     //'discount',

@@ -379,16 +379,26 @@ section {
     }
 }
 
+.page-content--bge5
+{
+    background: url("../images/login-bg.jpg");
+}
+/*change color of button to red*/
+.au-btn--red {
+    background: #be1717;
+}
+
 .login-form .form-group label {
     display: block;
 }
 
 .login-content {
-    background: #fff;
+    color:white;
     padding: 30px 30px 20px;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
+    margin-top:20%;
 }
 
 .social-login-content {

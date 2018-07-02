@@ -13,9 +13,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="col-md-9 offset-1">
 
-
-
-
     <div class="row">
 
         <div class="col-md-12">

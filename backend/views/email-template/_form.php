@@ -11,7 +11,7 @@ use dosamigos\tinymce\TinyMce;
 
 <div class="email-template-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data',]]); ?>
 
     <?= $form->field($model, 'type'); ?>
     <?= $form->field($model, 'subject'); ?>

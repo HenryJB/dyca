@@ -4,42 +4,60 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\SettingSearch */
+/* @var $searchModel common\models\VouchersAssignmentSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Settings';
+$this->title = 'Vouchers Assignments';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="setting-index">
+<div class="vouchers-assignment-index">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<?php if (Yii::$app->session->hasFlash('error')): ?>
 
-    <p class="mb-4">
-        <?= Html::a('Create Settings', ['create'], ['class' => 'btn btn-danger']) ?>
-    </p>
+    <div class="alert alert-danger alert-dismissable">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
 
-    <div class="card">
+        <?= Yii::$app->session->getFlash('error') ?>
+    </div>
+
+<?php endif; ?>
+
+<?php if (Yii::$app->session->hasFlash('success')): ?>
+
+        <div class="alert alert-success alert-dismissable">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+
+            <?= Yii::$app->session->getFlash('success') ?>
+        </div>
+
+<?php endif; ?>
+
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+
+     <div class="card">
         <div class="card-header">
             <?= Html::encode($this->title) ?>
         </div>
         <div class="card-body" id="table__card">
+
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                    'company_name',
-                    'address:ntext',
-                    'phone_number',
-                    'email_address:email',
-                    //'logo',
-                    //'reg_status',
+                     [
+                     'attribute' => 'voucher',
+                     'value' => 'voucher.code'
+                     ],
+                     [
+                     'attribute' => 'student',
+                     'value' => 'student.first_name'
+                     ],
 
+                    
                     [
                         'format'=>'raw',
                         'value' => function($data){
-                            return
-                                Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view','id'=>$data->id], ['title' => 'view','class'=>'btn btn-danger']).' '.
-                                Html::a('<span class="glyphicon glyphicon-pencil"></span> ', ['update','id'=>$data->id], ['title' => 'edit','class'=>'btn btn-danger']).' '.
+                            return                                
                                 Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['delete', 'id' => $data->id], [
                                     'class' => 'btn btn-danger',
                                     'data' => [
@@ -53,5 +71,4 @@ $this->params['breadcrumbs'][] = $this->title;
             ]); ?>
         </div>
     </div>
-
 </div>

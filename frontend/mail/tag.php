@@ -394,9 +394,7 @@
                                                 <tr>
                                                     <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;"
                                                         class="center-on-narrow">
-                                                        <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class
-                                                            aptent taciti sociosqu ad litora torquent per conubia nostra,
-                                                            per inceptos himenaeos.</p>
+                                                        
                                                         <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background: red; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 17px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
                                                     </td>
                                                 </tr>
@@ -417,9 +415,7 @@
                                                 <tr>
                                                     <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;"
                                                         class="center-on-narrow">
-                                                        <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class
-                                                            aptent taciti sociosqu ad litora torquent per conubia nostra,
-                                                            per inceptos himenaeos.</p>
+                                                      
                                                         <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background:red; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 10px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
                                                     </td>
                                                 </tr>
@@ -440,9 +436,7 @@
                                                 <tr>
                                                     <td style="font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555; padding: 0 10px 10px; text-align: left;"
                                                         class="center-on-narrow">
-                                                        <p style="margin: 0;">Maecenas sed ante pellentesque, posuere leo id, eleifend dolor. Class
-                                                            aptent taciti sociosqu ad litora torquent per conubia nostra,
-                                                            per inceptos himenaeos.</p>
+                                                      
                                                         <a class="button-a button-a-primary" href="https://delyorkcreative.academy/" style="background:red; border: 1px solid #000000; font-family: sans-serif; font-size: 15px; line-height: 15px; text-decoration: none; padding: 13px 10px; color: #ffffff; display: block; border-radius: 4px;">Learn More</a>
                                                     </td>
                                                 </tr>

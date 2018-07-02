@@ -2,7 +2,6 @@
   use yii\helpers\Html;
   use yii\bootstrap\ActiveForm;
 
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

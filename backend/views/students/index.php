@@ -70,7 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
               'class' => 'col-md-4 offset-md-2 col-sm-4 offset-sm-2 col-lg-4 offset-lg-2 col-xl-3 offset-xl-2 col-xs-6 offset-xs-3',
             ],
             'itemView'     => '_student',
-
           ]);
       Pjax::end();
     ?>

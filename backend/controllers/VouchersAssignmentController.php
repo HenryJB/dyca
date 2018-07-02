@@ -3,17 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Grant;
-use common\models\GrantSearch;
+use common\models\VouchersAssignment;
+use common\models\Voucher;
+use common\models\VouchersAssignmentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
- * GrantController implements the CRUD actions for Grant model.
+ * VouchersAssignmentController implements the CRUD actions for VouchersAssignment model.
  */
-class GrantController extends Controller
+class VouchersAssignmentController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +31,12 @@ class GrantController extends Controller
     }
 
     /**
-     * Lists all Grant models.
+     * Lists all VouchersAssignment models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new GrantSearch();
+        $searchModel = new VouchersAssignmentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class GrantController extends Controller
     }
 
     /**
-     * Displays a single Grant model.
+     * Displays a single VouchersAssignment model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,27 +59,15 @@ class GrantController extends Controller
     }
 
     /**
-     * Creates a new Grant model.
+     * Creates a new VouchersAssignment model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Grant();
+        $model = new VouchersAssignment();
 
-        if ($model->load(Yii::$app->request->post()) ) {
-            $fileinstance = UploadedFile::getInstance($model,'thumbnail');
-
-            $model->thumbnail = $model->upload($fileinstance);
-            $model->question = serialize($model->question);
-
-            if($model->save()){
-                Yii::$app->session->setFlash('success', 'Grant Created');
-            }
-            else{
-                Yii::$app->session->setFlash('error', 'Grant failed to save');
-            }
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -89,7 +77,7 @@ class GrantController extends Controller
     }
 
     /**
-     * Updates an existing Grant model.
+     * Updates an existing VouchersAssignment model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -109,29 +97,39 @@ class GrantController extends Controller
     }
 
     /**
-     * Deletes an existing Grant model.
+     * Deletes an existing VouchersAssignment model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    {        
+        $voucher = Voucher::findOne((int)$this->findModel((int)$id)->voucher_id);
+        $voucher->status = 'not used';
+        
+        if($voucher->update()){
+            $this->findModel((int)$id)->delete();
+            Yii::$app->session->setFlash('success','Voucher has been revoked from this user');
+            return $this->redirect(['index']);
+        }
+        else
+        {
+            Yii::$app->session->setFlash('error','Voucher could not be revoked from usere');
+            return $this->redirect(['index']);
+        }
     }
 
     /**
-     * Finds the Grant model based on its primary key value.
+     * Finds the VouchersAssignment model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Grant the loaded model
+     * @return VouchersAssignment the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Grant::findOne($id)) !== null) {
+        if (($model = VouchersAssignment::findOne($id)) !== null) {
             return $model;
         }
 
