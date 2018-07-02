@@ -566,23 +566,32 @@ class StudentsController extends Controller
             if(Yii::$app->request->post()){
 
                 $skills = Yii::$app->request->post('skillset');
-                foreach( $skills as $skill){
 
-                    $skill_model = StudentSkill::find()->where(['skill_id'=>$skill, 'student_id'=>$student_id])->one();
+                if(!empty($skills)){
+                    foreach( $skills as $skill){
 
-                    if($skill_model!==null){
-                        Yii::$app->session->setFlash('success', 'Skill already  added.');
-                        continue;
-                    }else{
-                        $model = new StudentSkill();
-                        $model->student_id = $student_id;
-                        $model->skill_id = $skill;
-                        $model->save();
+                        $skill_model = StudentSkill::find()->where(['skill_id'=>$skill, 'student_id'=>$student_id])->one();
+
+                        if($skill_model!==null){
+                            Yii::$app->session->setFlash('success', 'Skill already  added.');
+                            continue;
+                        }else{
+                            $model = new StudentSkill();
+                            $model->student_id = $student_id;
+                            $model->skill_id = $skill;
+                            $model->save();
+                        }
+
                     }
+
+                    Yii::$app->session->setFlash('success', 'Skill added.');
+
+                    return $this->redirect('profile');
 
                 }
 
-                Yii::$app->session->setFlash('success', 'Skill added.');
+
+                Yii::$app->session->setFlash('error', 'No Skill selected. Select one and try again ');
 
                 return $this->redirect('profile');
             }

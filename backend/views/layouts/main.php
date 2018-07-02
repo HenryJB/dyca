@@ -180,11 +180,13 @@ DashboardAsset::register($this);
                           <li>
                                 <?=Html::a('Email Templates', ['email-template/index'])?>
                           </li>
+ 
                           <li>
-                                <?=Html::a('New Tag', ['tags/create'])?>
+                                <?=Html::a('Tags', ['tags/index'])?>
                           </li>
+
                           <li>
-                                <?=Html::a('Tag List', ['tags/index'])?>
+                                <?=Html::a('Tag Categories', ['tag-category/index'])?>
                           </li>
                       </ul>
 

@@ -12,23 +12,46 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="email-template-index">
 
-    <h1 class="mb-3 text-white"><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Email Template', ['create'], ['class' => 'btn btn-danger btn-lg']) ?>
+        <?= Html::a('Create Email Template', ['create'], ['class' => 'btn btn-danger btn-lg mb-3 mt-3']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+  
 
-            'type',
-            'subject',
-            'body:ntext',
+    <div class="card">
+        <div class="card-header">
+            Email Templates
+        </div>
+        <div class="card-body">
+             <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                    'type',
+                    'subject',
+                    'body:ntext',
+
+                      [
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return
+                                Html::a('<span class="glyphicon glyphicon-eye-open"></span> ', ['view','id'=>$data->id], ['title' => 'view','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-pencil"></span> ', ['update','id'=>$data->id], ['title' => 'edit','class'=>'btn btn-danger']).' '.
+                                Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['delete', 'id' => $data->id], [
+                                    'class' => 'btn btn-danger',
+                                    'data' => [
+                                        'confirm' => 'Are you sure you want to delete this item?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
 </div>

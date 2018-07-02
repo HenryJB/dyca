@@ -40,7 +40,7 @@
                         <img src="<?= Url::to('@web/uploads/courses/'.$applied_course->photo); ?>" class="img-fluid img-rounded">
                         <h3 class="title-bold font-24 bottom-centered "><?=$applied_course->name?></h3>
                         <div style="margin-top:20px">
-                          <a href="<?=Yii::$app->request->baseUrl?>/payments/course-fee?id=<?=$course->id?>" class="btn btn-danger btn-block rounded">Pay</a>
+                          <a href="<?=Yii::$app->request->baseUrl?>/payments/course-fees?id=<?=$course->id?>" class="btn btn-danger btn-block rounded">Pay</a>
                         </div>
                     </div>
                     <div class="col-md-4" style="padding-top:36px">

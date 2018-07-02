@@ -21,7 +21,7 @@ class EmailController extends \yii\web\Controller
         
         $emails = null;
         
-       if(count($student) > 0){
+       if($student!==null){
            
             $emails = Email::find()->where(['receiver_email' => $student->email_address])->all();
            
@@ -38,7 +38,7 @@ class EmailController extends \yii\web\Controller
 
         $email = Email::findOne($id);
 
-        if ($email) {
+        if ($email!==null) {
             $email->delete();
             Yii::$app->session->setFlash('success', 'Email deleted');
             return $this->redirect('index');
