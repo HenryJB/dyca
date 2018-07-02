@@ -174,7 +174,7 @@ class StudentsController extends Controller
 
             $tagging = Tagging::find()->where(['tag_id' => $dca_tag, 'student_id' => $id])->one();
 
-            if(count($tagging) == 0){
+            if($tagging!== null){
                 $tagging = new Tagging();
                 $tagging->student_id = $id;
                 $tagging->tag_id = $dca_tag;
@@ -193,7 +193,7 @@ class StudentsController extends Controller
             
             $tag = Tag::find()->where(['id'=>$dca_tag])->one();
             
-            if(count($tag)> 0 || $tag->voucher_category!==NULL){
+            if($tag!==0 || $tag->voucher_category!==NULL){
                 $selected_vouchers = Voucher::find()
                 ->where(['voucher_category'=>$tag->voucher_category, 'status'=>'not used'])
                 ->all();

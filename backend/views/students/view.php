@@ -308,7 +308,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                             <?php $student_tag = Tag::find()->where(['id' => $tagging->tag_id])->one(); ?>
 
-                                            <?php if (count($student_tag) > 0) : ?>
+                                            <?php if ($student_tag!==null) : ?>
                                                 <a class="btn btn-danger "
                                                    href="<?= Yii::$app->request->baseUrl ?>/students/tag?id=<?= $student_tag->id ?>">
                       <span class="badge badge-dark">

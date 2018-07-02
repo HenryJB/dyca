@@ -39,9 +39,11 @@
                         <?php $applied_course= $course->getCourse()->andWhere('id='.$course->course_id)->one();?>
                         <img src="<?= Url::to('@web/uploads/courses/'.$applied_course->photo); ?>" class="img-fluid img-rounded">
                         <h3 class="title-bold font-24 bottom-centered "><?=$applied_course->name?></h3>
+                        <?php if($course_applied->payment_status!=='paid'):?>
                         <div style="margin-top:20px">
                           <a href="<?=Yii::$app->request->baseUrl?>/payments/course-fees?id=<?=$course->id?>" class="btn btn-danger btn-block rounded">Pay</a>
                         </div>
+                        <?php endif?>
                     </div>
                     <div class="col-md-4" style="padding-top:36px">
                       <div class="row">

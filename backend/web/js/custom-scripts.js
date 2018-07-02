@@ -46,23 +46,23 @@ $('.sufee-alert').hide();
   });
 
 
-   $('#batch-tag-link').click(function (e) {
+   $('#batch_tag_link').click(function (e) {
        alert("welcome");
        e.preventDefault();
        //alert('clicked');
-       $("#batch-tag-modal").modal("show");
-       $("#batch-tag-modal").appendTo("body");
+       $("#batchTagModal").modal("show");
+       $("#batchTagModal").appendTo("body");
 
-       $.ajax({
-           url: '<?= Yii::$app->request->baseUrl?>/skills/get-skills',
-           method: 'POST',
-           success: function (data) {
-               $('#batch-tag-box').show();
-               // alert(data);
-               $('#batch-tag-modal').html(data);
-           },
-           error: {}
-       });
+       //$.ajax({
+       //    url: '<?= Yii::$app->request->baseUrl?>/skills/get-skills',
+       //    method: 'POST',
+       //    success: function (data) {
+       //        $('#batch-tag-box').show();
+       //        // alert(data);
+       //        $('#batch-tag-modal').html(data);
+       //    },
+       //    error: {}
+       //});
        return false;
    });
 

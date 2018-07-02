@@ -139,9 +139,9 @@ class PaymentsController extends \yii\web\Controller
 
 
                 $email = $student->email_address;
-                $amount = 5000 *100;
+                $amount = 5350* 360 *100;
                 $currency = 'NGN';
-            }
+
 
 
             // Initializing a payment transaction
@@ -168,7 +168,7 @@ class PaymentsController extends \yii\web\Controller
 
 
                 if($model->save()){
-                    Yii::$app->runAction('messaging/registration', ['email_address' => $student->email_address, 'firstname' => $student->first_name, 'lastname' => $student_model->last_name]);
+                    Yii::$app->runAction('messaging/registration', ['email_address' => $student->email_address, 'firstname' => $student->first_name, 'lastname' => $student->last_name]);
 
                     // redirect the user to the payment page gotten from the initialization
                     $transaction->redirect();
@@ -180,14 +180,16 @@ class PaymentsController extends \yii\web\Controller
                 }
 
 
-            }
-            else
-            {
+            }else{
                 // display message
                 echo $transaction->message;
 
                 // get all the errors information regarding the operation from paystack
                 $error = $transaction->getError();
+            }
+
+            }else{
+                return $this->redirect(['site/index']);
             }
 
         }else{

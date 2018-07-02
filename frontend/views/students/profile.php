@@ -181,9 +181,11 @@ AppAsset::register($this);
                                               <?php $applied_course= $course->getCourse()->andWhere('id='.$course->course_id)->one();?>
                                               <img src="<?= Url::to('@web/uploads/courses/'.$applied_course->photo); ?>" class="img-fluid img-rounded">
                                               <h3 class="title-bold font-24 bottom-centered "><?=$applied_course->name?></h3>
+                                             <?php if($course_applied->payment_status!=='paid'):?>
                                               <div style="margin-top:20px">
                                                   <a href="<?=Yii::$app->request->baseUrl?>/payments/course-fee?id=<?=$course->id?>" class="btn btn-danger btn-block rounded">Pay</a>
                                               </div>
+                                            <?php endif;?>
                                           </div>
                                           <div class="col-md-4" style="padding-top:36px">
                                               <div class="row">
@@ -217,53 +219,54 @@ AppAsset::register($this);
                     </div>
 
 
-                            </div>
-                            <div class="col-md-4"> <a id="project-link" data-toggle="modal" data-target="#Modal1" href="#"><i class="fa fa-plus"></i> Add a new project</a>  </div>
-                        </div>
-                        <div class="row">
-                            <?php if(count($projects)>0): ?>
-
-                            <?php foreach($projects as $project):?>
-
-
-                                    <div class="card-body">
-
-                                        <div class="row">
-                                            <div class="col-md-6">
-
-
-
-                                                <h3 class="title-bold font-24 bottom-centered "><?=$project->title?></h3>
-
-                                            </div>
-                                            <div class="col-md-4" style="padding-top:36px">
-                                                <div class="row">
-                                                    <div class=" col-md-12"><h3 class="title-light font-14">Description</h3></div>
-                                                    <div class="col-md-12 line-compressed"><?= $project->description ?></div>
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-                            <?php endforeach;?>
-                            <?php endif?>
-                        </div>
-
-                <div class="portfolio">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="title-bold font-24"> <i class="fa fa-briefcase"></i> PORTFOLIOS </div>
-
-                        </div>
-                        <div class="col-md-4"> <a id="project-link" data-toggle="modal" data-target="#Modal1" href="#"><i class="fa fa-plus"></i> Add a new project</a>  </div>
                     </div>
 
+                    <div class="portfolio">
 
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="title-bold font-24"> <i class="fa fa-briefcase"></i> PORTFOLIOS</div>
+                            </div>
+
+                            <div class="col-md-4"> <a id="project-link" data-toggle="modal" data-target="#Modal1" href="#"><i class="fa fa-plus"></i> Add a new project</a>  </div>
+                        </div>
+
+                    </div>
+
+                <div class="row">
+                    <?php if(count($projects)>0): ?>
+
+                        <?php foreach($projects as $project):?>
+
+
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <img src="<?= Url::to('@web/uploads/student-projects/documents/pdf.jpg'); ?>" class="img-fluid img-rounded">
+
+                                        <h3 class="title-bold font-24 bottom-centered "><?=$project->title?></h3>
+
+                                    </div>
+                                    <div class="col-md-4" style="padding-top:36px">
+                                        <div class="row">
+                                            <div class=" col-md-12"><h3 class="title-light font-14">Description</h3></div>
+                                            <div class="col-md-12 line-compressed"><?= $project->description ?></div>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        <?php endforeach;?>
+                    <?php endif?>
                 </div>
+
+
 
 
             </div>
