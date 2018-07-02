@@ -5,14 +5,15 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "grant_answer".
+ * This is the model class for table "grant_answers".
  *
  * @property int $id
- * @property int $grant_question_id
+ * @property int $grant_id
  * @property int $student_id
  * @property string $answer
+ * @property string $created_at
  *
- * @property GrantQuestion $grantQuestion
+ * @property Grants $grant
  * @property Students $student
  */
 class GrantAnswer extends \yii\db\ActiveRecord
@@ -22,7 +23,7 @@ class GrantAnswer extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'grant_answer';
+        return 'grant_answers';
     }
 
     /**
@@ -31,11 +32,13 @@ class GrantAnswer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['grant_question_id', 'student_id', 'answer'], 'required'],
-            [['grant_question_id', 'student_id'], 'integer'],
-            [['answer'], 'string'],
-            [['grant_question_id'], 'exist', 'skipOnError' => true, 'targetClass' => GrantQuestion::className(), 'targetAttribute' => ['grant_question_id' => 'id']],
-            [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Student::className(), 'targetAttribute' => ['student_id' => 'id']],
+            [['id', 'grant_id', 'student_id', 'answer'], 'required'],
+            [['id', 'grant_id', 'student_id'], 'integer'],
+            [['created_at'], 'safe'],
+            [['answer'], 'string', 'max' => 225],
+            [['id'], 'unique'],
+            [['grant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Grants::className(), 'targetAttribute' => ['grant_id' => 'id']],
+            [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Students::className(), 'targetAttribute' => ['student_id' => 'id']],
         ];
     }
 
@@ -46,18 +49,19 @@ class GrantAnswer extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'grant_question_id' => 'Grant Question ID',
+            'grant_id' => 'Grant ID',
             'student_id' => 'Student ID',
             'answer' => 'Answer',
+            'created_at' => 'Created At',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGrantQuestion()
+    public function getGrant()
     {
-        return $this->hasOne(GrantQuestion::className(), ['id' => 'grant_question_id']);
+        return $this->hasOne(Grants::className(), ['id' => 'grant_id']);
     }
 
     /**

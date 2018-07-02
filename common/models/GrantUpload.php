@@ -31,9 +31,10 @@ class GrantUpload extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['grant_id', 'student_id', 'link'], 'required'],
-            [['grant_id', 'student_id'], 'integer'],
-            [['link'], 'string', 'max' => 255],
+            [['id', 'grant_id', 'student_id', 'link'], 'required'],
+            [['id', 'grant_id', 'student_id'], 'integer'],
+            [['link'], 'string', 'max' => 150],
+            [['id'], 'unique'],
             [['grant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Grants::className(), 'targetAttribute' => ['grant_id' => 'id']],
             [['student_id'], 'exist', 'skipOnError' => true, 'targetClass' => Students::className(), 'targetAttribute' => ['student_id' => 'id']],
         ];

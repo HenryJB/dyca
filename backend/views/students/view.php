@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary">Confirm</button>
+                            <button type="submit" class="btn btn-primary" onclick=" confirm('Are you sure?');">Confirm</button>
                         </div>
                     </form>
                     </p>

@@ -19,7 +19,7 @@ class GrantSearch extends Grant
     {
         return [
             [['id'], 'integer'],
-            [['title'], 'safe'],
+            [['title', 'question', 'description', 'thumbnail', 'status', 'created_at'], 'safe'],
         ];
     }
 
@@ -60,9 +60,14 @@ class GrantSearch extends Grant
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'question', $this->question])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'thumbnail', $this->thumbnail])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

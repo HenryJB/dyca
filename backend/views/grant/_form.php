@@ -2,64 +2,48 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use dosamigos\tinymce\TinyMce;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Grant */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="grant-form">
+<div class="grant-form p-5">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <div class="form-row">
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model,'thumbnail')->fileInput()->label(false) ?>
+        </div>
 
-    <?= $form->field($model, 'description')->widget(TinyMce::className(), [
-        'options' => ['rows' => 10],
-        'language' => 'en',
-        'clientOptions' => [
-            'plugins' => [
-                'advlist autolink lists link charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table contextmenu paste',
-            ],
-            'toolbar' => 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-        ],
-    ]); ?>
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+        </div>
 
-     <?= $form->field($model, 'terms_and_condition')->widget(TinyMce::className(), [
-        'options' => ['rows' => 10],
-        'language' => 'en',
-        'clientOptions' => [
-            'plugins' => [
-                'advlist autolink lists link charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table contextmenu paste',
-            ],
-            'toolbar' => 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-        ],
-    ]); ?>
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model, 'question[]')->textarea(['rows' => 6]) ?>
+        </div>
 
-    <h5 class="text-white mt-5 mb-5">SCREENING QUESTIONS AND ESSAYS</h5>
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model, 'question[]')->textarea(['rows' => 6]) ?>
+        </div>
 
-    <?= $form->field($model2, 'question')->widget(TinyMce::className(), [
-        'options' => ['rows' => 10],
-        'language' => 'en',
-        'clientOptions' => [
-            'plugins' => [
-                'advlist autolink lists link charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table contextmenu paste',
-            ],
-            'toolbar' => 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-        ],
-    ]); ?>
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+        </div>
 
-    
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model, 'status')->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', ], ['prompt' => '']) ?>
+        </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Publish', ['class' => 'btn btn-danger btn-lg']) ?>
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= $form->field($model, 'created_at')->input('date') ?>
+        </div>
+
+        <div class="form-group col-sm-6 offset-sm-3">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-danger btn-lg']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

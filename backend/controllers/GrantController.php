@@ -4,11 +4,10 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Grant;
-use common\models\GrantQuestion;
-use common\models\GrantUpload;
 use common\models\GrantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
@@ -67,16 +66,25 @@ class GrantController extends Controller
     public function actionCreate()
     {
         $model = new Grant();
-        $model2 = new GrantQuestion();
-        $model3 = new GrantUpload();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) ) {
+            $fileinstance = UploadedFile::getInstance($model,'thumbnail');
+
+            $model->thumbnail = $model->upload($fileinstance);
+            $model->question = serialize($model->question);
+
+            if($model->save()){
+                Yii::$app->session->setFlash('success', 'Grant Created');
+            }
+            else{
+                Yii::$app->session->setFlash('error', 'Grant failed to save');
+            }
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
             'model' => $model,
-            'model2' => $model2
         ]);
     }
 

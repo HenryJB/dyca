@@ -3,14 +3,20 @@
 namespace common\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "grants".
  *
  * @property int $id
- * @property string $name
+ * @property string $title
+ * @property string $question
+ * @property string $description
+ * @property string $thumbnail
+ * @property string $status
+ * @property string $created_at
  *
- * @property GrantQuestion[] $grantQuestions
+ * @property GrantAnswers[] $grantAnswers
  * @property GrantUploads[] $grantUploads
  */
 class Grant extends \yii\db\ActiveRecord
@@ -29,8 +35,12 @@ class Grant extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title','description','terms_and_condition','thumbnail'], 'required'],
-            [['title','description'], 'string', 'max' => 255],
+            [['title', 'question', 'description', 'thumbnail', 'status', 'created_at'], 'required'],
+            [['question', 'status'], 'string'],
+            [['created_at'], 'safe'],
+            [['title'], 'string', 'max' => 45],
+            [['description'], 'string', 'max' => 225],
+            [['thumbnail'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, gif, png','maxSize' => 2048000, 'tooBig' => 'Limit is 2MB'],
         ];
     }
 
@@ -42,18 +52,20 @@ class Grant extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'title' => 'Title',
+            'question' => 'Question',
             'description' => 'Description',
-            'terms_and_condition' => 'Terms and Conditions',
             'thumbnail' => 'Thumbnail',
+            'status' => 'Status',
+            'created_at' => 'Created Date',
         ];
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGrantQuestions()
+    public function getGrantAnswers()
     {
-        return $this->hasMany(GrantQuestion::className(), ['grant_id' => 'id']);
+        return $this->hasMany(GrantAnswers::className(), ['grant_id' => 'id']);
     }
 
     /**
@@ -62,5 +74,25 @@ class Grant extends \yii\db\ActiveRecord
     public function getGrantUploads()
     {
         return $this->hasMany(GrantUploads::className(), ['grant_id' => 'id']);
+    }
+
+    public function upload($fileinstance)
+    {
+
+        if ($fileinstance != NULL || $fileinstance !== '') {
+
+            $img_name = $fileinstance->baseName . Yii::$app->getSecurity()->generateRandomString(5) . '.' . $fileinstance->extension;
+
+            if ($this->validate() && !empty($img_name)) {
+
+                $fileinstance->saveAs(
+                    Url::to('@web/uploads/grants/').$img_name
+                );
+
+                return $img_name;
+            }else{
+                return $img_name;
+            }
+        }
     }
 }
