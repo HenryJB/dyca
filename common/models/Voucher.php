@@ -69,4 +69,9 @@ class Voucher extends \yii\db\ActiveRecord
     {
         return $this->hasOne(VoucherCategory::className(), ['id' => 'voucher_category']);
     }
+
+    public function getCategoryName()
+    {
+        return $this->voucherCategory->name;
+    }
 }

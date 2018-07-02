@@ -270,7 +270,8 @@ class MessagingController extends \yii\web\Controller
 
 
             $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $subject);
-            Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
+            Yii::$app->session->setFlash('success', 'Mail Sent');
+            return $this->redirect(['students/view', 'id' => (int)$id]);
         } 
         catch (Exception $e) 
         {
