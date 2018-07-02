@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\VouchersAssignment;
+use common\models\Voucher;
 use common\models\VouchersAssignmentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -103,10 +104,20 @@ class VouchersAssignmentController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+    {        
+        $voucher = Voucher::findOne((int)$this->findModel((int)$id)->voucher_id);
+        $voucher->status = 'not used';
+        
+        if($voucher->update()){
+            $this->findModel((int)$id)->delete();
+            Yii::$app->session->setFlash('success','Voucher has been revoked from this user');
+            return $this->redirect(['index']);
+        }
+        else
+        {
+            Yii::$app->session->setFlash('error','Voucher could not be revoked from usere');
+            return $this->redirect(['index']);
+        }
     }
 
     /**

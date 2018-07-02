@@ -12,14 +12,18 @@ use common\models\VouchersAssignment;
  */
 class VouchersAssignmentSearch extends VouchersAssignment
 {
+    public $voucher;
+    public $student;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'voucher_id', 'student_id'], 'integer'],
-        ];
+            [['voucher_id', 'student_id'], 'string'],
+            [['voucher', 'student'], 'safe'],
+        ];        
     }
 
     /**
@@ -42,6 +46,16 @@ class VouchersAssignmentSearch extends VouchersAssignment
     {
         $query = VouchersAssignment::find();
 
+        $query->joinWith(['student', 'voucher']);
+
+        $dataProvider->sort->attributes['voucher'] = [
+            'asc' => ['vouchers.code' => SORT_ASC],
+        ];
+        // Lets do the same with country now
+        $dataProvider->sort->attributes['student'] = [
+            'asc' => ['students.first_name' => SORT_ASC],
+        ];
+
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -51,17 +65,15 @@ class VouchersAssignmentSearch extends VouchersAssignment
         $this->load($params);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'voucher_id' => $this->voucher_id,
-            'student_id' => $this->student_id,
-        ]);
+        $query
+
+         ->andFilterWhere(['like', 'students.first_name', $this->student_id])
+         ->orFilterWhere(['like', 'students.last_name', $this->student_id])
+         ->andFilterWhere(['like', 'vouchers.code', $this->voucher_id]);
 
         return $dataProvider;
     }
