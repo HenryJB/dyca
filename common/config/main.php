@@ -10,5 +10,10 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'xxtea' => [
+            'class' => 'rmrevin\yii\xxtea\Component',
+            'key' => 'qwertyuiopasdfgh', // 16 letters
+            'base64_encode' => true,
+        ],
     ],
 ];

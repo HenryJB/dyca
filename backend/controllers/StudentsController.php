@@ -222,7 +222,7 @@ class StudentsController extends Controller
                 }
                 if($tag->message != NULL && $tag->notify_status==1 && count($selected_vouchers) > 0){ 
                     
-                    Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id, 'email_template' => 3]);
+                    Yii::$app->runAction('messaging/tagging',['body'=>$tag->message, 'voucher' => $selected_vouchers[0]->code, 'id' => $id]);
                 }
                 else{
                     Yii::$app->session->setFlash('error', 'Voucher has been assigned');

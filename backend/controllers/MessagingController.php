@@ -6,6 +6,7 @@ use common\models\Course;
 use common\models\Email;
 use common\models\EmailTemplate;
 use common\models\Student;
+use yii\base\DynamicModel;
 
 use yii\helpers\Url;
 use yii;
@@ -14,7 +15,7 @@ class MessagingController extends \yii\web\Controller
 {
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['send-mail', 'invoice-by-voucher','action-registration', 'course-applied', 'tagging', ])) {
+        if (in_array($action->id, ['send-mail', 'invoice-by-voucher','action-registration', 'course-applied', 'tagging','mail-student' ])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -93,6 +94,7 @@ class MessagingController extends \yii\web\Controller
                 ]
             );
 
+
             $email_response = $this->saveEmailDb($email, $email_address, $template->id);
 
             if ($email_response) {
@@ -156,45 +158,44 @@ class MessagingController extends \yii\web\Controller
 
     //untagging
 
-    public function actionTagging($body,$voucher,$id)
+     public function actionTagging($body, $voucher, $id)
     {
-        //This method depends on email_template_id of 3 for tagging
-
         $email = new Email();
 
-        $student = Student::findOne((int)$id);
+        $student = Student::findOne($id);
 
         $template = EmailTemplate::findOne(3);
 
-        try {
+        if (!empty($template )&& !empty($student)) {
+            try {
 
-            $message = Yii::$app->mailer->compose(
-                '@frontend/mail/tag.php',
-                [
-                    'content'   => $body,
-                    'title'     => 'DCA TRANSACTION',
-                    'name'      => $student->first_name.' '.$student->last_name,
-                    'voucher'   => $voucher,
-                ]
-            );
+                $message = Yii::$app->mailer->compose(
+                    '@frontend/mail/tag.php',
+                    [
+                        'content' => $body,
+                        'title' => 'TAGGING',
+                        'name' => $student['first_name'] . ' ' . $student['last_name'],
+                        'voucher' => $voucher,
+                    ]
+                );
 
-            $email_response = $this->saveEmailDb($email, $student->email_address, $template->id);
+                $email_response = $this->saveEmailDb($email, $student['email_address'], $template->id);
 
-            if ($email_response) {
-                $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'], 'DCA TRANSACTION');
-                Yii::$app->session->setFlash('sucess', 'An email has been sent to your mail box');
-            }else{
+                if ($email_response) {
+                    $this->setMessageParameter($message, $student['email_address'], Yii::$app->params['supportEmail'], 'DCA TRANSACTION');
+                    Yii::$app->session->setFlash('sucess', 'An email has been sent to your mail box');
+                } else {
+                    Yii::$app->session->setFlash('error', 'Whoops please try again');
+                }
+            } catch (Exception $e) {
+
                 Yii::$app->session->setFlash('error', 'Whoops please try again');
+
             }
-        } 
-        catch (Exception $e) 
-        {
-
+        } else {
             Yii::$app->session->setFlash('error', 'Whoops please try again');
-
         }
 
-        Yii::$app->session->setFlash('error', 'Whoops please try again');
     }
 
     public function actionPaySuccess($id,$email_template)
@@ -235,6 +236,48 @@ class MessagingController extends \yii\web\Controller
         }
 
         Yii::$app->session->setFlash('error', 'Whoops please try again');
+    }
+
+    public function actionMailStudent()
+    {
+        $subject = Yii::$app->request->post('subject');
+        $email_address = Yii::$app->request->post('email_address');
+        $email_body = Yii::$app->request->post('email_body');
+        $id = Yii::$app->request->post('id');
+        
+
+         $model = new DynamicModel(compact('subject', 'email_address','email_body'));
+                    $model->addRule(['email_address','subject'], 'string', ['max' => 100])
+                    ->addRule(['email_address','subject','email_body'], 'required')
+                            ->addRule('email_address', 'email')
+                            ->addRule(['email_body'], 'string', ['max' => 1000])
+                            ->validate();
+
+        if ($model->hasErrors()) {
+            Yii::$app->session->setFlash('error',"There were errors in your form");
+            return $this->redirect(['students/view', 'id' => (int)$id]);
+        } 
+
+          try {
+
+            $message = Yii::$app->mailer->compose(
+                '@frontend/mail/mailstudent.php',
+                [
+                    'body'   => $email_body,
+                    'subject'     => $subject,
+                ]
+            );
+
+
+            $this->setMessageParameter($message, $email_address, Yii::$app->params['supportEmail'], $subject);
+            Yii::$app->session->setFlash('success', 'An email has been sent to your mail box');
+        } 
+        catch (Exception $e) 
+        {
+
+            Yii::$app->session->setFlash('error', 'Whoops please try again');
+
+        }
     }
 
     //this code does not change most times

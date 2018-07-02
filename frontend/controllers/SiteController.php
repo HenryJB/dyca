@@ -201,8 +201,9 @@ class SiteController extends Controller
         ]);
     }
 
-//    public function actionTesting()
-//    {
-//        Yii::$app->runAction('messaging/welcome', ['email_address' => 'wibuqi@mailinator.com','firstname' => 'Lusahaha', 'lastname' => 'Mbaku']);
-//    }
+   public function actionTesting()
+   {
+        // Yii::$app->runAction('messaging/tagging', ['body' => 'Congratulations You have been given a weaver for the registration. Proceed to register with the code given below:','voucher' => 'WKPKIMY8JZ', 'id' => 22]);
+       Yii::$app->runAction('messaging/registration', ['email_address' => 'esiro@mailinator.com','firstname' => 'esiro', 'lastname' => 'aromeh']);
+   }
 }

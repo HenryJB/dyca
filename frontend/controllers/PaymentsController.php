@@ -60,11 +60,11 @@ class PaymentsController extends \yii\web\Controller
         $user_id = (int)$session->get('id');
 
         if($user_id!==null ){
-            $student = Student::find()->where(['id'=>$user_id])->one();
+            $student = Student::find()->where(['id'=>$user_id])->one();           
 
             if($student!==null)
             {
-                $email = $student->email_address;
+                $email = $student['email_address'];
                 $amount = 5000 *100;
                 $currency = 'NGN';
             }
@@ -72,7 +72,7 @@ class PaymentsController extends \yii\web\Controller
             // Initializing a payment transaction
             $paystack = Yii::$app->Paystack;
             $transaction = $paystack->transaction();
-            $transaction->initialize(['email'=>$email,'amount'=>$amount,'currency'=>$currency]);
+            $transaction->initialize(['email'=> $student['email_address'],'amount'=>$amount,'currency'=>$currency]);
 
             // check if an error occured during the operation
             if (!$transaction->hasError)
@@ -93,7 +93,8 @@ class PaymentsController extends \yii\web\Controller
 
                 if( $model->save())
                 {
-                    Yii::$app->runAction('messaging/registration', ['email_address' => $student_model->email_address, 'firstname' => $student_model->first_name, 'lastname' => $student_model->last_name]);
+                    Yii::$app->runAction('messaging/registration', ['email_address' => $student['email_address'], 'firstname' => $student['first_name'], 
+                        'lastname' => $student['last_name']]);
 
                     // redirect the user to the payment page gotten from the initialization
                     $transaction->redirect();
@@ -242,6 +243,9 @@ class PaymentsController extends \yii\web\Controller
 
     public function actionPaySuccess()
     {
+        $session = Yii::$app->session;
+        $user_id = (int)$session->get('id');
+
         $student_model = Student::findOne((int)$user_id);
         $student_model->payment_status = 'paid';
         if($student_model->update()){

@@ -51,14 +51,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
                 <div class="modal-body">
                     <p>
-                    <form action="<?php echo Yii::$app->request->baseUrl ?>/students/send-mail" method="post">
+                    <form action="<?php echo Yii::$app->request->baseUrl ?>/messaging/mail-student" method="post">
+                        <?php $email =  'noreply.delyorkinternational.com' ?>
+                        <?php $id =  0 ?>
+
+                        <?php if(!empty($model->email_address) && !empty($model->id)) : ?>
+                            <?php $email = $model->email_address?>
+                            <?php $id   = $model->id?>
+                        <?php endif;?>
+
+
+                        <input type="hidden" name="email_address" value='<?= $email  ?>'>
+                        <input type="hidden" name="id" value='<?= $id  ?>'>
                         <div class="form-group">
-                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Subject"/>
+                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Subject" />
                         </div>
                         <div class="form-group">
-                            <textarea cols="6" rows="10" class="form-control"></textarea>
+                            <textarea cols="6" rows="10" class="form-control" name="email_body" ></textarea>
                         </div>
-                        <button name="sendMail" class="btn btn-success">
+                        <button type="submit" class="btn btn-success">
                             <i class='fa fa-envelope'></i> Send Email
                         </button>
 
@@ -177,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <div class="col-md-4 col-sm-4 mt-5 mb-4 pl-0">
                                     <?php $photo = !empty($model->photo) || $model->photo !== NULL ? $model->photo : 'default-avatar.gif' ?>
-                                    <?= Html::img('@web/uploads/students/' . $photo, ['class' => 'rounded-circle d-block', 'style' => 'width:300px; height:250px;']) ?>
+                                    <?= Html::img('@web/uploads/students/' . $photo, ['class' => 'rounded-circle d-block', 'style' => 'width:300px; height:300px;']) ?>
                                 </div>
 
                                 <div class="col-md-8 col-sm-8 mt-5 align-self-center">
@@ -281,18 +292,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <i class="fa fa-star"></i> SKILLS</h3>
 
                                 </div>
-                                <div class="col-sm-4">
-                                    <p class="font-weight-bold">PHONE NUMBER</p>
-                                    <p>
-                                        <?= $model->phone_number ?>
-                                    </p>
-                                </div>
-                                <div class="col-sm-4">
-                                    <p class="font-weight-bold">PHONE NUMBER</p>
-                                    <p>
-                                        <?= $model->phone_number ?>
-                                    </p>
-                                </div>
+                                
                             </div>
 
                             <div class="row mt-4 mb-4">
@@ -408,7 +408,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                                         <?php elseif($project->type == 'photo' && !empty($project->attachment)):?>                                                            
                                                             <?php $link = Url::to('@web/uploads/student-projects/images/'.$project->attachment); ?>
                                                             <img src="<?= $link; ?>" width="200px" height="200px">
-                                                            
+
                                                         <?php else:?>
                                                                 <p>Content Error</p>
                                                         <?php endif;?>
