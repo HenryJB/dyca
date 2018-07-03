@@ -104,22 +104,31 @@ class VouchersAssignmentController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
-    {        
+    {
         $voucher = Voucher::findOne((int)$this->findModel((int)$id)->voucher_id);
-        $voucher->status = 'not used';
-        
-        if($voucher->update()){
-            $this->findModel((int)$id)->delete();
-            //send email to students that voucher has been revoked for them
-            Yii::$app->runAction();
-            Yii::$app->session->setFlash('success','Voucher has been revoked from this user');
-            return $this->redirect(['index']);
+
+        switch ($voucher->status) {
+            case 'not used':
+                $this->findModel((int)$id)->delete();
+                Yii::$app->runAction('messaging/revoke-voucher', ['id' => $id]);
+                break;
+            case 'assigned' :
+                $voucher->satus = 'not used';
+                if ($voucher->update()) {
+                    $this->findModel((int)$id)->delete();
+                    Yii::$app->runAction('messaging/revoke-voucher', ['id' => $id]);
+                }
+                break;
+            case 'used' :
+                $this->findModel((int)$id)->delete();
+                Yii::$app->runAction('messaging/revoke-voucher', ['id' => $id]);
+                break;
+            default:
+                Yii::$app->session->setFlash('error', 'Failed: Voucher Not Revoked');
+                break;
         }
-        else
-        {
-            Yii::$app->session->setFlash('error','Voucher could not be revoked from usere');
-            return $this->redirect(['index']);
-        }
+        return $this->redirect(['index']);
+
     }
 
     /**

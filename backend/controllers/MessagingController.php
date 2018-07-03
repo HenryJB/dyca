@@ -17,7 +17,7 @@ class MessagingController extends \yii\web\Controller
 {
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['send-mail', 'invoice-by-voucher','action-registration', 'course-applied', 'tagging','mail-student','revoke-voucher'])) {
+        if (in_array($action->id, ['send-mail', 'invoice-by-voucher','action-registration', 'course-applied', 'tagging','mail-student'])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -55,18 +55,45 @@ class MessagingController extends \yii\web\Controller
         }
     }
 
-    //for this function to work i need to get data from the voucher assignment table
-    //voucher id is needed for getting the code of the voucher
-    //student id is needed for getting the emails
-    //pass parameters into the function
-
-    public function actionRevokeVoucher($voucher_id)
+    public function actionRevokeVoucher($id)
     {
-        $model = VouchersAssignment::findOne($voucher_id);
+        $model = VouchersAssignment::findOne($id);
+        $template = EmailTemplate::findOne(7);
+        $student = Student::findOne($model->student_id);
+        $voucher = Voucher::findOne($model->voucher_id);
+        $email = new Email();
 
-        //i need the voucher model here
-        //i need the student model here
-        //i need the voucher assignment model here
+        if(!empty($template) || $template !== null)
+        {
+            try
+            {
+                $message = Yii::$app->mailer->compose(
+                    '@frontend/mail/revokevoucher.php',
+                    [
+                        'content' => $template->body,
+                        'title' => $template->type,
+                        'name' =>   $student->first_name.' '.$student->last_name ,
+                        'voucher' => $voucher->code,
+                    ]
+                );
+
+                if (!$this->saveEmailDb($email, $student->email_address, $template->id))
+                {
+                    Yii::$app->session->setFlash('error', 'Could not send mail');
+                    return;
+                }
+
+                $this->setMessageParameter($message, $student->email_address, Yii::$app->params['supportEmail'],$template->subject);
+                Yii::$app->session->setFlash('success', 'An email has been sent to '.$student->email_address);
+
+            } catch (Exception $e) {
+                Yii::$app->session->setFlash('error', 'Whoops please try again');
+            }
+            return;
+        }
+
+        Yii::$app->session->setFlash('error', 'Whoops please try again');
+        return;
     }
 
     public function invoiceByVoucher($first_name, $last_name, $amount, $email_address, $subject)
@@ -294,7 +321,6 @@ class MessagingController extends \yii\web\Controller
         }
     }
 
-    //this code does not change most times
     public function saveEmailDb($email, $student_email_address, $template_id)
     {
         try {
@@ -315,7 +341,6 @@ class MessagingController extends \yii\web\Controller
 
     }
 
-    //this code does not change most times
     public function setMessageParameter($message, $receiver, $from, $subject)
     {
         $message->setTo($receiver);

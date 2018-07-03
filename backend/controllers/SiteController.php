@@ -99,4 +99,8 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+    public function actionTesting($id)
+    {
+        Yii::$app->runAction('messaging/revoke-voucher', ['id' => $id]);
+    }
 }

@@ -63,11 +63,10 @@ class GrantSearch extends Grant
             'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
+        $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'question', $this->question])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'thumbnail', $this->thumbnail])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'status', $this->status])
+            ->andFilterWhere(['like', 'thumbnail', $this->thumbnail]);
 
         return $dataProvider;
     }

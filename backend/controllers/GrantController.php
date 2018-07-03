@@ -7,7 +7,6 @@ use common\models\Grant;
 use common\models\GrantSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
@@ -67,19 +66,7 @@ class GrantController extends Controller
     {
         $model = new Grant();
 
-        if ($model->load(Yii::$app->request->post()) ) {
-            $fileinstance = UploadedFile::getInstance($model,'thumbnail');
-
-            $model->thumbnail = $model->upload($fileinstance);
-            $model->question = serialize($model->question);
-
-            if($model->save()){
-                Yii::$app->session->setFlash('success', 'Grant Created');
-            }
-            else{
-                Yii::$app->session->setFlash('error', 'Grant failed to save');
-            }
-
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

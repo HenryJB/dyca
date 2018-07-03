@@ -63,6 +63,16 @@ class VouchersAssignment extends \yii\db\ActiveRecord
         return $this->student->first_name.' '.$this->student->last_name; 
     }
 
+    public function getStudentId()
+    {
+        return $this->student->id;
+    }
+
+    public function getStudentEmailAddress()
+    {
+        return $this->student->email_address;
+    }
+
     public function getVoucherCode()
     {
         return $this->voucher->code;

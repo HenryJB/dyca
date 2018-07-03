@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-use circulon\widgets\ColumnListView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\GrantSearch */
@@ -13,28 +12,27 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="grant-index">
 
+    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p class="mb-4">
-        <?= Html::a('Create Grant', ['create'], ['class' => 'btn btn-danger']) ?>
+    <p>
+        <?= Html::a('Create Grant', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <div class="card">
-        <div class="card-header">
-            <?= Html::encode($this->title) ?>
-        </div>
-        <div class="card-body" id="table__card">
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
-            <?=
-                ColumnListView::widget([
-                    'dataProvider' => $dataProvider,
-                    'columns' => 3,
-                    'itemOptions' => [
-                        'class' => 'col-md-4 offset-md-2 col-sm-4 offset-sm-2 col-lg-4 offset-lg-2 col-xl-3 offset-xl-2 col-xs-6 offset-xs-3',
-                    ],
-                    'itemView'     => '_grant',
-                ]);
-            ?>
-        </div>
-    </div>
+            'id',
+            'name',
+            'question:ntext',
+            'status',
+            'thumbnail',
+            //'created_at',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 </div>
