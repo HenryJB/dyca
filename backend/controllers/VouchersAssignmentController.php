@@ -110,6 +110,8 @@ class VouchersAssignmentController extends Controller
         
         if($voucher->update()){
             $this->findModel((int)$id)->delete();
+            //send email to students that voucher has been revoked for them
+            Yii::$app->runAction();
             Yii::$app->session->setFlash('success','Voucher has been revoked from this user');
             return $this->redirect(['index']);
         }

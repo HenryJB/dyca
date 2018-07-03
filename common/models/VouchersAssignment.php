@@ -67,4 +67,9 @@ class VouchersAssignment extends \yii\db\ActiveRecord
     {
         return $this->voucher->code;
     }
+
+    public function getVoucherStatus()
+    {
+        return $this->voucher->status;
+    }
 }

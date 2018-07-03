@@ -19,7 +19,7 @@ class GrantSearch extends Grant
     {
         return [
             [['id'], 'integer'],
-            [['title', 'question', 'description', 'thumbnail', 'status', 'created_at'], 'safe'],
+            [['name', 'question', 'status', 'thumbnail', 'created_at'], 'safe'],
         ];
     }
 

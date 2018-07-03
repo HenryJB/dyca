@@ -74,7 +74,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -87,10 +86,9 @@ class SiteController extends Controller
                 $session->set('id', $student->id);
                 $session->set('first_course_id', $student->first_choice);
                 
-                if($student->payment_status=='paid'){
-
+                if($student->payment_status=='paid')
+                {
                   return $this->redirect(['students/dashboard']);
-
                 }else {
 
                   return $this->redirect(['payments/index']);

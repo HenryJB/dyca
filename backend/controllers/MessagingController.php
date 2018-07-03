@@ -6,6 +6,8 @@ use common\models\Course;
 use common\models\Email;
 use common\models\EmailTemplate;
 use common\models\Student;
+use common\models\Voucher;
+use common\models\VouchersAssignment;
 use yii\base\DynamicModel;
 
 use yii\helpers\Url;
@@ -15,7 +17,7 @@ class MessagingController extends \yii\web\Controller
 {
     public function beforeAction($action)
     {
-        if (in_array($action->id, ['send-mail', 'invoice-by-voucher','action-registration', 'course-applied', 'tagging','mail-student' ])) {
+        if (in_array($action->id, ['send-mail', 'invoice-by-voucher','action-registration', 'course-applied', 'tagging','mail-student','revoke-voucher'])) {
             $this->enableCsrfValidation = false;
         }
 
@@ -53,6 +55,20 @@ class MessagingController extends \yii\web\Controller
         }
     }
 
+    //for this function to work i need to get data from the voucher assignment table
+    //voucher id is needed for getting the code of the voucher
+    //student id is needed for getting the emails
+    //pass parameters into the function
+
+    public function actionRevokeVoucher($voucher_id)
+    {
+        $model = VouchersAssignment::findOne($voucher_id);
+
+        //i need the voucher model here
+        //i need the student model here
+        //i need the voucher assignment model here
+    }
+
     public function invoiceByVoucher($first_name, $last_name, $amount, $email_address, $subject)
     {
 
@@ -74,7 +90,6 @@ class MessagingController extends \yii\web\Controller
         }
 
     }
-
 
     public function actionRegistration($email_address,$firstname,$lastname)
     {
@@ -155,8 +170,6 @@ class MessagingController extends \yii\web\Controller
 
         Yii::$app->session->setFlash('error', 'Whoops please try again');
     }
-
-    //untagging
 
      public function actionTagging($body, $voucher, $id)
     {

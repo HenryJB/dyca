@@ -48,6 +48,10 @@ $this->params['breadcrumbs'][] = $this->title;
                      'attribute' => 'voucher',
                      'value' => 'voucher.code'
                      ],
+                    [
+                        'attribute' => 'status',
+                        'value' => 'voucher.status'
+                    ],
                      [
                      'attribute' => 'student',
                      'value' => 'student.first_name'
